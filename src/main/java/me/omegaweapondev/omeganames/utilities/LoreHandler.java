@@ -11,7 +11,7 @@ public class LoreHandler {
   public static List<String> noPermissionLore(final Player player, String colourName, final String colourCode) {
     colourName = colourName.replace(colourCode, "").replace(" ", "").toLowerCase();
 
-    if(OmegaNames.getConfigFile().getConfig().getBoolean("Per_Name_Colour_Permissions")) {
+    if(OmegaNames.getInstance().getConfigFile().getConfig().getBoolean("Per_Name_Colour_Permissions")) {
 
       if(player.hasPermission("omeganames.namecolours.colour." + colourName) || player.hasPermission("omeganames.namecolours.colour.*") || player.isOp()) {
         return colourLoreMessage(player, colourName, colourCode);
@@ -30,7 +30,7 @@ public class LoreHandler {
   public static List<String> colourLoreMessage(final Player player, String colourName, final String colourCode) {
     colourName = colourName.replace(colourCode, "").toLowerCase();
 
-    if(OmegaNames.getConfigFile().getConfig().getBoolean("Per_Name_Colour_Permissions")) {
+    if(OmegaNames.getInstance().getConfigFile().getConfig().getBoolean("Per_Name_Colour_Permissions")) {
       if(player.hasPermission("omeganames.namecolours.colour." + colourName) || player.isOp()) {
         return Utilities.colourise(MessageHandler.nameColourItemLore(colourCode + player.getName()));
       }

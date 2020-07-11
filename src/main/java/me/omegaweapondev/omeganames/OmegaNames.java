@@ -8,15 +8,16 @@ import me.omegaweapondev.omeganames.menus.NameColours;
 import me.omegaweapondev.omeganames.utilities.Placeholders;
 import me.ou.library.Utilities;
 import me.ou.library.configs.ConfigCreator;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class OmegaNames extends JavaPlugin {
-  private static final ConfigCreator configFile = new ConfigCreator("config.yml");
-  private static final ConfigCreator messagesFile = new ConfigCreator("messages.yml");
-  private static final ConfigCreator playerData = new ConfigCreator("playerData.yml");
+  private final ConfigCreator configFile = new ConfigCreator("config.yml");
+  private final ConfigCreator messagesFile = new ConfigCreator("messages.yml");
+  private final ConfigCreator playerData = new ConfigCreator("playerData.yml");
   private static OmegaNames instance;
 
   // Declaring the GUI's
@@ -29,7 +30,16 @@ public class OmegaNames extends JavaPlugin {
     Utilities.setInstance(instance);
 
     // Send a message to console once the plugin has enabled
-    Utilities.logInfo(true, "OmegaNames has been enabled!");
+    // Log message for successful enabling of the plugin
+    Utilities.logInfo(true,
+      " _____ _   _",
+      "|  _  | \\ | |  ",
+      "| | | |  \\| |  OmegaNames v" + OmegaNames.getInstance().getDescription().getVersion() + " By OmegaWeaponDev",
+      "| | | | . ` |  Allow your players to choose their own name colours!",
+      "\\ \\_/ / |\\  |  Currently supporting Spigot 1.13 - 1.16.1",
+      " \\___/\\_| \\_/",
+      ""
+    );
 
     if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
       new Placeholders(instance).register();
@@ -60,6 +70,10 @@ public class OmegaNames extends JavaPlugin {
     Utilities.registerCommand("namecolour", new NameColour());
 
     Utilities.registerEvents(new PlayerListener(), new MenuListener());
+
+    // Setup bStats
+    final int bstatsPluginId = 7490;
+    Metrics metrics = new Metrics(getInstance(), bstatsPluginId);
 
     // The Updater
     new UpdateChecker(this, 78327).getVersion(version -> {
@@ -108,15 +122,15 @@ public class OmegaNames extends JavaPlugin {
     }.runTaskLaterAsynchronously(getInstance(), 20);
   }
 
-  public static ConfigCreator getConfigFile() {
+  public ConfigCreator getConfigFile() {
     return configFile;
   }
 
-  public static ConfigCreator getMessagesFile() {
+  public ConfigCreator getMessagesFile() {
     return messagesFile;
   }
 
-  public static ConfigCreator getPlayerData() {
+  public ConfigCreator getPlayerData() {
     return playerData;
   }
 

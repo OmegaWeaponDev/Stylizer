@@ -44,6 +44,24 @@ Name_Colour_Login: true
 # The default namecolour players will have if they have not chosen a current name colour
 Default_Name_Colour: "&e"
 
+Name_Colours:
+  darkred:
+  red:
+  gold:
+  yellow:
+  green:
+  lime:
+  aqua:
+  darkaqua:
+  darkblue:
+  blue:
+  pink:
+  purple:
+  white:
+  lightgray:
+  gray:
+  black:
+
 # Group Specific name colours.
 # Use the permission `omeganames.namecolour.groups.<group name>`
 Group_Name_Colour:

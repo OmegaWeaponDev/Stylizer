@@ -20,14 +20,14 @@ public class PlayerListener implements Listener {
     Player player = playerJoinEvent.getPlayer();
 
     // Set the players namecolours
-    for(String groupName : OmegaNames.getConfigFile().getConfig().getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
+    for(String groupName : OmegaNames.getInstance().getConfigFile().getConfig().getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
       if(Utilities.checkPermission(player, true, "omeganames.namecolours.groups." + groupName.toLowerCase())) {
         Utilities.colourise(Colour.groupNameColour(player, groupName));
 
 
 
         // Format the tablist
-        if(OmegaNames.getConfigFile().getConfig().getBoolean("Tablist_Name_Colour")) {
+        if(OmegaNames.getInstance().getConfigFile().getConfig().getBoolean("Tablist_Name_Colour")) {
           Bukkit.getScheduler().scheduleSyncRepeatingTask(OmegaNames.getInstance(), () -> {
             player.setPlayerListName(Utilities.colourise(Colour.groupNameColour(player, groupName) + player.getName()));
           }, 20L * 5L, 20L * 60L);
@@ -37,7 +37,7 @@ public class PlayerListener implements Listener {
 
         // Format the tablist
 
-        if(OmegaNames.getConfigFile().getConfig().getBoolean("Tablist_Name_Colour")) {
+        if(OmegaNames.getInstance().getConfigFile().getConfig().getBoolean("Tablist_Name_Colour")) {
           Bukkit.getScheduler().scheduleSyncRepeatingTask(OmegaNames.getInstance(), () -> {
             player.setPlayerListName(Utilities.colourise(Colour.playerNameColour(player) + player.getName()));
           }, 20L * 5L, 20L * 60L);
