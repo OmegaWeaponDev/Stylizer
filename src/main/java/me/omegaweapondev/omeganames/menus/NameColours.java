@@ -23,23 +23,23 @@ public class NameColours extends MenuCreator {
     super(5, OmegaNames.getInstance().getMessagesFile().getConfig().getString("Name_Colour_GUI.GUI_Title"), "&6&lNameColours");
 
     createItem(10, "RED_WOOL", "Dark Red", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkred"));
-    createItem(11, "RED_WOOL", "Red", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkred"));
-    createItem(12, "ORANGE_WOOL", "Gold", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkred"));
-    createItem(13, "YELLOW_WOOL", "Yellow", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkred"));
-    createItem(14, "GREEN_WOOL", "Green", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkred"));
-    createItem(15, "GREEN_WOOL", "Lime", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkred"));
-    createItem(16, "LIGHT_BLUE_WOOL", "Aqua", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkred"));
+    createItem(11, "RED_WOOL", "Red", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.red"));
+    createItem(12, "ORANGE_WOOL", "Gold", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.gold"));
+    createItem(13, "YELLOW_WOOL", "Yellow", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.yellow"));
+    createItem(14, "GREEN_WOOL", "Green", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.green"));
+    createItem(15, "GREEN_WOOL", "Lime", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.lime"));
+    createItem(16, "LIGHT_BLUE_WOOL", "Aqua", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.aqua"));
 
-    createItem(19, "LIGHT_BLUE_WOOL", "Dark Aqua", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkred"));
-    createItem(20, "BLUE_WOOL", "Dark Blue", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkred"));
-    createItem(21, "BLUE_WOOL", "Blue", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkred"));
-    createItem(22, "PINK_WOOL", "Pink", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkred"));
-    createItem(23, "MAGENTA_WOOL", "Purple", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkred"));
-    createItem(24, "WHITE_WOOL", "White", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkred"));
-    createItem(25, "LIGHT_GRAY_WOOL","Light Gray", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkred"));
+    createItem(19, "LIGHT_BLUE_WOOL", "Dark Aqua", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkaqua"));
+    createItem(20, "BLUE_WOOL", "Dark Blue", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkblue"));
+    createItem(21, "BLUE_WOOL", "Blue", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.blue"));
+    createItem(22, "PINK_WOOL", "Pink", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.pink"));
+    createItem(23, "MAGENTA_WOOL", "Purple", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.purple"));
+    createItem(24, "WHITE_WOOL", "White", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.white"));
+    createItem(25, "LIGHT_GRAY_WOOL","Light Gray", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.lightgray"));
 
-    createItem(29, "GRAY_WOOL","Gray", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkred"));
-    createItem(30, "BLACK_WOOL", "Black", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.darkred"));
+    createItem(29, "GRAY_WOOL","Gray", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.gray"));
+    createItem(30, "BLACK_WOOL", "Black", OmegaNames.getInstance().getConfigFile().getConfig().getString("Name_Colours.black"));
 
     setItem(32, createItemStack("SPONGE", Utilities.colourise("&cCurrent"), loreMessages(Arrays.asList("&cClick here to view", "&cyour current name colour"))), player -> {
       Utilities.message(player, MessageHandler.prefix() + " " + MessageHandler.currentNameColour(player, player.getDisplayName()));

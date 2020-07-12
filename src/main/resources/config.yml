@@ -44,23 +44,25 @@ Name_Colour_Login: true
 # The default namecolour players will have if they have not chosen a current name colour
 Default_Name_Colour: "&e"
 
+# As pf 1.16 you are now able to set hex name colours
+# You can do this by changing the colours below to a hex colour (#123456) for example
 Name_Colours:
-  darkred:
-  red:
-  gold:
-  yellow:
-  green:
-  lime:
-  aqua:
-  darkaqua:
-  darkblue:
-  blue:
-  pink:
-  purple:
-  white:
-  lightgray:
-  gray:
-  black:
+  darkred: "&4"
+  red: "&c"
+  gold: "&6"
+  yellow: "&e"
+  green: "&2"
+  lime: "&a"
+  aqua: "&b"
+  darkaqua: "&3"
+  darkblue: "&1"
+  blue: "&9"
+  pink: "&d"
+  purple: "&5"
+  white: "&f"
+  lightgray: "&7"
+  gray: "&8"
+  black: "&0"
 
 # Group Specific name colours.
 # Use the permission `omeganames.namecolour.groups.<group name>`

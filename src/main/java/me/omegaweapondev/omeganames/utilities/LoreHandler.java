@@ -9,7 +9,7 @@ import java.util.List;
 public class LoreHandler {
 
   public static List<String> noPermissionLore(final Player player, String colourName, final String colourCode) {
-    colourName = colourName.replace(colourCode, "").replace(" ", "").toLowerCase();
+    colourName = colourName.replace(" ", "").toLowerCase();
 
     if(OmegaNames.getInstance().getConfigFile().getConfig().getBoolean("Per_Name_Colour_Permissions")) {
 
@@ -28,7 +28,7 @@ public class LoreHandler {
   }
 
   public static List<String> colourLoreMessage(final Player player, String colourName, final String colourCode) {
-    colourName = colourName.replace(colourCode, "").toLowerCase();
+    colourName = colourName.toLowerCase();
 
     if(OmegaNames.getInstance().getConfigFile().getConfig().getBoolean("Per_Name_Colour_Permissions")) {
       if(player.hasPermission("omeganames.namecolours.colour." + colourName) || player.isOp()) {
@@ -41,4 +41,22 @@ public class LoreHandler {
     }
     return null;
   }
+
+
+//  private List<String> nameColourDenied(final Player player, final String colourName) {
+//    List<String> deniedAccess = new ArrayList<>();
+//
+//    if(ConfigVersion.getConfigBoolean("Per_Name_Colour_Permissions")) {
+//      if(!player.hasPermission("omegaformatter.namecolour." + colourName.replace(" ", "").toLowerCase()) && !player.isOp()) {
+//        for(String string : MessagesHandler.nameColourNoPermissionLore()) {
+//          deniedAccess.add(Utilities.colourise(string));
+//        }
+//        return deniedAccess;
+//      } else {
+//        return loreMessages(customLore);
+//      }
+//    } else {
+//      return loreMessages(customLore);
+//    }
+//  }
 }
