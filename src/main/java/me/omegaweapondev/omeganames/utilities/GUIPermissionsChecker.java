@@ -25,7 +25,7 @@ public class GUIPermissionsChecker {
         Utilities.message(player, MessageHandler.prefix() + " " + MessageHandler.noPermission());
       }
     } else {
-      if(Utilities.checkPermission(player, true, "omegaformatter.namecolour.colours")) {
+      if(Utilities.checkPermission(player, true, "omeganames.namecolours.colours")) {
         player.setDisplayName(Utilities.colourise(colour + player.getName() + "&r"));
 
         OmegaNames.getInstance().getPlayerData().getConfig().set(player.getUniqueId().toString() + ".Name_Colour", colour);
