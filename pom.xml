@@ -15,7 +15,7 @@
   <groupId>me.omegaweapondev</groupId>
   <artifactId>omeganames</artifactId>
   <name>OmegaNames</name>
-  <version>1.1.3</version>
+  <version>1.1.4</version>
   <description>Allow players to choose their own namecolours!</description>
 
   <!--

@@ -97,7 +97,7 @@ Items:
     Item: BLACK_WOOL
 
 # Group Specific name colours.
-# Use the permission `omeganames.namecolour.groups.<group name>`
+# Use the permission `omeganames.namecolours.groups.<group name>`
 Group_Name_Colour:
   # Whether or not you want per-group name colours
   Enabled: true
@@ -105,16 +105,6 @@ Group_Name_Colour:
   Groups:
     owner: '&4'
     admin: '&b'
-
-# Set name colours for different groups
-Group_Name_Colours:
-  # If true, players will use their group name colours if they have not set a specific name colour
-  Enabled: true
-  # The groups and their name colours
-  # Use the permission `omeganames.namecolours.groups.<groupname>` to assign the name colour to the group
-  Groups:
-    default: "&7"
-    owner: "&4"
 
 # If true, players with the permission `omeganames.update` will receive update messages
 Update_Messages: true
