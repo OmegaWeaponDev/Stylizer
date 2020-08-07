@@ -1,4 +1,4 @@
-![alt text](https://i.imgur.com/seOhfDO.png "banner") </span>
+![alt text](https://i.imgur.com/DTZ7ZwG.png "banner") </span>
 
 ## OmegaNames
 
@@ -31,11 +31,24 @@ When it comes to installing the plugin, Simply drop the omeganames-[version numb
 
 ***
 
-### Support
+## **Support**
 
-Apart from the usual Spigot Page discussion thread. You are also able to receive help by visiting the 
-[issues](https://github.com/OmegaWeaponDev/OmegaNames/issues) page.
-I have also made a [discord](https://discord.gg/9nZTPcp) server that you are more than welcome to join, to chat with others using my
-plugins or receive some support for this plugin or one of my other plugins.
+If at any stage you come across a sneaky bug that I was unable to locate during testing please do not hesitate to get in contact with me so I am able to squash it quickly for you. When you are finding yourself in need to contact me about any of my plugins, if it is relating to a bug, please try and provide as much detail as possible, including server version, plugin version and the steps taken to get the bug. This allows me to focus on the bug a lot quicker and allows me to get an update released sooner in order to resolve the bug.
 
+### **Discord**
+![IMG](https://i.imgur.com/yQIZDR6.png)
+
+I have spent some time setting up a discord server that you are welcome to join at any time. Here you are able to seek help, have a chat, be informed of any updates or announcements and just be apart of a great community. You can join the community or invite your friends to the discord community by using this link: https://discord.gg/9nZTPcp
+
+### **Spigot**
+
+Of course, we have the normal contact method of using the SpigotMC website. You can locate my profile here: https://www.spigotmc.org/members/omegaweapondev.14953/ Feel free to privately message me about anything related to any of my plugins. 
+
+### **GitHub**
+
+As you can tell, I also have set everything here on git hub as well. So if you need any support feel free to post a issue for the related plugin
+
+***
+
+Lastly, I would like to say Thank you for supporting my plugins and supporting me as a developer. While I am still somewhat new to plugin development I try to provide the best support and the best plugins for you guys (and girls). Again, Thank you. 
 

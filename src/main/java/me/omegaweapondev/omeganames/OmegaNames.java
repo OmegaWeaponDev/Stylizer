@@ -6,6 +6,7 @@ import me.omegaweapondev.omeganames.events.MenuListener;
 import me.omegaweapondev.omeganames.events.PlayerListener;
 import me.omegaweapondev.omeganames.menus.NameColours;
 import me.omegaweapondev.omeganames.utilities.Placeholders;
+import me.ou.library.SpigotUpdater;
 import me.ou.library.Utilities;
 import me.ou.library.configs.ConfigCreator;
 import org.bstats.bukkit.Metrics;
@@ -76,17 +77,19 @@ public class OmegaNames extends JavaPlugin {
     Metrics metrics = new Metrics(getInstance(), bstatsPluginId);
 
     // The Updater
-    new UpdateChecker(this, 78327).getVersion(version -> {
+    new SpigotUpdater(this, 78327).getVersion(version -> {
+      Utilities.logInfo(true, "Checking for updates...");
       if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
         Utilities.logInfo(true, "You are already running the latest version");
-      } else {
-        PluginDescriptionFile pdf = this.getDescription();
-        Utilities.logWarning(true,
-          "A new version of " + pdf.getName() + " is avaliable!",
-          "Current Version: " + pdf.getVersion() + " > New Version: " + version,
-          "Grab it here: https://spigotmc.org/resources/78327"
-        );
+        return;
       }
+
+      PluginDescriptionFile pdf = this.getDescription();
+      Utilities.logWarning(true,
+        "A new version of " + pdf.getName() + " is avaliable!",
+        "Current Version: " + pdf.getVersion() + " > New Version: " + version,
+        "Grab it here: https://spigotmc.org/resources/78327"
+      );
     });
   }
 

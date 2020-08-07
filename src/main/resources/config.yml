@@ -44,25 +44,57 @@ Name_Colour_Login: true
 # The default namecolour players will have if they have not chosen a current name colour
 Default_Name_Colour: "&e"
 
-# As pf 1.16 you are now able to set hex name colours
-# You can do this by changing the colours below to a hex colour (#123456) for example
-Name_Colours:
-  darkred: "&4"
-  red: "&c"
-  gold: "&6"
-  yellow: "&e"
-  green: "&2"
-  lime: "&a"
-  aqua: "&b"
-  darkaqua: "&3"
-  darkblue: "&1"
-  blue: "&9"
-  pink: "&d"
-  purple: "&5"
-  white: "&f"
-  lightgray: "&7"
-  gray: "&8"
-  black: "&0"
+Items:
+  # Set all the different name colours and the item that you want in the GUI
+  # This will accept both the normal colour codes (&4) and hex colour codes (#123456)
+  Dark Red:
+    Colour: "#670E00"
+    Item: NETHER_WART
+  Red:
+    Colour: "#FF0101"
+    Item: RED_WOOL
+  Gold:
+    Colour: "#FFDC01"
+    Item: GOLD_BLOCK
+  Yellow:
+    Colour: "#FFFB01"
+    Item: YELLOW_WOOL
+  Green:
+    Colour: "#1FAA00"
+    Item: GREEN_WOOL
+  Lime:
+    Colour: "#36FF09"
+    Item: LIME_DYE
+  Aqua:
+    Colour: "#09FFEC"
+    Item: LIGHT_BLUE_WOOL
+  Dark Aqua:
+    Colour: "#00B4A6"
+    Item: CYAN_WOOL
+  Dark Blue:
+    Colour: "#000E86"
+    Item: BLUE_WOOL
+  Blue:
+    Colour: "#004DFF"
+    Item: BLUE_ORCHID
+  Pink:
+    Colour: "#FF00FF"
+    Item: PINK_TULIP
+  Purple:
+    Colour: "#8000FF"
+    Item: MAGENTA_SHULKER_BOX
+  White:
+    Colour: "#FFFFFF"
+    Item: QUARTZ_BLOCK
+  Light Gray:
+    Colour: "#CBCBCB"
+    Item: LIGHT_GRAY_WOOL
+  Gray:
+    Colour: "#818181"
+    Item: STONE
+  Black:
+    Colour: "#000000"
+    Item: BLACK_WOOL
 
 # Group Specific name colours.
 # Use the permission `omeganames.namecolour.groups.<group name>`

@@ -1,8 +1,8 @@
 package me.omegaweapondev.omeganames.events;
 
 import me.omegaweapondev.omeganames.OmegaNames;
-import me.omegaweapondev.omeganames.UpdateChecker;
 import me.omegaweapondev.omeganames.utilities.Colour;
+import me.ou.library.SpigotUpdater;
 import me.ou.library.Utilities;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -55,8 +55,8 @@ public class PlayerListener implements Listener {
     }.runTaskLaterAsynchronously(OmegaNames.getInstance(), 40);
 
     // Send the player a message on join if there is an update for the plugin
-    if(Utilities.checkPermission(player, true, "omeganames.update")) {
-      new UpdateChecker(OmegaNames.getInstance(), 78327).getVersion(version -> {
+    if(Utilities.checkPermissions(player, true, "omeganames.update", "omeganames.*")) {
+      new SpigotUpdater(OmegaNames.getInstance(), 78327).getVersion(version -> {
         if (!OmegaNames.getInstance().getDescription().getVersion().equalsIgnoreCase(version)) {
           PluginDescriptionFile pdf = OmegaNames.getInstance().getDescription();
           Utilities.message(player,
