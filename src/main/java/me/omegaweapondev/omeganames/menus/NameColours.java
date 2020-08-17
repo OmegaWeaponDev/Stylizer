@@ -45,7 +45,7 @@ public class NameColours extends MenuCreator {
 
   private void createItem(final Integer slot, final String material, final String name, final String colour) {
     for(Player online : Bukkit.getOnlinePlayers()) {
-      if(Utilities.checkPermissions(online, true, "omeganames.namecolours.open", "omeganames.*")) {
+      if(Utilities.checkPermissions(online, true, "omeganames.namecolour.open", "omeganames.*")) {
         setItem(slot, createItemStack(material, Utilities.colourise(colour + name), LoreHandler.noPermissionLore(online, name, colour)), player -> {
           GUIPermissionsChecker.nameColourPermsCheck(player, name, colour);
         });

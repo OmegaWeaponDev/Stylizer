@@ -13,13 +13,13 @@ public class LoreHandler {
 
     if(OmegaNames.getInstance().getConfigFile().getConfig().getBoolean("Per_Name_Colour_Permissions")) {
 
-      if(player.hasPermission("omeganames.namecolours.colour." + colourName) || player.hasPermission("omeganames.namecolours.colour.*") || player.isOp()) {
+      if(player.hasPermission("omeganames.namecolour.colour." + colourName) || player.hasPermission("omeganames.namecolour.colour.*") || player.isOp()) {
         return colourLoreMessage(player, colourName, colourCode);
       } else {
         return Utilities.colourise(MessageHandler.nameColourNoPermissionLore());
       }
     } else {
-      if (player.hasPermission("omeganames.namecolours.colours") || player.isOp()) {
+      if (player.hasPermission("omeganames.namecolour.colours") || player.isOp()) {
         return colourLoreMessage(player, colourName, colourCode);
       } else {
         return Utilities.colourise(MessageHandler.nameColourNoPermissionLore());
@@ -31,32 +31,14 @@ public class LoreHandler {
     colourName = colourName.toLowerCase();
 
     if(OmegaNames.getInstance().getConfigFile().getConfig().getBoolean("Per_Name_Colour_Permissions")) {
-      if(player.hasPermission("omeganames.namecolours.colour." + colourName) || player.isOp()) {
+      if(player.hasPermission("omeganames.namecolour.colour." + colourName) || player.isOp()) {
         return Utilities.colourise(MessageHandler.nameColourItemLore(colourCode + player.getName()));
       }
     } else {
-      if(player.hasPermission("omeganames.namecolours.colours") || player.isOp()) {
+      if(player.hasPermission("omeganames.namecolour.colours") || player.isOp()) {
         return Utilities.colourise(MessageHandler.nameColourItemLore(colourCode + player.getName()));
       }
     }
     return null;
   }
-
-
-//  private List<String> nameColourDenied(final Player player, final String colourName) {
-//    List<String> deniedAccess = new ArrayList<>();
-//
-//    if(ConfigVersion.getConfigBoolean("Per_Name_Colour_Permissions")) {
-//      if(!player.hasPermission("omegaformatter.namecolour." + colourName.replace(" ", "").toLowerCase()) && !player.isOp()) {
-//        for(String string : MessagesHandler.nameColourNoPermissionLore()) {
-//          deniedAccess.add(Utilities.colourise(string));
-//        }
-//        return deniedAccess;
-//      } else {
-//        return loreMessages(customLore);
-//      }
-//    } else {
-//      return loreMessages(customLore);
-//    }
-//  }
 }
