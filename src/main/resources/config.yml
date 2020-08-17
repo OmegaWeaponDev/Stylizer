@@ -38,15 +38,14 @@ Per_Name_Colour_Permissions: false
 Tablist_Name_Colour: true
 
 # If true, players will retain their name colour when they login/logout
-# Use the permission `omeganames.namecolour.login`
 Name_Colour_Login: true
 
 # The default namecolour players will have if they have not chosen a current name colour
 Default_Name_Colour: "&e"
 
+# Set all the different name colours and the item that you want in the GUI
+# This will accept both the normal colour codes (&4) and hex colour codes (#123456)
 Items:
-  # Set all the different name colours and the item that you want in the GUI
-  # This will accept both the normal colour codes (&4) and hex colour codes (#123456)
   Dark Red:
     Colour: "#670E00"
     Item: NETHER_WART
@@ -97,7 +96,7 @@ Items:
     Item: BLACK_WOOL
 
 # Group Specific name colours.
-# Use the permission `omeganames.namecolours.groups.<group name>`
+# Use the permission `omeganames.namecolour.groups.<group name>`
 Group_Name_Colour:
   # Whether or not you want per-group name colours
   Enabled: true
@@ -108,3 +107,6 @@ Group_Name_Colour:
 
 # If true, players with the permission `omeganames.update` will receive update messages
 Update_Messages: true
+
+# DO NOT EDIT THIS
+Config_Version: 1.0

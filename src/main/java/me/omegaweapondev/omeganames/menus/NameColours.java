@@ -21,7 +21,7 @@ import java.util.List;
 public class NameColours extends MenuCreator {
 
   public NameColours() {
-    super(5, OmegaNames.getInstance().getMessagesFile().getConfig().getString("Name_Colour_GUI.GUI_Title"), "&6&lNameColours");
+    super(4, OmegaNames.getInstance().getMessagesFile().getConfig().getString("Name_Colour_GUI.GUI_Title"), "&6&lNameColours");
 
     FileConfiguration configFile = OmegaNames.getInstance().getConfigFile().getConfig();
 
@@ -36,11 +36,11 @@ public class NameColours extends MenuCreator {
       createItem(slot + 1, configFile.getString("Items." + itemName + ".Item"), itemName,configFile.getString("Items." + itemName + ".Colour"));
     }
 
-    setItem(32, createItemStack("SPONGE", Utilities.colourise("&cCurrent"), loreMessages(Arrays.asList("&cClick here to view", "&cyour current name colour"))), player -> {
+    setItem(34, createItemStack("SPONGE", Utilities.colourise("&cCurrent"), loreMessages(Arrays.asList("&cClick here to view", "&cyour current name colour"))), player -> {
       Utilities.message(player, MessageHandler.prefix() + " " + MessageHandler.currentNameColour(player, player.getDisplayName()));
     });
 
-    setItem(34, createItemStack("BARRIER", Utilities.colourise("&cClose"), loreMessages(Arrays.asList("&cClick here to close", "&cthe name colour gui"))), HumanEntity::closeInventory);
+    setItem(35, createItemStack("BARRIER", Utilities.colourise("&cClose"), loreMessages(Arrays.asList("&cClick here to close", "&cthe name colour gui"))), HumanEntity::closeInventory);
   }
 
   private void createItem(final Integer slot, final String material, final String name, final String colour) {

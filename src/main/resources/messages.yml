@@ -24,7 +24,7 @@ Name_Colour_GUI:
     - "%namecolour%"
   # Set the lore messages for when players don't have permission to use a name colour
   No_Permission_Lore:
-    - "&cYou curerntly don't"
+    - "&cYou currently do not"
     - "&chave permission to"
     - "&cuse this name colour"
 
@@ -42,3 +42,6 @@ Reload_Message: "&bThe plugin has successfully been reloaded"
 
 # Set the message players receive when they try to do something without permission
 No_Permission: "&cI'm sorry, but you do not have permission to do that"
+
+# DO NOT EDIT THIS
+Config_Version: 1.0

@@ -23,7 +23,7 @@ public class Colour {
     }
 
     // Checks if config group namecolours have been set
-    if(Utilities.checkPermission(player, true,"omeganames.namecolours.groups." + groupName.toLowerCase()) && isconfigGroupNameColour) {
+    if(Utilities.checkPermission(player, true,"omeganames.namecolour.groups." + groupName.toLowerCase()) && isconfigGroupNameColour) {
       finalNameColour = configGroupNameColour;
 
       return finalNameColour;

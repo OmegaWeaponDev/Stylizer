@@ -27,9 +27,10 @@ permissions:
       - omeganames.reload
       - omeganames.login
       - omeganames.update
-      - omeganames.namecolours.open
-      - omeganames.namecolours.colours
-      - omeganames.namecolours.colour.*
+      - omeganames.namecolour.open
+      - omeganames.namecolour.colours
+      - omeganames.namecolour.colour.*
+      - omeganames.namecolour.login
   omeganames.reload:
     description: Grants the user access to the reload command
     default: false
@@ -39,6 +40,6 @@ permissions:
   omeganames.namecolour.open:
     description: Grants the user access to the name colour command
     default: false
-  omeganames.login:
+  omeganames.namecolour.login:
     description: Allows the user to retain their name colour when they login/logout
     default: false
