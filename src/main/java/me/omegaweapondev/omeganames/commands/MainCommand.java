@@ -37,7 +37,7 @@ public class MainCommand extends GlobalCommand {
     if(sender instanceof Player) {
       Player player = (Player) sender;
 
-      if(Utilities.checkPermission(player, true, "omeganames.reload")) {
+      if(Utilities.checkPermissions(player, true, "omeganames.reload", "omeganames.admin")) {
         OmegaNames.getInstance().onReload();
         Utilities.message(player, MessageHandler.prefix() + " " + MessageHandler.reloadMessage());
       } else {

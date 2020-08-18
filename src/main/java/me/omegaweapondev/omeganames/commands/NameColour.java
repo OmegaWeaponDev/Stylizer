@@ -1,7 +1,6 @@
 package me.omegaweapondev.omeganames.commands;
 
 import me.omegaweapondev.omeganames.OmegaNames;
-import me.omegaweapondev.omeganames.utilities.Colour;
 import me.omegaweapondev.omeganames.utilities.MessageHandler;
 import me.ou.library.Utilities;
 import me.ou.library.commands.PlayerCommand;
@@ -28,7 +27,7 @@ public class NameColour extends PlayerCommand {
   }
 
   private void openNameColourGUI(final Player player) {
-    if(!Utilities.checkPermissions(player, true, "omeganames.namecolour.open", "omeganames.*")) {
+    if(!Utilities.checkPermissions(player, true, "omeganames.namecolour.open", "omeganames.admin")) {
       Utilities.message(player, MessageHandler.prefix() + " " + MessageHandler.noPermission());
       return;
     }
@@ -44,7 +43,7 @@ public class NameColour extends PlayerCommand {
       return;
     }
 
-    if(!Utilities.checkPermissions(player, true, "omeganames.namecolour.add", "omeganames.*")) {
+    if(!Utilities.checkPermissions(player, true, "omeganames.namecolour.add", "omeganames.admin")) {
       Utilities.message(player, MessageHandler.prefix() + " " + MessageHandler.noPermission());
       return;
     }
@@ -72,7 +71,7 @@ public class NameColour extends PlayerCommand {
       return;
     }
 
-    if(!Utilities.checkPermissions(player, true, "omeganames.namecolour.remove", "omeganames.*")) {
+    if(!Utilities.checkPermissions(player, true, "omeganames.namecolour.remove", "omeganames.admin")) {
       Utilities.message(player, MessageHandler.prefix() + " " + MessageHandler.noPermission());
       return;
     }
@@ -85,15 +84,15 @@ public class NameColour extends PlayerCommand {
     for(String groupName : OmegaNames.getInstance().getConfigFile().getConfig().getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
 
       if(Utilities.checkPermission(player, false, "omeganames.namecolour.groups." + groupName)) {
-        player.setDisplayName(Utilities.colourise(Colour.groupNameColour(player, groupName) + player.getName()));
-        OmegaNames.getInstance().getPlayerData().getConfig().set(player.getUniqueId().toString() + ".Name_Colour", Colour.groupNameColour(player, groupName));
+        player.setDisplayName(Utilities.colourise(OmegaNames.getInstance().getConfigFile().getConfig().getString("Group_Name_Colour.Groups." + groupName) + player.getName()));
+        OmegaNames.getInstance().getPlayerData().getConfig().set(player.getUniqueId().toString() + ".Name_Colour", OmegaNames.getInstance().getConfigFile().getConfig().getString("Group_Name_Colour.Groups." + groupName));
         OmegaNames.getInstance().getPlayerData().saveConfig();
         Utilities.message(player, MessageHandler.prefix() + " " + MessageHandler.nameColourRemoved());
         return;
       }
 
-      player.setDisplayName(Utilities.colourise(Colour.playerNameColour(player) + player.getName()));
-      OmegaNames.getInstance().getPlayerData().getConfig().set(player.getUniqueId().toString() + ".Name_Colour", Colour.playerNameColour(player));
+      player.setDisplayName(Utilities.colourise(MessageHandler.defaultNameColour() + player.getName()));
+      OmegaNames.getInstance().getPlayerData().getConfig().set(player.getUniqueId().toString() + ".Name_Colour", MessageHandler.defaultNameColour());
       OmegaNames.getInstance().getPlayerData().saveConfig();
       Utilities.message(player, MessageHandler.prefix() + " " + MessageHandler.nameColourRemoved());
     }

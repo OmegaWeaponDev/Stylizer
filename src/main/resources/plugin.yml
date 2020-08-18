@@ -20,17 +20,18 @@ commands:
     aliases: [nc, namec, namecolours, ncolours]
 
 permissions:
-  omeganames.*:
-    description: Grants the user access to all permissions
+  omeganames.admin:
+    description: Grants the user access to all the main permissions, but not group colours
     default: false
     children:
       - omeganames.reload
-      - omeganames.login
       - omeganames.update
-      - omeganames.namecolour.open
+      - omeganames.namecolour.add
+      - omeganames.namecolour.remove
       - omeganames.namecolour.colours
-      - omeganames.namecolour.colour.*
+      - omeganames.namecolour.colour.all
       - omeganames.namecolour.login
+      - omeganames.namecolour.open
   omeganames.reload:
     description: Grants the user access to the reload command
     default: false
@@ -42,4 +43,16 @@ permissions:
     default: false
   omeganames.namecolour.login:
     description: Allows the user to retain their name colour when they login/logout
+    default: false
+  omeganames.namecolour.colours:
+    description: Allows the user to use all the colours if Per_Name_Colour_Permissions is disabled
+    default: false
+  omeganames.namecolour.colour.all:
+    description: Allows the user to use all the colours if Per_Name_Colour_Permissions is enabled
+    default: false
+  omeganames.namecolour.add:
+    description: Allows the user to use the name colour add command
+    default: false
+  omeganames.namecolour.remove:
+    description: Allows the user to use the name colour remove command
     default: false

@@ -13,13 +13,13 @@ public class LoreHandler {
 
     if(OmegaNames.getInstance().getConfigFile().getConfig().getBoolean("Per_Name_Colour_Permissions")) {
 
-      if(player.hasPermission("omeganames.namecolour.colour." + colourName) || player.hasPermission("omeganames.namecolour.colour.*") || player.isOp()) {
+      if(Utilities.checkPermissions(player, true, "omeganames.namecolour.colour." + colourName, "omeganames.namecolour.colour.all", "omeganames.admin")) {
         return colourLoreMessage(player, colourName, colourCode);
       } else {
         return Utilities.colourise(MessageHandler.nameColourNoPermissionLore());
       }
     } else {
-      if (player.hasPermission("omeganames.namecolour.colours") || player.isOp()) {
+      if (Utilities.checkPermissions(player, true, "omeganames.namecolour.colours", "omeganames.admin")) {
         return colourLoreMessage(player, colourName, colourCode);
       } else {
         return Utilities.colourise(MessageHandler.nameColourNoPermissionLore());
@@ -31,11 +31,11 @@ public class LoreHandler {
     colourName = colourName.toLowerCase();
 
     if(OmegaNames.getInstance().getConfigFile().getConfig().getBoolean("Per_Name_Colour_Permissions")) {
-      if(player.hasPermission("omeganames.namecolour.colour." + colourName) || player.isOp()) {
+      if(Utilities.checkPermissions(player, true, "omeganames.namecolour.colour." + colourName, "omeganames.admin")) {
         return Utilities.colourise(MessageHandler.nameColourItemLore(colourCode + player.getName()));
       }
     } else {
-      if(player.hasPermission("omeganames.namecolour.colours") || player.isOp()) {
+      if(Utilities.checkPermissions(player, true, "omeganames.namecolour.colours", "omeganames.admin")) {
         return Utilities.colourise(MessageHandler.nameColourItemLore(colourCode + player.getName()));
       }
     }

@@ -9,29 +9,11 @@
 # For help you can visit the wiki at: https://github.com/OmegaWeaponDev/OmegaNames/wiki
 # If you have any issues, report them here: https://github.com/OmegaWeaponDev/OmegaNames/issues
 #
-#  Colours:
-#   - darkred
-#   - red
-#   - gold
-#   - yellow
-#   - green
-#   - lime
-#   - aqua
-#   - darkaqua
-#   - darkblue
-#   - blue
-#   - pink
-#   - purple
-#   - white
-#   - lightgray
-#   - gray
-#   - black
-#
 # -------------------------------------------------------------------------------------------
 
 # If true, each of the colours will require a specific permission
-# Use the permission `omeganames.namecolours.colour.<colour>` or `omeganames.namecolours.colour.*`
-# If false, use the permission `omeganames.namecolours.colours`
+# Use the permission `omeganames.namecolour.colour.<colour>` or `omeganames.namecolour.colour.all`
+# If false, use the permission `omeganames.namecolour.colours`
 Per_Name_Colour_Permissions: false
 
 # If true, when a player gets a name colour it will show the name colour on tablist
@@ -109,4 +91,4 @@ Group_Name_Colour:
 Update_Messages: true
 
 # DO NOT EDIT THIS
-Config_Version: 1.0
+Config_Version: 1.1

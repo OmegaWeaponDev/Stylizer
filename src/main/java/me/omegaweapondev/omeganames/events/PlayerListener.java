@@ -1,10 +1,11 @@
 package me.omegaweapondev.omeganames.events;
 
 import me.omegaweapondev.omeganames.OmegaNames;
-import me.omegaweapondev.omeganames.utilities.Colour;
+import me.omegaweapondev.omeganames.utilities.MessageHandler;
 import me.ou.library.SpigotUpdater;
 import me.ou.library.Utilities;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,8 +22,7 @@ public class PlayerListener implements Listener {
   public void onPlayerJoin(PlayerJoinEvent playerJoinEvent) {
     Player player = playerJoinEvent.getPlayer();
 
-
-    Bukkit.getScheduler().scheduleSyncRepeatingTask(OmegaNames.getInstance(), () -> setNameColour(player), 20L * 5L, 20L * 30L);
+    Bukkit.getScheduler().scheduleSyncRepeatingTask(OmegaNames.getInstance(), () -> setNameColour(player), 20L * 5L, 20L * 15L);
 
     // Call gui reload method, so item lore is refreshed for each player, as it checks for permissions
     // to decide which lore messages should be applied
@@ -34,7 +34,7 @@ public class PlayerListener implements Listener {
     }.runTaskLaterAsynchronously(OmegaNames.getInstance(), 40);
 
     // Send the player a message on join if there is an update for the plugin
-    if(Utilities.checkPermissions(player, true, "omeganames.update", "omeganames.*")) {
+    if(Utilities.checkPermissions(player, true, "omeganames.update", "omeganames.admin")) {
       new SpigotUpdater(OmegaNames.getInstance(), 78327).getVersion(version -> {
         if (!OmegaNames.getInstance().getDescription().getVersion().equalsIgnoreCase(version)) {
           PluginDescriptionFile pdf = OmegaNames.getInstance().getDescription();
@@ -49,40 +49,69 @@ public class PlayerListener implements Listener {
   }
 
   private void setNameColour(final Player player) {
-    // Remove the custom name colours if Name_Colour_Login is not enabled.
-    if(!configFile.getBoolean("Name_Colour_Login")) {
-      OmegaNames.getInstance().getPlayerData().getConfig().set(player.getUniqueId().toString() + ".Name_Colour", null);
-      OmegaNames.getInstance().getPlayerData().saveConfig();
+
+    if(configFile.getBoolean("Name_Colour_Login")) {
+
+      if(OmegaNames.getInstance().getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
+        player.setDisplayName(Utilities.colourise(OmegaNames.getInstance().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour") + player.getName()) + ChatColor.RESET);
+        player.setPlayerListName(player.getDisplayName());
+        Utilities.message(player, "DEBUG 1");
+        return;
+      }
 
       for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
 
         if(Utilities.checkPermission(player, false, "omeganames.namecolour.groups." + groupName.toLowerCase())) {
-
-          player.setDisplayName(Utilities.colourise(Colour.groupNameColour(player, groupName)) + player.getName());
-          player.setPlayerListName(Utilities.colourise(Colour.groupNameColour(player, groupName)) + player.getName());
+          player.setDisplayName(Utilities.colourise(groupNameColour(player, groupName) + player.getName()) + ChatColor.RESET);
+          player.setPlayerListName(player.getDisplayName());
+          Utilities.message(player, "DEBUG 2");
           return;
         }
       }
-      return;
-    }
 
-    // Name_Colour_Login is enabled so check if they have the permission, and apply the name colour
-    if(!Utilities.checkPermissions(player, true, "omeganames.namecolour.login", "omeganames.*")) {
-      OmegaNames.getInstance().getPlayerData().getConfig().set(player.getUniqueId().toString() + ".Name_Colour", null);
-      OmegaNames.getInstance().getPlayerData().saveConfig();
+      player.setDisplayName(Utilities.colourise(MessageHandler.defaultNameColour() + player.getName()) + ChatColor.RESET);
+      player.setPlayerListName(player.getDisplayName());
+      return;
     }
 
     for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
 
       if(Utilities.checkPermission(player, false, "omeganames.namecolour.groups." + groupName.toLowerCase())) {
-        player.setDisplayName(Utilities.colourise(Colour.groupNameColour(player, groupName)) + player.getName());
-        player.setPlayerListName(Utilities.colourise(Colour.groupNameColour(player, groupName)) + player.getName());
+        player.setDisplayName(Utilities.colourise(groupNameColour(player, groupName) + player.getName()) + ChatColor.RESET);
+        player.setPlayerListName(player.getDisplayName());
+        Utilities.message(player, "DEBUG 3");
         return;
       }
     }
 
-    player.setDisplayName(Utilities.colourise(Colour.playerNameColour(player)) + player.getName());
-    player.setPlayerListName(Utilities.colourise(Colour.playerNameColour(player)) + player.getName());
+    player.setDisplayName(Utilities.colourise(playerNameColour(player) + player.getName()) + ChatColor.RESET);
+    player.setPlayerListName(player.getDisplayName());
+  }
 
+  private String groupNameColour(final Player player, final String groupName) {
+
+    if(!configFile.getBoolean("Group_Name_Colour.Enabled")) {
+      Utilities.message(player, "DEBUG 4");
+      return playerNameColour(player);
+    }
+
+    if(configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false).size() == 0) {
+      Utilities.message(player, "DEBUG 5");
+      return playerNameColour(player);
+    }
+
+    Utilities.message(player, "DEBUG 6");
+    return configFile.getString("Group_Name_Colour.Groups." + groupName);
+  }
+
+  private String playerNameColour(final Player player) {
+
+    if(!OmegaNames.getInstance().getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
+      Utilities.message(player, "DEBUG 7");
+      return MessageHandler.defaultNameColour();
+    }
+
+    Utilities.message(player, "DEBUG 8");
+    return OmegaNames.getInstance().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour");
   }
 }

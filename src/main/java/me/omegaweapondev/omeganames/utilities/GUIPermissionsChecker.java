@@ -9,7 +9,7 @@ public class GUIPermissionsChecker {
   public static void nameColourPermsCheck(final Player player, final String name, final String colour) {
 
     if(OmegaNames.getInstance().getConfigFile().getConfig().getBoolean("Per_Name_Colour_Permissions")) {
-      if(Utilities.checkPermission(player, true, ("omeganames.namecolour.colour." + name).replace(" ", "").toLowerCase()) || player.hasPermission("omeganames.namecolours.colour.*")) {
+      if(Utilities.checkPermissions(player, true, ("omeganames.namecolour.colour." + name).replace(" ", "").toLowerCase(), "omeganames.namecolour.colour.all", "omeganames.admin")) {
 
         player.setDisplayName(Utilities.colourise(colour + player.getName() + "&r"));
 
@@ -25,7 +25,7 @@ public class GUIPermissionsChecker {
         Utilities.message(player, MessageHandler.prefix() + " " + MessageHandler.noPermission());
       }
     } else {
-      if(Utilities.checkPermission(player, true, "omeganames.namecolour.colours")) {
+      if(Utilities.checkPermissions(player, true, "omeganames.namecolour.colours", "omeganames.admin")) {
         player.setDisplayName(Utilities.colourise(colour + player.getName() + "&r"));
 
         OmegaNames.getInstance().getPlayerData().getConfig().set(player.getUniqueId().toString() + ".Name_Colour", colour);

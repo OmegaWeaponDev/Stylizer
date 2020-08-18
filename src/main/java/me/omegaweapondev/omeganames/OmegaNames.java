@@ -157,8 +157,8 @@ public class OmegaNames extends JavaPlugin {
     Utilities.logInfo(true, "Attempting to update the config files....");
 
     try {
-      if(getConfigFile().getConfig().getDouble("Config_Version") != 1.0) {
-        getConfigFile().getConfig().set("Config_Version", 1.0);
+      if(getConfigFile().getConfig().getDouble("Config_Version") != 1.1) {
+        getConfigFile().getConfig().set("Config_Version", 1.1);
         getConfigFile().saveConfig();
         ConfigUpdater.update(OmegaNames.getInstance(), "config.yml", getConfigFile().getFile(), Arrays.asList("Group_Name_Colour.Groups", "Items"));
       }
