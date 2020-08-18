@@ -55,7 +55,6 @@ public class PlayerListener implements Listener {
       if(OmegaNames.getInstance().getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
         player.setDisplayName(Utilities.colourise(OmegaNames.getInstance().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour") + player.getName()) + ChatColor.RESET);
         player.setPlayerListName(player.getDisplayName());
-        Utilities.message(player, "DEBUG 1");
         return;
       }
 
@@ -64,7 +63,6 @@ public class PlayerListener implements Listener {
         if(Utilities.checkPermission(player, false, "omeganames.namecolour.groups." + groupName.toLowerCase())) {
           player.setDisplayName(Utilities.colourise(groupNameColour(player, groupName) + player.getName()) + ChatColor.RESET);
           player.setPlayerListName(player.getDisplayName());
-          Utilities.message(player, "DEBUG 2");
           return;
         }
       }
@@ -79,7 +77,6 @@ public class PlayerListener implements Listener {
       if(Utilities.checkPermission(player, false, "omeganames.namecolour.groups." + groupName.toLowerCase())) {
         player.setDisplayName(Utilities.colourise(groupNameColour(player, groupName) + player.getName()) + ChatColor.RESET);
         player.setPlayerListName(player.getDisplayName());
-        Utilities.message(player, "DEBUG 3");
         return;
       }
     }
@@ -91,27 +88,22 @@ public class PlayerListener implements Listener {
   private String groupNameColour(final Player player, final String groupName) {
 
     if(!configFile.getBoolean("Group_Name_Colour.Enabled")) {
-      Utilities.message(player, "DEBUG 4");
       return playerNameColour(player);
     }
 
     if(configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false).size() == 0) {
-      Utilities.message(player, "DEBUG 5");
       return playerNameColour(player);
     }
 
-    Utilities.message(player, "DEBUG 6");
     return configFile.getString("Group_Name_Colour.Groups." + groupName);
   }
 
   private String playerNameColour(final Player player) {
 
     if(!OmegaNames.getInstance().getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
-      Utilities.message(player, "DEBUG 7");
       return MessageHandler.defaultNameColour();
     }
 
-    Utilities.message(player, "DEBUG 8");
     return OmegaNames.getInstance().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour");
   }
 }
