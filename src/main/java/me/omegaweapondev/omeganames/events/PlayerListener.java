@@ -1,7 +1,6 @@
 package me.omegaweapondev.omeganames.events;
 
 import me.omegaweapondev.omeganames.OmegaNames;
-import me.omegaweapondev.omeganames.utilities.MessageHandler;
 import me.ou.library.SpigotUpdater;
 import me.ou.library.Utilities;
 import org.bukkit.Bukkit;
@@ -13,7 +12,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerListener implements Listener {
   private final FileConfiguration configFile = OmegaNames.getInstance().getConfigFile().getConfig();
@@ -26,12 +24,7 @@ public class PlayerListener implements Listener {
 
     // Call gui reload method, so item lore is refreshed for each player, as it checks for permissions
     // to decide which lore messages should be applied
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        OmegaNames.getInstance().onGUIReload();
-      }
-    }.runTaskLaterAsynchronously(OmegaNames.getInstance(), 40);
+    Bukkit.getScheduler().scheduleSyncRepeatingTask(OmegaNames.getInstance(), () -> OmegaNames.getInstance().onGUIReload(), 20L * 5L, 20L * 15L);
 
     // Send the player a message on join if there is an update for the plugin
     if(Utilities.checkPermissions(player, true, "omeganames.update", "omeganames.admin")) {
@@ -67,7 +60,7 @@ public class PlayerListener implements Listener {
         }
       }
 
-      player.setDisplayName(Utilities.colourise(MessageHandler.defaultNameColour() + player.getName()) + ChatColor.RESET);
+      player.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "&e") + player.getName()) + ChatColor.RESET);
       player.setPlayerListName(player.getDisplayName());
       return;
     }
@@ -101,7 +94,7 @@ public class PlayerListener implements Listener {
   private String playerNameColour(final Player player) {
 
     if(!OmegaNames.getInstance().getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
-      return MessageHandler.defaultNameColour();
+      return configFile.getString("Default_Name_Colour", "&e");
     }
 
     return OmegaNames.getInstance().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour");

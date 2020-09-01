@@ -5,12 +5,16 @@ import me.omegaweapondev.omeganames.utilities.MessageHandler;
 import me.ou.library.Utilities;
 import me.ou.library.commands.PlayerCommand;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class NameColour extends PlayerCommand {
+  private final MessageHandler messagesFile = new MessageHandler(OmegaNames.getInstance().getMessagesFile().getConfig());
+  private final FileConfiguration playerData = OmegaNames.getInstance().getPlayerData().getConfig();
+  private final FileConfiguration configFile = OmegaNames.getInstance().getConfigFile().getConfig();
 
   @Override
-  protected void execute(Player player, String[] strings) {
+  protected void execute(final Player player, final String[] strings) {
 
     if(strings.length == 0) {
       openNameColourGUI(player);
@@ -28,7 +32,7 @@ public class NameColour extends PlayerCommand {
 
   private void openNameColourGUI(final Player player) {
     if(!Utilities.checkPermissions(player, true, "omeganames.namecolour.open", "omeganames.admin")) {
-      Utilities.message(player, MessageHandler.prefix() + " " + MessageHandler.noPermission());
+      Utilities.message(player, messagesFile.string("No_Permission", "&cSorry, you do not have permission to do that."));
       return;
     }
 
@@ -44,12 +48,12 @@ public class NameColour extends PlayerCommand {
     }
 
     if(!Utilities.checkPermissions(player, true, "omeganames.namecolour.add", "omeganames.admin")) {
-      Utilities.message(player, MessageHandler.prefix() + " " + MessageHandler.noPermission());
+      Utilities.message(player, messagesFile.string("No_Permission", "&cSorry, you do not have permission to do that."));
       return;
     }
 
     if(target == null) {
-      Utilities.message(player, MessageHandler.prefix() + " &cSorry, that player does not exist.");
+      Utilities.message(player, messagesFile.string("Invalid_Player", "&cSorry, that player cannot be found."));
       return;
     }
 
@@ -59,9 +63,9 @@ public class NameColour extends PlayerCommand {
     }
 
     target.setDisplayName(Utilities.colourise(nameColour + target.getName()));
-    OmegaNames.getInstance().getPlayerData().getConfig().set(target.getUniqueId().toString() + ".Name_Colour", nameColour);
+    playerData.set(target.getUniqueId().toString() + ".Name_Colour", nameColour);
     OmegaNames.getInstance().getPlayerData().saveConfig();
-    Utilities.message(target, MessageHandler.prefix() + " " + MessageHandler.nameColourApplied(target, nameColour));
+    Utilities.message(target, messagesFile.string("Name_Colour_Applied", "&bYour name colour has been changed to: %namecolour%").replace("%namecolour%", nameColour + player.getName()));
   }
 
   private void removeNameColour(final Player player, final String[] strings) {
@@ -72,29 +76,29 @@ public class NameColour extends PlayerCommand {
     }
 
     if(!Utilities.checkPermissions(player, true, "omeganames.namecolour.remove", "omeganames.admin")) {
-      Utilities.message(player, MessageHandler.prefix() + " " + MessageHandler.noPermission());
+      Utilities.message(player, messagesFile.string("No_Permission", "&cSorry, you do not have permission to do that."));
       return;
     }
 
     if(target == null) {
-      Utilities.message(player, MessageHandler.prefix() + " &cSorry, that player does not exist.");
+      Utilities.message(player, messagesFile.string("Invalid_Player", "&cSorry, that player cannot be found."));
       return;
     }
 
-    for(String groupName : OmegaNames.getInstance().getConfigFile().getConfig().getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
+    for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
 
       if(Utilities.checkPermission(player, false, "omeganames.namecolour.groups." + groupName)) {
-        player.setDisplayName(Utilities.colourise(OmegaNames.getInstance().getConfigFile().getConfig().getString("Group_Name_Colour.Groups." + groupName) + player.getName()));
-        OmegaNames.getInstance().getPlayerData().getConfig().set(player.getUniqueId().toString() + ".Name_Colour", OmegaNames.getInstance().getConfigFile().getConfig().getString("Group_Name_Colour.Groups." + groupName));
+        player.setDisplayName(Utilities.colourise(configFile.getString("Group_Name_Colour.Groups." + groupName) + player.getName()));
+        playerData.set(player.getUniqueId().toString() + ".Name_Colour", OmegaNames.getInstance().getConfigFile().getConfig().getString("Group_Name_Colour.Groups." + groupName));
         OmegaNames.getInstance().getPlayerData().saveConfig();
-        Utilities.message(player, MessageHandler.prefix() + " " + MessageHandler.nameColourRemoved());
+        Utilities.message(target, messagesFile.string("Name_Colour_Removed", "&cYour name colour has been reverted to the default colour"));
         return;
       }
 
-      player.setDisplayName(Utilities.colourise(MessageHandler.defaultNameColour() + player.getName()));
-      OmegaNames.getInstance().getPlayerData().getConfig().set(player.getUniqueId().toString() + ".Name_Colour", MessageHandler.defaultNameColour());
+      player.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "&e") + player.getName()));
+      playerData.set(player.getUniqueId().toString() + ".Name_Colour", configFile.getString("Default_Name_Colour", "&e"));
       OmegaNames.getInstance().getPlayerData().saveConfig();
-      Utilities.message(player, MessageHandler.prefix() + " " + MessageHandler.nameColourRemoved());
+      Utilities.message(target, messagesFile.string("Name_Colour_Removed", "&cYour name colour has been reverted to the default colour"));
     }
   }
 }

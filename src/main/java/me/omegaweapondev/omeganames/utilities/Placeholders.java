@@ -102,13 +102,14 @@ public class Placeholders extends PlaceholderExpansion {
     }
 
     // %omeganames_namecolour%
-    if(identifier.equals("namecolour")){
-    	if (OmegaNames.getInstance().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour") != null) {
-        return OmegaNames.getInstance().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour");
-      } else {
-        return "";
-      }
+    if(!identifier.equals("namecolour")) {
+      return null;
     }
-    return null;
+
+    if (OmegaNames.getInstance().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour") != null) {
+      return OmegaNames.getInstance().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour");
+    }
+
+    return "";
   }
 }

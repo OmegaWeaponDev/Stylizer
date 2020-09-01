@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class NameColours extends MenuCreator {
+  private final MessageHandler messagesFile = new MessageHandler(OmegaNames.getInstance().getMessagesFile().getConfig());
 
   public NameColours() {
     super(4, OmegaNames.getInstance().getMessagesFile().getConfig().getString("Name_Colour_GUI.GUI_Title"), "&6&lNameColours");
@@ -37,7 +38,7 @@ public class NameColours extends MenuCreator {
     }
 
     setItem(34, createItemStack("SPONGE", Utilities.colourise("&cCurrent"), loreMessages(Arrays.asList("&cClick here to view", "&cyour current name colour"))), player -> {
-      Utilities.message(player, MessageHandler.prefix() + " " + MessageHandler.currentNameColour(player, player.getDisplayName()));
+      Utilities.message(player, messagesFile.string("Current_Name_Colour", "&bYour name colour has been changed to: %namecolour%").replace("%namecolour%", player.getDisplayName()));
     });
 
     setItem(35, createItemStack("BARRIER", Utilities.colourise("&cClose"), loreMessages(Arrays.asList("&cClick here to close", "&cthe name colour gui"))), HumanEntity::closeInventory);
@@ -45,16 +46,20 @@ public class NameColours extends MenuCreator {
 
   private void createItem(final Integer slot, final String material, final String name, final String colour) {
     for(Player online : Bukkit.getOnlinePlayers()) {
+      final LoreHandler loreHandler = new LoreHandler(online, name, colour);
+
       if(Utilities.checkPermissions(online, true, "omeganames.namecolour.open", "omeganames.admin")) {
-        setItem(slot, createItemStack(material, Utilities.colourise(colour + name), LoreHandler.noPermissionLore(online, name, colour)), player -> {
-          GUIPermissionsChecker.nameColourPermsCheck(player, name, colour);
+        setItem(slot, createItemStack(material, Utilities.colourise(colour + name), loreHandler.permLoreChecker()), player -> {
+          final GUIPermissionsChecker permChecker = new GUIPermissionsChecker(player, name, colour);
+
+          permChecker.nameColourPermsCheck();
         });
       }
     }
   }
 
   private ItemStack createItemStack(final String material, final String name, final List<String> itemLore) {
-    final ItemStack item =  new ItemStack(Material.valueOf(material), 1);
+    final ItemStack item = new ItemStack(Material.valueOf(material), 1);
     final ItemMeta itemMeta = item.getItemMeta();
 
     itemMeta.setDisplayName(Utilities.colourise(name));

@@ -163,8 +163,8 @@ public class OmegaNames extends JavaPlugin {
         ConfigUpdater.update(OmegaNames.getInstance(), "config.yml", getConfigFile().getFile(), Arrays.asList("Group_Name_Colour.Groups", "Items"));
       }
 
-      if(getMessagesFile().getConfig().getDouble("Config_Version") != 1.0) {
-        getMessagesFile().getConfig().set("Config_Version", 1.0);
+      if(getMessagesFile().getConfig().getDouble("Config_Version") != 1.1) {
+        getMessagesFile().getConfig().set("Config_Version", 1.1);
         getMessagesFile().saveConfig();
         ConfigUpdater.update(OmegaNames.getInstance(), "messages.yml", getMessagesFile().getFile(), Arrays.asList("none"));
       }

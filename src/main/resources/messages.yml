@@ -40,8 +40,11 @@ Current_Name_Colour: "&bYour name colour is currently set to: %namecolour%"
 # Set the message you receive when you successfully reload the plugin
 Reload_Message: "&bThe plugin has successfully been reloaded"
 
+# Set the message you receive if a player cannot be found.
+Invalid_Player: "&cSorry, that player cannot be found."
+
 # Set the message players receive when they try to do something without permission
 No_Permission: "&cI'm sorry, but you do not have permission to do that"
 
 # DO NOT EDIT THIS
-Config_Version: 1.0
+Config_Version: 1.1
