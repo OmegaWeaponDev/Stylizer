@@ -138,8 +138,10 @@ public class OmegaNames extends JavaPlugin {
   private void spigotUpdater() {
     // The Updater
     new SpigotUpdater(this, 78327).getVersion(version -> {
-      Utilities.logInfo(true, "Checking for updates...");
-      if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
+      int spigotVersion = Integer.parseInt(version.replace(".", ""));
+      int pluginVersion = Integer.parseInt(this.getDescription().getVersion().replace(".", ""));
+
+      if(pluginVersion >= spigotVersion) {
         Utilities.logInfo(true, "You are already running the latest version");
         return;
       }

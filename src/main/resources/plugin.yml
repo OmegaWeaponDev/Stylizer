@@ -32,6 +32,7 @@ permissions:
       - omeganames.namecolour.colour.all
       - omeganames.namecolour.login
       - omeganames.namecolour.open
+      - omeganames.namecolour.custom
   omeganames.reload:
     description: Grants the user access to the reload command
     default: false
@@ -56,3 +57,5 @@ permissions:
   omeganames.namecolour.remove:
     description: Allows the user to use the name colour remove command
     default: false
+  omeganames.namecolour.custom:
+    description: Allows the user to use the custom name colour command

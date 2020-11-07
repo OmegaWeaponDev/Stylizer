@@ -29,14 +29,20 @@ public class PlayerListener implements Listener {
     // Send the player a message on join if there is an update for the plugin
     if(Utilities.checkPermissions(player, true, "omeganames.update", "omeganames.admin")) {
       new SpigotUpdater(OmegaNames.getInstance(), 78327).getVersion(version -> {
-        if (!OmegaNames.getInstance().getDescription().getVersion().equalsIgnoreCase(version)) {
-          PluginDescriptionFile pdf = OmegaNames.getInstance().getDescription();
-          Utilities.message(player,
-            "&bA new version of &c" + pdf.getName() + " &bis avaliable!",
-            "&bCurrent Version: &c" + pdf.getVersion() + " &b> New Version: &c" + version,
-            "&bGrab it here:&c https://spigotmc.org/resources/78327"
-          );
+        int spigotVersion = Integer.parseInt(version.replace(".", ""));
+        int pluginVersion = Integer.parseInt(OmegaNames.getInstance().getDescription().getVersion().replace(".", ""));
+
+        if(pluginVersion >= spigotVersion) {
+          Utilities.logInfo(true, "You are already running the latest version");
+          return;
         }
+
+        PluginDescriptionFile pdf = OmegaNames.getInstance().getDescription();
+        Utilities.logWarning(true,
+          "A new version of " + pdf.getName() + " is avaliable!",
+          "Current Version: " + pdf.getVersion() + " > New Version: " + version,
+          "Grab it here: https://spigotmc.org/resources/78327"
+        );
       });
     }
   }

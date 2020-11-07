@@ -22,7 +22,16 @@ public class NameColour extends PlayerCommand {
     }
 
     if(strings.length == 2) {
-      removeNameColour(player, strings);
+      switch(strings[0]) {
+        case "remove":
+          removeNameColour(player, strings);
+          break;
+        case "custom":
+          customNameColour(player, strings);
+          break;
+        default:
+          break;
+      }
     }
 
     if(strings.length == 3) {
@@ -100,5 +109,28 @@ public class NameColour extends PlayerCommand {
       OmegaNames.getInstance().getPlayerData().saveConfig();
       Utilities.message(target, messagesFile.string("Name_Colour_Removed", "&cYour name colour has been reverted to the default colour"));
     }
+  }
+
+  private void customNameColour(final Player player, final String[] strings) {
+
+    if(!strings[0].equalsIgnoreCase("custom")) {
+      return;
+    }
+
+    if(!Utilities.checkPermissions(player, true, "omeganames.namecolour.custom", "omeganames.admin")) {
+      Utilities.message(player, messagesFile.string("No_Permission", "&cSorry, you do not have permission to do that."));
+      return;
+    }
+
+    final String customColour = strings[1];
+
+    if(strings[1].equalsIgnoreCase("")) {
+      return;
+    }
+
+    player.setDisplayName(Utilities.colourise(customColour));
+    playerData.set(player.getUniqueId().toString() + ".Name_Colour", customColour);
+    OmegaNames.getInstance().getPlayerData().saveConfig();
+    Utilities.message(player, "Name_Colour_Applied".replace("%namecolour%", player.getDisplayName()));
   }
 }
