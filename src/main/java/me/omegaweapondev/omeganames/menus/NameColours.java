@@ -6,11 +6,9 @@ import me.omegaweapondev.omeganames.utilities.LoreHandler;
 import me.omegaweapondev.omeganames.utilities.MessageHandler;
 import me.ou.library.Utilities;
 import me.ou.library.menus.MenuCreator;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -45,17 +43,13 @@ public class NameColours extends MenuCreator {
   }
 
   private void createItem(final Integer slot, final String material, final String name, final String colour) {
-    for(Player online : Bukkit.getOnlinePlayers()) {
-      final LoreHandler loreHandler = new LoreHandler(online, name, colour);
+    final LoreHandler loreHandler = new LoreHandler(name, colour);
 
-      if(Utilities.checkPermissions(online, true, "omeganames.namecolour.open", "omeganames.admin")) {
-        setItem(slot, createItemStack(material, Utilities.colourise(colour + name), loreHandler.permLoreChecker()), player -> {
-          final GUIPermissionsChecker permChecker = new GUIPermissionsChecker(player, name, colour);
+    setItem(slot, createItemStack(material, Utilities.colourise(colour + name), loreHandler.colourLoreMessage()), player -> {
+      final GUIPermissionsChecker permChecker = new GUIPermissionsChecker(player, name, colour);
 
-          permChecker.nameColourPermsCheck();
-        });
-      }
-    }
+      permChecker.nameColourPermsCheck();
+    });
   }
 
   private ItemStack createItemStack(final String material, final String name, final List<String> itemLore) {

@@ -10,11 +10,11 @@ import me.ou.library.SpigotUpdater;
 import me.ou.library.Utilities;
 import me.ou.library.configs.ConfigCreator;
 import me.ou.library.configs.ConfigUpdater;
+import me.ou.library.menus.MenuCreator;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -33,9 +33,9 @@ public class OmegaNames extends JavaPlugin {
     initialSetup();
     configSetup();
     configUpdater();
-    guiSetup();
     commandSetup();
     eventsSetup();
+    guiSetup();
     spigotUpdater();
   }
 
@@ -43,32 +43,20 @@ public class OmegaNames extends JavaPlugin {
   public void onDisable() {
     // Set the instance to null when the plugin is disabled
     instance = null;
+
+    if(!MenuCreator.getOpenInventories().isEmpty()) {
+      nameColourGUI.deleteInventory();
+    }
+
     super.onDisable();
   }
 
   public void onReload() {
-    // Reload the Name Colour GUI
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        nameColourGUI = new NameColours();
-      }
-    }.runTaskLaterAsynchronously(getInstance(), 20);
 
     // Reload the files
     configFile.reloadConfig();
     messagesFile.reloadConfig();
     playerData.reloadConfig();
-  }
-
-  // Method to reload just the GUI's
-  public void onGUIReload() {
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        nameColourGUI = new NameColours();
-      }
-    }.runTaskLaterAsynchronously(getInstance(), 20);
   }
 
   private void initialSetup() {

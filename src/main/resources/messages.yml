@@ -22,11 +22,6 @@ Name_Colour_GUI:
     - "&cClick here to change"
     - "&cyour name colour to"
     - "%namecolour%"
-  # Set the lore messages for when players don't have permission to use a name colour
-  No_Permission_Lore:
-    - "&cYou currently do not"
-    - "&chave permission to"
-    - "&cuse this name colour"
 
 # Set the message players receive when they change their name colour
 Name_Colour_Applied: "&bYour name colour has been changed to: %namecolour%"
@@ -47,4 +42,4 @@ Invalid_Player: "&cSorry, that player cannot be found."
 No_Permission: "&cI'm sorry, but you do not have permission to do that"
 
 # DO NOT EDIT THIS
-Config_Version: 1.1
+Config_Version: 1.2

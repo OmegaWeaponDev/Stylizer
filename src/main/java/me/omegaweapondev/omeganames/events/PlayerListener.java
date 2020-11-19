@@ -22,10 +22,6 @@ public class PlayerListener implements Listener {
 
     Bukkit.getScheduler().scheduleSyncRepeatingTask(OmegaNames.getInstance(), () -> setNameColour(player), 20L * 5L, 20L * 15L);
 
-    // Call gui reload method, so item lore is refreshed for each player, as it checks for permissions
-    // to decide which lore messages should be applied
-    Bukkit.getScheduler().scheduleSyncRepeatingTask(OmegaNames.getInstance(), () -> OmegaNames.getInstance().onGUIReload(), 20L * 5L, 20L * 15L);
-
     // Send the player a message on join if there is an update for the plugin
     if(Utilities.checkPermissions(player, true, "omeganames.update", "omeganames.admin")) {
       new SpigotUpdater(OmegaNames.getInstance(), 78327).getVersion(version -> {
