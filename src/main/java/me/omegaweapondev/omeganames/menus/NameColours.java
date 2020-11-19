@@ -53,10 +53,25 @@ public class NameColours extends MenuCreator {
   }
 
   private ItemStack createItemStack(final String material, final String name, final List<String> itemLore) {
-    final ItemStack item = new ItemStack(Material.valueOf(material), 1);
-    final ItemMeta itemMeta = item.getItemMeta();
+    final ItemStack item;
+    final ItemMeta itemMeta;
 
-    itemMeta.setDisplayName(Utilities.colourise(name));
+    if(Material.getMaterial(material.toUpperCase()) == null) {
+      item = new ItemStack(Material.BARRIER, 1);
+
+      itemMeta = item.getItemMeta();
+      itemMeta.setDisplayName("&cInvalid Item");
+      itemLore.clear();
+      itemLore.add(Utilities.colourise("&cInvalid Item: " + material.toUpperCase()));
+
+      itemMeta.setLore(itemLore);
+      item.setItemMeta(itemMeta);
+    } else {
+      item = new ItemStack(Material.getMaterial(material.toUpperCase()), 1);
+      itemMeta = item.getItemMeta();
+      itemMeta.setDisplayName(Utilities.colourise(name));
+    }
+
     itemMeta.setLore(itemLore);
     item.setItemMeta(itemMeta);
 

@@ -2,7 +2,6 @@ package me.omegaweapondev.omeganames.utilities;
 
 import me.omegaweapondev.omeganames.OmegaNames;
 import me.ou.library.Utilities;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +9,6 @@ import java.util.List;
 
 public class LoreHandler {
   private final MessageHandler messageFile = new MessageHandler(OmegaNames.getInstance().getMessagesFile().getConfig());
-  private final FileConfiguration configFile = OmegaNames.getInstance().getConfigFile().getConfig();
 
   private final String colourName;
   private final String colourCode;
