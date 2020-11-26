@@ -1,5 +1,6 @@
 package me.omegaweapondev.omeganames.events;
 
+import me.ou.library.Utilities;
 import me.ou.library.menus.MenuCreator;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -33,6 +34,10 @@ public class MenuListener implements Listener {
 
     if(e.getClick().equals(ClickType.DROP)) {
       e.setCancelled(true);
+      return;
+    }
+
+    if(clickedItem.getItemMeta().getDisplayName().equals(Utilities.colourise("&cInvalid Item"))) {
       return;
     }
 
