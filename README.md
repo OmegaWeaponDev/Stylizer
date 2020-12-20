@@ -25,7 +25,7 @@ Below is a brief list of the features that are included in the plugin
 ### Installation & Downloading
 
 You can always find the latest version by visiting the [spigot](https://www.spigotmc.org/resources/omeganames.78327/) 
-page or [MC Market]() page. This plugin works on all Bukkit/Spigot/Paper servers from version 1.13 and above.
+page or [MC Market](https://www.mc-market.org/resources/18385/) page. This plugin works on all Bukkit/Spigot/Paper servers from version 1.13 and above.
 
 When it comes to installing the plugin, Simply drop the omeganames-[version number].jar into your servers plugin folder and then start your server.
 
