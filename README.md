@@ -25,7 +25,7 @@ Below is a brief list of the features that are included in the plugin
 ### Installation & Downloading
 
 You can always find the latest version by visiting the [spigot](https://www.spigotmc.org/resources/omeganames.78327/) 
-page. This plugin works on all Bukkit/Spigot/Paper servers from version 1.13 and above.
+page or [MC Market]() page. This plugin works on all Bukkit/Spigot/Paper servers from version 1.13 and above.
 
 When it comes to installing the plugin, Simply drop the omeganames-[version number].jar into your servers plugin folder and then start your server.
 
@@ -40,9 +40,9 @@ If at any stage you come across a sneaky bug that I was unable to locate during 
 
 I have spent some time setting up a discord server that you are welcome to join at any time. Here you are able to seek help, have a chat, be informed of any updates or announcements and just be apart of a great community. You can join the community or invite your friends to the discord community by using this link: https://discord.gg/9nZTPcp
 
-### **Spigot**
+### **Spigot & McMarket**
 
-Of course, we have the normal contact method of using the SpigotMC website. You can locate my profile here: https://www.spigotmc.org/members/omegaweapondev.14953/ Feel free to privately message me about anything related to any of my plugins. 
+Of course, we have the normal contact method of using the SpigotMC website. You can locate my profile here: https://www.spigotmc.org/members/omegaweapondev.14953/ Feel free to privately message me about anything related to any of my plugins. You can also contact me via Mc Market at https://www.mc-market.org/members/271921/
 
 ### **GitHub**
 
