@@ -78,7 +78,7 @@ public class OmegaNames extends JavaPlugin {
       "|  _  | \\ | |  ",
       "| | | |  \\| |  OmegaNames v" + OmegaNames.getInstance().getDescription().getVersion() + " By OmegaWeaponDev",
       "| | | | . ` |  Allow your players to choose their own name colours!",
-      "\\ \\_/ / |\\  |  Currently supporting Spigot 1.13 - 1.16.1",
+      "\\ \\_/ / |\\  |  Currently supporting Spigot 1.13 - 1.16.4",
       " \\___/\\_| \\_/",
       ""
     );
@@ -138,7 +138,7 @@ public class OmegaNames extends JavaPlugin {
       Utilities.logWarning(true,
         "A new version of " + pdf.getName() + " is avaliable!",
         "Current Version: " + pdf.getVersion() + " > New Version: " + version,
-        "Grab it here: https://spigotmc.org/resources/78327"
+        "Grab it here: https://github.com/OmegaWeaponDev/OmegaNames"
       );
     });
   }
