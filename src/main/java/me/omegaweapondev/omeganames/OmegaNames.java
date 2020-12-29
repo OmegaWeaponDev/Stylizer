@@ -11,9 +11,11 @@ import me.ou.library.Utilities;
 import me.ou.library.configs.ConfigCreator;
 import me.ou.library.configs.ConfigUpdater;
 import me.ou.library.menus.MenuCreator;
+import net.milkbowl.vault.chat.Chat;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -28,6 +30,8 @@ public class OmegaNames extends JavaPlugin {
   // Declaring the GUI's
   private NameColours nameColourGUI;
 
+  private static Chat chat = null;
+
   @Override
   public void onEnable() {
     initialSetup();
@@ -37,6 +41,7 @@ public class OmegaNames extends JavaPlugin {
     eventsSetup();
     guiSetup();
     spigotUpdater();
+    setupChat();
   }
 
   @Override
@@ -147,8 +152,8 @@ public class OmegaNames extends JavaPlugin {
     Utilities.logInfo(true, "Attempting to update the config files....");
 
     try {
-      if(getConfigFile().getConfig().getDouble("Config_Version") != 1.1) {
-        getConfigFile().getConfig().set("Config_Version", 1.1);
+      if(getConfigFile().getConfig().getDouble("Config_Version") != 1.2) {
+        getConfigFile().getConfig().set("Config_Version", 1.2);
         getConfigFile().saveConfig();
         ConfigUpdater.update(OmegaNames.getInstance(), "config.yml", getConfigFile().getFile(), Arrays.asList("Group_Name_Colour.Groups", "Items"));
       }
@@ -165,6 +170,12 @@ public class OmegaNames extends JavaPlugin {
     }
   }
 
+  private boolean setupChat() {
+    RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
+    chat = rsp.getProvider();
+    return chat != null;
+  }
+
   public ConfigCreator getConfigFile() {
     return configFile;
   }
@@ -179,6 +190,10 @@ public class OmegaNames extends JavaPlugin {
 
   public NameColours getNameColourGUI() {
     return nameColourGUI;
+  }
+
+  public static Chat getChat() {
+    return chat;
   }
 
   public static OmegaNames getInstance() {

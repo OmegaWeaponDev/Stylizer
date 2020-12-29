@@ -49,6 +49,12 @@ public class PlayerListener implements Listener {
 
       if(OmegaNames.getInstance().getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
         player.setDisplayName(Utilities.colourise(OmegaNames.getInstance().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour") + player.getName()) + ChatColor.RESET);
+
+        if(configFile.getBoolean("Tablist_Prefix_Suffix")) {
+          player.setPlayerListName(Utilities.colourise(OmegaNames.getChat().getPlayerPrefix(player) + " " + player.getDisplayName() + " " + OmegaNames.getChat().getPlayerSuffix(player)));
+          return;
+        }
+
         player.setPlayerListName(player.getDisplayName());
         return;
       }

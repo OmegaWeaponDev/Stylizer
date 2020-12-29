@@ -19,6 +19,9 @@ Per_Name_Colour_Permissions: false
 # If true, when a player gets a name colour it will show the name colour on tablist
 Tablist_Name_Colour: true
 
+# Apply the players prefix and suffix to their tablist name along with your name colour
+Tablist_Prefix_Suffix: true
+
 # If true, players will retain their name colour when they login/logout
 Name_Colour_Login: true
 
@@ -91,4 +94,4 @@ Group_Name_Colour:
 Update_Messages: true
 
 # DO NOT EDIT THIS
-Config_Version: 1.1
+Config_Version: 1.2
