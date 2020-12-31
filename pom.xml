@@ -15,7 +15,7 @@
   <groupId>me.omegaweapondev</groupId>
   <artifactId>omeganames</artifactId>
   <name>OmegaNames</name>
-  <version>1.1.18</version>
+  <version>1.1.19</version>
   <description>Allow players to choose their own namecolours!</description>
 
   <!--
@@ -42,7 +42,7 @@
     <pl.apiver>1.13</pl.apiver>
 
     <!-- The Java version your plugin uses, see bstats.org for what most servers have and use that -->
-    <java.version>1.8</java.version>
+    <java.version>11.0</java.version>
 
     <!-- How letters in your code should be saved on your disk, leave to UTF-8 to support all languages -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
