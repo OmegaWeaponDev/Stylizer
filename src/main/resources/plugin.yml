@@ -8,16 +8,19 @@ author: ${pl.author}
 
 softdepend:
   - PlaceholderAPI
+  - Vault
 
 commands:
   omeganames:
     description: The main command for OmegaNames
-    usage: /omeganames
     aliases: [on, onames, omegan]
   namecolour:
     description: The name colour command
-    usage: /namecolour
     aliases: [nc, namec, namecolours, ncolours]
+  omeganamesdebug:
+    description: Display useful information to help debug issues
+    aliases: [onamesdebug, ncdebug, ondebug]
+
 
 permissions:
   omeganames.admin:
@@ -26,6 +29,7 @@ permissions:
     children:
       - omeganames.reload
       - omeganames.update
+      - omeganames.debug
       - omeganames.namecolour.add
       - omeganames.namecolour.remove
       - omeganames.namecolour.colours
@@ -59,3 +63,7 @@ permissions:
     default: false
   omeganames.namecolour.custom:
     description: Allows the user to use the custom name colour command
+    default: false
+  omeganames.debug:
+    description: Allows the user to use the debug command
+    default: false

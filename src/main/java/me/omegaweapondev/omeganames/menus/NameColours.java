@@ -11,6 +11,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,11 +45,21 @@ public class NameColours extends MenuCreator {
 
   private void createItem(final Integer slot, final String material, final String name, final String colour) {
 
-    setItem(slot, createItemStack(material, Utilities.colourise(colour + name), Utilities.colourise(messagesFile.stringList("Name_Colour_GUI.Colour_Lore" , Arrays.asList("&cClick here to change", "&cyour name colour to", "%namecolour%".replace("%namecolour%", colour + name))))), player -> {
+    setItem(slot, createItemStack(material, Utilities.colourise(colour + name), Utilities.colourise(loreMessage(messagesFile.stringList("Name_Colour_GUI.Colour_Lore", Arrays.asList("&cClick here to change", "&cyour name colour to", colour + name)), colour + name))), player -> {
       final GUIPermissionsChecker permChecker = new GUIPermissionsChecker(player, name, colour);
 
       permChecker.nameColourPermsCheck();
     });
+  }
+
+  private List<String> loreMessage(final List<String> lore, String name) {
+    List<String> formattedLore = new ArrayList<>();
+
+    for(String message : lore) {
+      formattedLore.add(message.replace("%namecolour%", name));
+    }
+
+    return formattedLore;
   }
 
   private ItemStack createItemStack(final String material, final String name, final List<String> lore) {
@@ -60,10 +71,10 @@ public class NameColours extends MenuCreator {
       return itemCreator.getItem();
     }
 
-    itemCreator = new ItemCreator(Material.valueOf(material));
-
+    itemCreator = new ItemCreator(Material.getMaterial(material.toUpperCase()));
     itemCreator.setDisplayName(name);
-    itemCreator.setLore(String.valueOf(lore));
+
+    itemCreator.setLore(lore);
 
     return itemCreator.getItem();
   }

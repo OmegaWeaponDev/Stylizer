@@ -1,5 +1,6 @@
 package me.omegaweapondev.omeganames;
 
+import me.omegaweapondev.omeganames.commands.DebugCommand;
 import me.omegaweapondev.omeganames.commands.MainCommand;
 import me.omegaweapondev.omeganames.commands.NameColour;
 import me.omegaweapondev.omeganames.events.MenuListener;
@@ -30,7 +31,7 @@ public class OmegaNames extends JavaPlugin {
   // Declaring the GUI's
   private NameColours nameColourGUI;
 
-  private static Chat chat = null;
+  private static Chat chat;
 
   @Override
   public void onEnable() {
@@ -71,6 +72,14 @@ public class OmegaNames extends JavaPlugin {
 
     if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
       new Placeholders(instance).register();
+    }
+
+    if(Bukkit.getPluginManager().getPlugin("Vault") == null) {
+      Utilities.logWarning(true,
+        "OmegaNames has detected that you do not have vault installed.",
+        "If you are wanting to use the prefix and suffixes in the tablist",
+        "it is recommended that you install vault and a chat plugin otherwise these features won't work."
+      );
     }
 
     // Setup bStats
@@ -118,6 +127,7 @@ public class OmegaNames extends JavaPlugin {
 
     Utilities.setCommand().put("omeganames", new MainCommand());
     Utilities.setCommand().put("namecolour", new NameColour());
+    Utilities.setCommand().put("omeganamesdebug", new DebugCommand());
 
     Utilities.registerCommands();
 

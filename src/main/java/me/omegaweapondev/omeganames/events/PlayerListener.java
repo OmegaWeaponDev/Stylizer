@@ -49,13 +49,7 @@ public class PlayerListener implements Listener {
 
       if(OmegaNames.getInstance().getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
         player.setDisplayName(Utilities.colourise(OmegaNames.getInstance().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour") + player.getName()) + ChatColor.RESET);
-
-        if(configFile.getBoolean("Tablist_Prefix_Suffix") && player.isOnline()) {
-          player.setPlayerListName(Utilities.colourise(OmegaNames.getChat().getPlayerPrefix(player) + " " + player.getDisplayName() + " " + OmegaNames.getChat().getPlayerSuffix(player)));
-          return;
-        }
-
-        player.setPlayerListName(player.getDisplayName());
+        formatTablist(player);
         return;
       }
 
@@ -63,27 +57,45 @@ public class PlayerListener implements Listener {
 
         if(Utilities.checkPermission(player, false, "omeganames.namecolour.groups." + groupName.toLowerCase())) {
           player.setDisplayName(Utilities.colourise(groupNameColour(player, groupName) + player.getName()) + ChatColor.RESET);
-          player.setPlayerListName(player.getDisplayName());
+          formatTablist(player);
           return;
         }
       }
-
       player.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "&e") + player.getName()) + ChatColor.RESET);
+      formatTablist(player);
+      return;
+    }
+    player.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "&e") + player.getName()) + ChatColor.RESET);
+    formatTablist(player);
+  }
+
+  private void formatTablist(final Player player) {
+    if(!configFile.getBoolean("Tablist_Name_Colour") && !configFile.getBoolean("Tablist_Prefix_Suffix")) {
+      player.setPlayerListName(player.getName());
+      return;
+    }
+
+    if(!configFile.getBoolean("Tablist_Name_Colour") && configFile.getBoolean("Tablist_Prefix_Suffix")) {
+      player.setPlayerListName(
+        Utilities.colourise(
+          (OmegaNames.getChat().getPlayerPrefix(player) != null ? OmegaNames.getChat().getPlayerPrefix(player)  + " " : "") + player.getName() + (OmegaNames.getChat().getPlayerSuffix(player) != null ? OmegaNames.getChat().getPlayerSuffix(player)  + " " : "")
+        )
+      );
+      return;
+    }
+
+    if(configFile.getBoolean("Tablist_Name_Colour") && !configFile.getBoolean("Tablist_Prefix_Suffix")) {
       player.setPlayerListName(player.getDisplayName());
       return;
     }
 
-    for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
-
-      if(Utilities.checkPermission(player, false, "omeganames.namecolour.groups." + groupName.toLowerCase())) {
-        player.setDisplayName(Utilities.colourise(groupNameColour(player, groupName) + player.getName()) + ChatColor.RESET);
-        player.setPlayerListName(player.getDisplayName());
-        return;
-      }
+    if(configFile.getBoolean("Tablist_Name_Colour") && configFile.getBoolean("Tablist_Prefix_Suffix")) {
+      player.setPlayerListName(
+        Utilities.colourise(
+          (OmegaNames.getChat().getPlayerPrefix(player) != null ? OmegaNames.getChat().getPlayerPrefix(player)  + " " : "") + player.getDisplayName() + (OmegaNames.getChat().getPlayerSuffix(player) != null ? OmegaNames.getChat().getPlayerSuffix(player)  + " " : "")
+        )
+      );
     }
-
-    player.setDisplayName(Utilities.colourise(playerNameColour(player) + player.getName()) + ChatColor.RESET);
-    player.setPlayerListName(player.getDisplayName());
   }
 
   private String groupNameColour(final Player player, final String groupName) {
