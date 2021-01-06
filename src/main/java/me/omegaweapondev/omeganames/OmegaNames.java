@@ -23,15 +23,15 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class OmegaNames extends JavaPlugin {
+  private static OmegaNames instance;
   private final ConfigCreator configFile = new ConfigCreator("config.yml");
   private final ConfigCreator messagesFile = new ConfigCreator("messages.yml");
   private final ConfigCreator playerData = new ConfigCreator("playerData.yml");
-  private static OmegaNames instance;
+
+  private Chat chat;
 
   // Declaring the GUI's
   private NameColours nameColourGUI;
-
-  private static Chat chat;
 
   @Override
   public void onEnable() {
@@ -202,7 +202,7 @@ public class OmegaNames extends JavaPlugin {
     return nameColourGUI;
   }
 
-  public static Chat getChat() {
+  public Chat getChat() {
     return chat;
   }
 

@@ -78,7 +78,7 @@ public class PlayerListener implements Listener {
     if(!configFile.getBoolean("Tablist_Name_Colour") && configFile.getBoolean("Tablist_Prefix_Suffix")) {
       player.setPlayerListName(
         Utilities.colourise(
-          (OmegaNames.getChat().getPlayerPrefix(player) != null ? OmegaNames.getChat().getPlayerPrefix(player)  + " " : "") + player.getName() + (OmegaNames.getChat().getPlayerSuffix(player) != null ? OmegaNames.getChat().getPlayerSuffix(player)  + " " : "")
+          (OmegaNames.getInstance().getChat().getPlayerPrefix(player) != null ? OmegaNames.getInstance().getChat().getPlayerPrefix(player)  + " " : "") + player.getName() + (OmegaNames.getInstance().getChat().getPlayerSuffix(player) != null ? OmegaNames.getInstance().getChat().getPlayerSuffix(player)  + " " : "")
         )
       );
       return;
@@ -92,7 +92,7 @@ public class PlayerListener implements Listener {
     if(configFile.getBoolean("Tablist_Name_Colour") && configFile.getBoolean("Tablist_Prefix_Suffix")) {
       player.setPlayerListName(
         Utilities.colourise(
-          (OmegaNames.getChat().getPlayerPrefix(player) != null ? OmegaNames.getChat().getPlayerPrefix(player)  + " " : "") + player.getDisplayName() + (OmegaNames.getChat().getPlayerSuffix(player) != null ? OmegaNames.getChat().getPlayerSuffix(player)  + " " : "")
+          (OmegaNames.getInstance().getChat().getPlayerPrefix(player) != null ? OmegaNames.getInstance().getChat().getPlayerPrefix(player)  + " " : "") + player.getDisplayName() + (OmegaNames.getInstance().getChat().getPlayerSuffix(player) != null ? OmegaNames.getInstance().getChat().getPlayerSuffix(player)  + " " : "")
         )
       );
     }
