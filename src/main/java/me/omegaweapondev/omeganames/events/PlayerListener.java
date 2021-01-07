@@ -11,16 +11,26 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class PlayerListener implements Listener {
   private final FileConfiguration configFile = OmegaNames.getInstance().getConfigFile().getConfig();
+  private final Map<UUID, Integer> tablistRefreashMap = new HashMap<>();
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onPlayerJoin(PlayerJoinEvent playerJoinEvent) {
     Player player = playerJoinEvent.getPlayer();
 
-    Bukkit.getScheduler().scheduleSyncRepeatingTask(OmegaNames.getInstance(), () -> setNameColour(player), 20L * 5L, 20L * 15L);
+    setNameColour(player);
+
+    BukkitTask tablistRefreashTask = Bukkit.getScheduler().runTaskTimer(OmegaNames.getInstance(), () -> tablistRefreash(player), 20 * 15L, 20 * 15L);
+    tablistRefreashMap.put(player.getUniqueId(), tablistRefreashTask.getTaskId());
 
     // Send the player a message on join if there is an update for the plugin
     if(Utilities.checkPermissions(player, true, "omeganames.update", "omeganames.admin")) {
@@ -43,8 +53,15 @@ public class PlayerListener implements Listener {
     }
   }
 
-  private void setNameColour(final Player player) {
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onPlayerQuit(PlayerQuitEvent playerQuitEvent) {
+    final Player player = playerQuitEvent.getPlayer();
 
+    Bukkit.getScheduler().cancelTask(tablistRefreashMap.get(player.getUniqueId()));
+    tablistRefreashMap.remove(player.getUniqueId());
+  }
+
+  private void setNameColour(final Player player) {
     if(configFile.getBoolean("Name_Colour_Login")) {
 
       if(OmegaNames.getInstance().getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
@@ -69,16 +86,39 @@ public class PlayerListener implements Listener {
     formatTablist(player);
   }
 
+  private void tablistRefreash(final Player player) {
+    if(OmegaNames.getInstance().getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
+      player.setDisplayName(Utilities.colourise(OmegaNames.getInstance().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour") + player.getName()) + ChatColor.RESET);
+      formatTablist(player);
+      return;
+    }
+
+    for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
+
+      if(Utilities.checkPermission(player, false, "omeganames.namecolour.groups." + groupName.toLowerCase())) {
+        player.setDisplayName(Utilities.colourise(groupNameColour(player, groupName) + player.getName()) + ChatColor.RESET);
+        formatTablist(player);
+        return;
+      }
+    }
+    player.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "&e") + player.getName()) + ChatColor.RESET);
+    formatTablist(player);
+    return;
+  }
+
   private void formatTablist(final Player player) {
+    final String playerPrefix = OmegaNames.getInstance().getChat().getPlayerPrefix(player);
+    final String playerSuffix = OmegaNames.getInstance().getChat().getPlayerSuffix(player);
+
     if(!configFile.getBoolean("Tablist_Name_Colour") && !configFile.getBoolean("Tablist_Prefix_Suffix")) {
       player.setPlayerListName(player.getName());
       return;
     }
 
-    if(!configFile.getBoolean("Tablist_Name_Colour") && configFile.getBoolean("Tablist_Prefix_Suffix")) {
+    if(!configFile.getBoolean("Tablist_Name_Colour") && configFile.getBoolean("Tablist_Prefix_Suffix") && player.isOnline()) {
       player.setPlayerListName(
         Utilities.colourise(
-          (OmegaNames.getInstance().getChat().getPlayerPrefix(player) != null ? OmegaNames.getInstance().getChat().getPlayerPrefix(player)  + " " : "") + player.getName() + (OmegaNames.getInstance().getChat().getPlayerSuffix(player) != null ? OmegaNames.getInstance().getChat().getPlayerSuffix(player)  + " " : "")
+          (playerPrefix != null ? playerPrefix  + " " : "") + player.getName() + (playerSuffix != null ? playerSuffix  + " " : "")
         )
       );
       return;
@@ -89,10 +129,10 @@ public class PlayerListener implements Listener {
       return;
     }
 
-    if(configFile.getBoolean("Tablist_Name_Colour") && configFile.getBoolean("Tablist_Prefix_Suffix")) {
+    if(configFile.getBoolean("Tablist_Name_Colour") && configFile.getBoolean("Tablist_Prefix_Suffix") && player.isOnline()) {
       player.setPlayerListName(
         Utilities.colourise(
-          (OmegaNames.getInstance().getChat().getPlayerPrefix(player) != null ? OmegaNames.getInstance().getChat().getPlayerPrefix(player)  + " " : "") + player.getDisplayName() + (OmegaNames.getInstance().getChat().getPlayerSuffix(player) != null ? OmegaNames.getInstance().getChat().getPlayerSuffix(player)  + " " : "")
+          (playerPrefix != null ? playerPrefix  + " " : "") + player.getDisplayName() + (playerSuffix != null ? playerSuffix  + " " : "")
         )
       );
     }
