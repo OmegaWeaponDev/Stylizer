@@ -29,7 +29,7 @@ public class PlayerListener implements Listener {
 
     setNameColour(player);
 
-    BukkitTask tablistRefreashTask = Bukkit.getScheduler().runTaskTimer(OmegaNames.getInstance(), () -> tablistRefreash(player), 20 * 15L, 20 * 15L);
+    BukkitTask tablistRefreashTask = Bukkit.getScheduler().runTaskTimer(OmegaNames.getInstance(), () -> tablistRefreash(player), 20 * 10L, 20 * 15L);
     tablistRefreashMap.put(player.getUniqueId(), tablistRefreashTask.getTaskId());
 
     // Send the player a message on join if there is an update for the plugin
@@ -103,7 +103,6 @@ public class PlayerListener implements Listener {
     }
     player.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "&e") + player.getName()) + ChatColor.RESET);
     formatTablist(player);
-    return;
   }
 
   private void formatTablist(final Player player) {

@@ -1,12 +1,12 @@
-package me.omegaweapondev.omeganames;
+package me.omegaweapondev.stylizer;
 
-import me.omegaweapondev.omeganames.commands.DebugCommand;
-import me.omegaweapondev.omeganames.commands.MainCommand;
-import me.omegaweapondev.omeganames.commands.NameColour;
-import me.omegaweapondev.omeganames.events.MenuListener;
-import me.omegaweapondev.omeganames.events.PlayerListener;
-import me.omegaweapondev.omeganames.menus.NameColours;
-import me.omegaweapondev.omeganames.utilities.Placeholders;
+import me.omegaweapondev.stylizer.commands.DebugCommand;
+import me.omegaweapondev.stylizer.commands.MainCommand;
+import me.omegaweapondev.stylizer.commands.NameColour;
+import me.omegaweapondev.stylizer.events.MenuListener;
+import me.omegaweapondev.stylizer.events.PlayerListener;
+import me.omegaweapondev.stylizer.menus.NameColours;
+import me.omegaweapondev.stylizer.utilities.Placeholders;
 import me.ou.library.SpigotUpdater;
 import me.ou.library.Utilities;
 import me.ou.library.configs.ConfigCreator;
@@ -111,7 +111,7 @@ public class OmegaNames extends JavaPlugin {
         " Welcome to OmegaNames' Player Data file.\n" +
         " \n" +
         " This file contains all the uuids and namecolour colours\n" +
-        " for all the players who have the permission omeganames.login\n" +
+        " for all the players who have the permission stylizer.login\n" +
         " \n" +
         " -------------------------------------------------------------------------------------------"
     );
@@ -125,7 +125,7 @@ public class OmegaNames extends JavaPlugin {
   private void commandSetup() {
     Utilities.logInfo(true, "Registering the commands...");
 
-    Utilities.setCommand().put("omeganames", new MainCommand());
+    Utilities.setCommand().put("stylizer", new MainCommand());
     Utilities.setCommand().put("namecolour", new NameColour());
     Utilities.setCommand().put("omeganamesdebug", new DebugCommand());
 
