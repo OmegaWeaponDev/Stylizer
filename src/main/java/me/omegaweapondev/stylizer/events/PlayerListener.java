@@ -1,6 +1,6 @@
-package me.omegaweapondev.omeganames.events;
+package me.omegaweapondev.stylizer.events;
 
-import me.omegaweapondev.omeganames.OmegaNames;
+import me.omegaweapondev.stylizer.Stylizer;
 import me.ou.library.SpigotUpdater;
 import me.ou.library.Utilities;
 import org.bukkit.Bukkit;
@@ -20,30 +20,38 @@ import java.util.Map;
 import java.util.UUID;
 
 public class PlayerListener implements Listener {
-  private final FileConfiguration configFile = OmegaNames.getInstance().getConfigFile().getConfig();
+  private final Stylizer plugin;
+
+  private final FileConfiguration configFile;
   private final Map<UUID, Integer> tablistRefreashMap = new HashMap<>();
+
+  public PlayerListener(final Stylizer plugin) {
+    this.plugin = plugin;
+    configFile = plugin.getConfigFile().getConfig();
+  }
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onPlayerJoin(PlayerJoinEvent playerJoinEvent) {
     Player player = playerJoinEvent.getPlayer();
 
+    tablistHeaderFooter(player);
     setNameColour(player);
 
-    BukkitTask tablistRefreashTask = Bukkit.getScheduler().runTaskTimer(OmegaNames.getInstance(), () -> tablistRefreash(player), 20 * 10L, 20 * 15L);
+    BukkitTask tablistRefreashTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> tablistRefreash(player), 20 * 10L, 20 * 15L);
     tablistRefreashMap.put(player.getUniqueId(), tablistRefreashTask.getTaskId());
 
     // Send the player a message on join if there is an update for the plugin
-    if(Utilities.checkPermissions(player, true, "omeganames.update", "omeganames.admin")) {
-      new SpigotUpdater(OmegaNames.getInstance(), 78327).getVersion(version -> {
+    if(Utilities.checkPermissions(player, true, "stylizer.update", "stylizer.admin")) {
+      new SpigotUpdater(plugin, 78327).getVersion(version -> {
         int spigotVersion = Integer.parseInt(version.replace(".", ""));
-        int pluginVersion = Integer.parseInt(OmegaNames.getInstance().getDescription().getVersion().replace(".", ""));
+        int pluginVersion = Integer.parseInt(plugin.getDescription().getVersion().replace(".", ""));
 
         if(pluginVersion >= spigotVersion) {
           Utilities.logInfo(true, "You are already running the latest version");
           return;
         }
 
-        PluginDescriptionFile pdf = OmegaNames.getInstance().getDescription();
+        PluginDescriptionFile pdf = plugin.getDescription();
         Utilities.logWarning(true,
           "A new version of " + pdf.getName() + " is avaliable!",
           "Current Version: " + pdf.getVersion() + " > New Version: " + version,
@@ -64,50 +72,51 @@ public class PlayerListener implements Listener {
   private void setNameColour(final Player player) {
     if(configFile.getBoolean("Name_Colour_Login")) {
 
-      if(OmegaNames.getInstance().getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
-        player.setDisplayName(Utilities.colourise(OmegaNames.getInstance().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour") + player.getName()) + ChatColor.RESET);
+      if(plugin.getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
+        player.setDisplayName(Utilities.colourise(plugin.getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour") + player.getName()) + ChatColor.RESET);
         formatTablist(player);
         return;
       }
 
       for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
 
-        if(Utilities.checkPermission(player, false, "omeganames.namecolour.groups." + groupName.toLowerCase())) {
+        if(Utilities.checkPermission(player, false, "stylizer.namecolour.groups." + groupName.toLowerCase())) {
           player.setDisplayName(Utilities.colourise(groupNameColour(player, groupName) + player.getName()) + ChatColor.RESET);
           formatTablist(player);
           return;
         }
       }
-      player.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "&e") + player.getName()) + ChatColor.RESET);
+      player.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "#fff954") + player.getName()) + ChatColor.RESET);
       formatTablist(player);
       return;
     }
-    player.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "&e") + player.getName()) + ChatColor.RESET);
+    player.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "#fff954") + player.getName()) + ChatColor.RESET);
     formatTablist(player);
   }
 
   private void tablistRefreash(final Player player) {
-    if(OmegaNames.getInstance().getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
-      player.setDisplayName(Utilities.colourise(OmegaNames.getInstance().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour") + player.getName()) + ChatColor.RESET);
+    if(plugin.getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
+      player.setDisplayName(Utilities.colourise(plugin.getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour") + player.getName()) + ChatColor.RESET);
       formatTablist(player);
       return;
     }
 
     for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
 
-      if(Utilities.checkPermission(player, false, "omeganames.namecolour.groups." + groupName.toLowerCase())) {
+      if(Utilities.checkPermission(player, false, "stylizer.namecolour.groups." + groupName.toLowerCase())) {
         player.setDisplayName(Utilities.colourise(groupNameColour(player, groupName) + player.getName()) + ChatColor.RESET);
         formatTablist(player);
         return;
       }
     }
-    player.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "&e") + player.getName()) + ChatColor.RESET);
+    player.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "#fff954") + player.getName()) + ChatColor.RESET);
     formatTablist(player);
+    tablistHeaderFooter(player);
   }
 
   private void formatTablist(final Player player) {
-    final String playerPrefix = OmegaNames.getInstance().getChat().getPlayerPrefix(player);
-    final String playerSuffix = OmegaNames.getInstance().getChat().getPlayerSuffix(player);
+    final String playerPrefix = plugin.getChat().getPlayerPrefix(player);
+    final String playerSuffix = plugin.getChat().getPlayerSuffix(player);
 
     if(!configFile.getBoolean("Tablist_Name_Colour") && !configFile.getBoolean("Tablist_Prefix_Suffix")) {
       player.setPlayerListName(player.getName());
@@ -152,10 +161,28 @@ public class PlayerListener implements Listener {
 
   private String playerNameColour(final Player player) {
 
-    if(!OmegaNames.getInstance().getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
+    if(!plugin.getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
       return configFile.getString("Default_Name_Colour", "&e");
     }
 
-    return OmegaNames.getInstance().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour");
+    return plugin.getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour");
+  }
+
+  private void tablistHeaderFooter(final Player player) {
+    if(!configFile.getBoolean("Tablist.Enabled")) {
+      return;
+    }
+
+    final String playerPrefix = plugin.getChat().getPlayerPrefix(player);
+    final String playerSuffix = plugin.getChat().getPlayerSuffix(player);
+
+    player.setPlayerListHeader(Utilities.colourise(configFile.getString("Tablist.Tablist_Header").replace("%player%", (playerPrefix != null ? playerPrefix  + " " : "") + player.getDisplayName() + (playerSuffix != null ? playerSuffix  + " " : ""))));
+
+    StringBuilder footer = new StringBuilder();
+    for(String footerMessage : configFile.getStringList("Tablist.Tablist_Footer")) {
+      footer.append(footerMessage.replace("%player%", (playerPrefix != null ? playerPrefix  + " " : "") + player.getDisplayName() + (playerSuffix != null ? playerSuffix  + " " : ""))).append("\n");
+    }
+
+    player.setPlayerListFooter(Utilities.colourise(footer.toString()));
   }
 }

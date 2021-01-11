@@ -11,59 +11,93 @@ softdepend:
   - Vault
 
 commands:
-  omeganames:
+  stylizer:
     description: The main command for OmegaNames
-    aliases: [on, onames, omegan]
+    aliases: [styles]
   namecolour:
     description: The name colour command
     aliases: [nc, namec, namecolours, ncolours]
-  omeganamesdebug:
+  stylizerdebug:
     description: Display useful information to help debug issues
-    aliases: [onamesdebug, ncdebug, ondebug]
-
+    aliases: [styledebug]
+  itemnamer:
+    description: Edit the name and lore of an item
+    aliases: [styleitem, itemstyles, itemname]
+  stylizerclearlog:
+    description: The clear log command
+    aliases: [scl, sclearlog, stylizercl]
 
 permissions:
-  omeganames.admin:
+  stylizer.admin:
     description: Grants the user access to all the main permissions, but not group colours
     default: false
     children:
-      - omeganames.reload
-      - omeganames.update
-      - omeganames.debug
-      - omeganames.namecolour.add
-      - omeganames.namecolour.remove
-      - omeganames.namecolour.colours
-      - omeganames.namecolour.colour.all
-      - omeganames.namecolour.login
-      - omeganames.namecolour.open
-      - omeganames.namecolour.custom
-  omeganames.reload:
+      - stylizer.reload
+      - stylizer.update
+      - stylizer.debug
+      - stylizer.namecolour.add
+      - stylizer.namecolour.remove
+      - stylizer.namecolour.colours
+      - stylizer.namecolour.colour.all
+      - stylizer.namecolour.login
+      - stylizer.namecolour.open
+      - stylizer.namecolour.custom
+      - stylizer.itemnamer.admin
+      - stylizer.clearlog
+  stylizer.reload:
     description: Grants the user access to the reload command
     default: false
-  omeganames.update:
+  stylizer.update:
     description: Allows the user to recieve the update messages in-game
     default: false
-  omeganames.namecolour.open:
+  stylizer.namecolour.open:
     description: Grants the user access to the name colour command
     default: false
-  omeganames.namecolour.login:
+  stylizer.namecolour.login:
     description: Allows the user to retain their name colour when they login/logout
     default: false
-  omeganames.namecolour.colours:
+  stylizer.namecolour.colours:
     description: Allows the user to use all the colours if Per_Name_Colour_Permissions is disabled
     default: false
-  omeganames.namecolour.colour.all:
+  stylizer.namecolour.colour.all:
     description: Allows the user to use all the colours if Per_Name_Colour_Permissions is enabled
     default: false
-  omeganames.namecolour.add:
+  stylizer.namecolour.add:
     description: Allows the user to use the name colour add command
     default: false
-  omeganames.namecolour.remove:
+  stylizer.namecolour.remove:
     description: Allows the user to use the name colour remove command
     default: false
-  omeganames.namecolour.custom:
+  stylizer.namecolour.custom:
     description: Allows the user to use the custom name colour command
     default: false
-  omeganames.debug:
+  stylizer.debug:
     description: Allows the user to use the debug command
+    default: false
+  stylizer.itemnamer.admin:
+    description: Allows the user to use all the itemnamer commands
+    default: false
+    children:
+      - stylizer.itemnamer.use
+      - stylizer.itemnamer.set.name
+      - stylizer.itemnamer.set.lore
+      - stylizer.itemnamer.remove.name
+      - stylizer.itemnamer.remove.lore
+  stylizer.itemnamer.use:
+    description: Allows the user to use the itemnamer command
+    default: false
+  stylizer.itemnamer.set.name:
+    description: Allows the user to set custom item names
+    default: false
+  stylizer.itemnamer.set.lore:
+    description: Allows the user to set custom item lore
+    default: false
+  stylizer.itemnamer.remove.name:
+    description: Allows the user to remove custom item names
+    default: false
+  stylizer.itemnamer.remove.lore:
+    description: Allows the user to remove custom item lore
+    default: false
+  stylizer.clearlog:
+    description: Allows the user to use the clearlog command
     default: false

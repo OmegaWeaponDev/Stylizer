@@ -1,4 +1,4 @@
-package me.omegaweapondev.omeganames.utilities;
+package me.omegaweapondev.stylizer.utilities;
 
 import me.ou.library.builders.ItemBuilder;
 import org.bukkit.Material;

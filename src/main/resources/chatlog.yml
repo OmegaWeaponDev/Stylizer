@@ -1,0 +1,10 @@
+# -------------------------------------------------------------------------------------------
+#
+#  Welcome to Stylizer's Chat Log.
+#
+#  Below will be a list of all the chat messages that have been said.
+#  The format used to log chat messages is <timestamp>: <players name> >> <message>
+#
+# -------------------------------------------------------------------------------------------
+
+Chat_Log:

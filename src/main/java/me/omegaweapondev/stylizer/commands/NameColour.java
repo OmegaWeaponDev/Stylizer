@@ -1,7 +1,7 @@
-package me.omegaweapondev.omeganames.commands;
+package me.omegaweapondev.stylizer.commands;
 
-import me.omegaweapondev.omeganames.OmegaNames;
-import me.omegaweapondev.omeganames.utilities.MessageHandler;
+import me.omegaweapondev.stylizer.Stylizer;
+import me.omegaweapondev.stylizer.utilities.MessageHandler;
 import me.ou.library.Utilities;
 import me.ou.library.commands.PlayerCommand;
 import org.bukkit.Bukkit;
@@ -9,9 +9,18 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class NameColour extends PlayerCommand {
-  private final MessageHandler messagesFile = new MessageHandler(OmegaNames.getInstance().getMessagesFile().getConfig());
-  private final FileConfiguration playerData = OmegaNames.getInstance().getPlayerData().getConfig();
-  private final FileConfiguration configFile = OmegaNames.getInstance().getConfigFile().getConfig();
+  private final Stylizer plugin;
+
+  private final MessageHandler messageHandler;
+  private final FileConfiguration playerData;
+  private final FileConfiguration configFile;
+
+  public NameColour(final Stylizer plugin) {
+    this.plugin = plugin;
+    messageHandler = new MessageHandler(plugin, plugin.getMessagesFile().getConfig());
+    playerData = plugin.getPlayerData().getConfig();
+    configFile = plugin.getConfigFile().getConfig();
+  }
 
   @Override
   protected void execute(final Player player, final String[] strings) {
@@ -40,12 +49,12 @@ public class NameColour extends PlayerCommand {
   }
 
   private void openNameColourGUI(final Player player) {
-    if(!Utilities.checkPermissions(player, true, "omeganames.namecolour.open", "omeganames.admin")) {
-      Utilities.message(player, messagesFile.string("No_Permission", "&cSorry, you do not have permission to do that."));
+    if(!Utilities.checkPermissions(player, true, "stylizer.namecolour.open", "stylizer.admin")) {
+      Utilities.message(player, messageHandler.string("No_Permission", "&cSorry, you do not have permission to do that."));
       return;
     }
 
-    OmegaNames.getInstance().getNameColourGUI().openInventory(player);
+    plugin.getNameColourGUI().openInventory(player);
   }
 
   private void addNameColour(final Player player, final String[] strings) {
@@ -56,13 +65,13 @@ public class NameColour extends PlayerCommand {
       return;
     }
 
-    if(!Utilities.checkPermissions(player, true, "omeganames.namecolour.add", "omeganames.admin")) {
-      Utilities.message(player, messagesFile.string("No_Permission", "&cSorry, you do not have permission to do that."));
+    if(!Utilities.checkPermissions(player, true, "stylizer.namecolour.add", "stylizer.admin")) {
+      Utilities.message(player, messageHandler.string("No_Permission", "&cSorry, you do not have permission to do that."));
       return;
     }
 
     if(target == null) {
-      Utilities.message(player, messagesFile.string("Invalid_Player", "&cSorry, that player cannot be found."));
+      Utilities.message(player, messageHandler.string("Invalid_Player", "&cSorry, that player cannot be found."));
       return;
     }
 
@@ -73,8 +82,8 @@ public class NameColour extends PlayerCommand {
 
     target.setDisplayName(Utilities.colourise(nameColour + target.getName()));
     playerData.set(target.getUniqueId().toString() + ".Name_Colour", nameColour);
-    OmegaNames.getInstance().getPlayerData().saveConfig();
-    Utilities.message(target, messagesFile.string("Name_Colour_Applied", "&bYour name colour has been changed to: %namecolour%").replace("%namecolour%", nameColour + player.getName()));
+    plugin.getPlayerData().saveConfig();
+    Utilities.message(target, messageHandler.string("Name_Colour_Applied", "&bYour name colour has been changed to: %namecolour%").replace("%namecolour%", nameColour + player.getName()));
   }
 
   private void removeNameColour(final Player player, final String[] strings) {
@@ -84,30 +93,30 @@ public class NameColour extends PlayerCommand {
       return;
     }
 
-    if(!Utilities.checkPermissions(player, true, "omeganames.namecolour.remove", "omeganames.admin")) {
-      Utilities.message(player, messagesFile.string("No_Permission", "&cSorry, you do not have permission to do that."));
+    if(!Utilities.checkPermissions(player, true, "stylizer.namecolour.remove", "stylizer.admin")) {
+      Utilities.message(player, messageHandler.string("No_Permission", "&cSorry, you do not have permission to do that."));
       return;
     }
 
     if(target == null) {
-      Utilities.message(player, messagesFile.string("Invalid_Player", "&cSorry, that player cannot be found."));
+      Utilities.message(player, messageHandler.string("Invalid_Player", "&cSorry, that player cannot be found."));
       return;
     }
 
     for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
 
-      if(Utilities.checkPermission(player, false, "omeganames.namecolour.groups." + groupName)) {
+      if(Utilities.checkPermission(player, false, "stylizer.namecolour.groups." + groupName)) {
         player.setDisplayName(Utilities.colourise(configFile.getString("Group_Name_Colour.Groups." + groupName) + player.getName()));
-        playerData.set(player.getUniqueId().toString() + ".Name_Colour", OmegaNames.getInstance().getConfigFile().getConfig().getString("Group_Name_Colour.Groups." + groupName));
-        OmegaNames.getInstance().getPlayerData().saveConfig();
-        Utilities.message(target, messagesFile.string("Name_Colour_Removed", "&cYour name colour has been reverted to the default colour"));
+        playerData.set(player.getUniqueId().toString() + ".Name_Colour", plugin.getConfigFile().getConfig().getString("Group_Name_Colour.Groups." + groupName));
+        plugin.getPlayerData().saveConfig();
+        Utilities.message(target, messageHandler.string("Name_Colour_Removed", "&cYour name colour has been reverted to the default colour"));
         return;
       }
 
       player.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "&e") + player.getName()));
       playerData.set(player.getUniqueId().toString() + ".Name_Colour", configFile.getString("Default_Name_Colour", "&e"));
-      OmegaNames.getInstance().getPlayerData().saveConfig();
-      Utilities.message(target, messagesFile.string("Name_Colour_Removed", "&cYour name colour has been reverted to the default colour"));
+      plugin.getPlayerData().saveConfig();
+      Utilities.message(target, messageHandler.string("Name_Colour_Removed", "&cYour name colour has been reverted to the default colour"));
     }
   }
 
@@ -117,8 +126,8 @@ public class NameColour extends PlayerCommand {
       return;
     }
 
-    if(!Utilities.checkPermissions(player, true, "omeganames.namecolour.custom", "omeganames.admin")) {
-      Utilities.message(player, messagesFile.string("No_Permission", "&cSorry, you do not have permission to do that."));
+    if(!Utilities.checkPermissions(player, true, "stylizer.namecolour.custom", "stylizer.admin")) {
+      Utilities.message(player, messageHandler.string("No_Permission", "&cSorry, you do not have permission to do that."));
       return;
     }
 
@@ -130,7 +139,7 @@ public class NameColour extends PlayerCommand {
 
     player.setDisplayName(Utilities.colourise(customColour));
     playerData.set(player.getUniqueId().toString() + ".Name_Colour", customColour);
-    OmegaNames.getInstance().getPlayerData().saveConfig();
+    plugin.getPlayerData().saveConfig();
     Utilities.message(player, "Name_Colour_Applied".replace("%namecolour%", player.getDisplayName()));
   }
 }

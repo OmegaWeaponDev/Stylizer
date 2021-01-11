@@ -1,20 +1,20 @@
-package me.omegaweapondev.omeganames.utilities;
+package me.omegaweapondev.stylizer.utilities;
 
-import me.omegaweapondev.omeganames.OmegaNames;
+import me.omegaweapondev.stylizer.Stylizer;
 import me.ou.library.Utilities;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
 
 public class MessageHandler {
-
+  private final Stylizer plugin;
   private final FileConfiguration messagesConfig;
   private final String configName;
 
-  public MessageHandler(final FileConfiguration messagesConfig) {
+  public MessageHandler(final Stylizer plugin, final FileConfiguration messagesConfig) {
+    this.plugin = plugin;
     this.messagesConfig = messagesConfig;
-    this.configName = OmegaNames.getInstance().getMessagesFile().getFileName();
+    this.configName = plugin.getMessagesFile().getFileName();
   }
 
   public String string(final String message, final String fallbackMessage) {
@@ -41,18 +41,10 @@ public class MessageHandler {
     return messagesConfig.getStringList(message);
   }
 
-  public boolean configBoolean(final String message) {
-    return messagesConfig.getBoolean(message);
-  }
-
-  public ConfigurationSection configSection(final String message) {
-    return messagesConfig.getConfigurationSection(message);
-  }
-
   public String getPrefix() {
     if(messagesConfig.getString("Prefix") == null) {
       getErrorMessage("Prefix");
-      return "&7&l[&aHelix&7&l]" + " ";
+      return "#6b6b6b&l[#6928f7Stylizer#6b6b6b&l]" + " ";
     }
     return messagesConfig.getString("Prefix") + " ";
   }

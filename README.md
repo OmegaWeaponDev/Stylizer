@@ -1,11 +1,11 @@
 ![alt text](https://i.imgur.com/DTZ7ZwG.png "banner") </span>
 
-## OmegaNames
+## Stylizer
 
-OmegaNames is a modern unique plugin that allows users to pick and choose their own name colours. You are also able to 
+Stylizer is a modern unique plugin that allows users to pick and choose their own name colours. You are also able to 
 set name colours for different groups.
 
-For further information about this plugin, please see the [wiki](https://github.com/OmegaWeaponDev/OmegaNames/wiki)
+For further information about this plugin, please see the [wiki](https://github.com/OmegaWeaponDev/Stylizer/wiki)
 
 ***
 
@@ -17,17 +17,23 @@ Below is a brief list of the features that are included in the plugin
     
     * Group Name Colours
 
-    * Placeholder - %omeganames_namecolour%
-    
-    * Tablist namecolour
+    * Placeholder - %stylizer_namecolour%
+
+    * Chat Formatting
+
+    * Item Names & Lore
+
+    * Chat Log
+
+    * Tablist namecolour + header/footer
  ***
  
 ### Installation & Downloading
 
-You can always find the latest version by visiting the [spigot](https://www.spigotmc.org/resources/omeganames.78327/) 
+You can always find the latest version by visiting the [spigot](https://www.spigotmc.org/resources/stylizer.78327/) 
 page or [MC Market](https://www.mc-market.org/resources/18385/) page. This plugin works on all Bukkit/Spigot/Paper servers from version 1.13 and above.
 
-When it comes to installing the plugin, Simply drop the omeganames-[version number].jar into your servers plugin folder and then start your server.
+When it comes to installing the plugin, Simply drop the stylizer-[version number].jar into your servers plugin folder and then start your server.
 
 ***
 

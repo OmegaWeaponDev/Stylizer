@@ -1,17 +1,19 @@
 # -------------------------------------------------------------------------------------------
 #
-#  Welcome to OmegaNames' messages file.
+#  Welcome to Stylizer messages file.
 #
 #  Here you'll find all of the messages that you can
 #  customize to your server needs.
 #
 #  Placeholders:
 #   - %namecolour% -> Displaying the name colour applied to the players name
+#   - %itemName% -> Displaying the new item name
+#   - %itemLore% -> Displaying the new item lore
 #
 # -------------------------------------------------------------------------------------------
 
 # Set the prefix that shows before all the plugin messages
-Prefix: "&7&l[&bOmegaNames&7&l]"
+Prefix: "#6b6b6b&l[#6928f7Stylizer#6b6b6b&l]"
 
 # Customize the look of the Name Colour GUI
 Name_Colour_GUI:
@@ -19,27 +21,40 @@ Name_Colour_GUI:
   GUI_Title: "&3Name&aColours"
   # Set the lore messages for the name colours
   Colour_Lore:
-    - "&cClick here to change"
-    - "&cyour name colour to"
+    - "#ff4a4aClick here to change"
+    - "#ff4a4ayour name colour to"
     - "%namecolour%"
 
 # Set the message players receive when they change their name colour
-Name_Colour_Applied: "&bYour name colour has been changed to: %namecolour%"
+Name_Colour_Applied: "#14abc9Your name colour has been changed to: %namecolour%"
 
 # Set the message players receive when they remove their name colour
-Name_Colour_Removed: "&cYour name colour has been reverted to the default colour"
+Name_Colour_Removed: "#14abc9Your name colour has been reverted to the default colour"
 
 # Set the message players receive when they check their name colour
-Current_Name_Colour: "&bYour name colour is currently set to: %namecolour%"
+Current_Name_Colour: "#14abc9Your name colour is currently set to: %namecolour%"
+
+ItemNamer:
+  # Set the message players get when they set a custom name to an item
+  Set_Item_Name: "#14abc9You have set the items name to %itemName%"
+  # Set the message players get when they set a custom lore to an item
+  Set_Item_Lore: "#14abc9You have set the items lore"
+  # Set the message players get when they remove a custom name from an item
+  Remove_Item_Name: "#14abc9You have removed the items name"
+  # Set the message players get when they remove a custom lore from an item
+  Remove_Item_Lore: "#14abc9You have removed the items lore"
+
+# Set the message players get when they clear the chat log
+Clear_Chat_Log: "#14abc9You have cleared the chat log."
 
 # Set the message you receive when you successfully reload the plugin
-Reload_Message: "&bThe plugin has successfully been reloaded"
+Reload_Message: "#14abc9The plugin has successfully been reloaded"
 
 # Set the message you receive if a player cannot be found.
-Invalid_Player: "&cSorry, that player cannot be found."
+Invalid_Player: "#570000Sorry, that player cannot be found."
 
 # Set the message players receive when they try to do something without permission
-No_Permission: "&cI'm sorry, but you do not have permission to do that"
+No_Permission: "#570000I'm sorry, but you do not have permission to do that!"
 
 # DO NOT EDIT THIS
-Config_Version: 1.2
+Config_Version: 2.0

@@ -1,8 +1,7 @@
 package me.omegaweapondev.stylizer;
 
-import me.omegaweapondev.stylizer.commands.DebugCommand;
-import me.omegaweapondev.stylizer.commands.MainCommand;
-import me.omegaweapondev.stylizer.commands.NameColour;
+import me.omegaweapondev.stylizer.commands.*;
+import me.omegaweapondev.stylizer.events.ChatListener;
 import me.omegaweapondev.stylizer.events.MenuListener;
 import me.omegaweapondev.stylizer.events.PlayerListener;
 import me.omegaweapondev.stylizer.menus.NameColours;
@@ -22,19 +21,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class OmegaNames extends JavaPlugin {
-  private static OmegaNames instance;
+public class Stylizer extends JavaPlugin {
+  private Stylizer plugin;
+  private Chat chat;
+  private NameColours nameColourGUI;
   private final ConfigCreator configFile = new ConfigCreator("config.yml");
   private final ConfigCreator messagesFile = new ConfigCreator("messages.yml");
   private final ConfigCreator playerData = new ConfigCreator("playerData.yml");
-
-  private Chat chat;
-
-  // Declaring the GUI's
-  private NameColours nameColourGUI;
+  private final ConfigCreator chatlog = new ConfigCreator("chatlog.yml");
 
   @Override
   public void onEnable() {
+    plugin = this;
+
     initialSetup();
     configSetup();
     configUpdater();
@@ -48,8 +47,6 @@ public class OmegaNames extends JavaPlugin {
   @Override
   public void onDisable() {
     // Set the instance to null when the plugin is disabled
-    instance = null;
-
     if(!MenuCreator.getOpenInventories().isEmpty()) {
       nameColourGUI.deleteInventory();
     }
@@ -63,38 +60,48 @@ public class OmegaNames extends JavaPlugin {
     configFile.reloadConfig();
     messagesFile.reloadConfig();
     playerData.reloadConfig();
+    chatlog.reloadConfig();
   }
 
   private void initialSetup() {
     // Set the plugin & OULibrary Instances
-    instance = this;
-    Utilities.setInstance(instance);
+    Utilities.setInstance(this);
 
-    if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
-      new Placeholders(instance).register();
+    if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+      new Placeholders(this).register();
+    }
+
+    if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
+      Utilities.logWarning(true,
+        "Stylizer requires PlaceholderAPI to be installed if you are wanting to use the `%stylizer_namecolour%` placeholder",
+        "It is also required if you are wanting to use placeholders in any of the chat formats.",
+        "You can install PlaceholderAPI here: https://www.spigotmc.org/resources/placeholderapi.6245/ "
+      );
     }
 
     if(Bukkit.getPluginManager().getPlugin("Vault") == null) {
       Utilities.logWarning(true,
-        "OmegaNames has detected that you do not have vault installed.",
+        "Stylizer has detected that you do not have vault installed.",
         "If you are wanting to use the prefix and suffixes in the tablist",
-        "it is recommended that you install vault and a chat plugin otherwise these features won't work."
+        "it is recommended that you install vault and a chat plugin otherwise these features won't work.",
+        "You can install vault here: https://www.spigotmc.org/resources/vault.34315/"
       );
     }
 
     // Setup bStats
     final int bstatsPluginId = 7490;
-    Metrics metrics = new Metrics(getInstance(), bstatsPluginId);
+    Metrics metrics = new Metrics(plugin, bstatsPluginId);
 
     // Log message for successful enabling of the plugin
     Utilities.logInfo(true,
-      " _____ _   _",
-      "|  _  | \\ | |  ",
-      "| | | |  \\| |  OmegaNames v" + OmegaNames.getInstance().getDescription().getVersion() + " By OmegaWeaponDev",
-      "| | | | . ` |  Allow your players to choose their own name colours!",
-      "\\ \\_/ / |\\  |  Currently supporting Spigot 1.13 - 1.16.4",
-      " \\___/\\_| \\_/",
-      ""
+      " _____ _         _ _",
+      "/  ___| |       | (_) " ,
+      "\\ `--.| |_ _   _| |_ _______ _ __ ",
+      " `--. \\ __| | | | | |_  / _ \\ '__| Stylizer v" + plugin.getDescription().getVersion() + " By OmegaWeaponDev" ,
+      "/\\__/ / |_| |_| | | |/ /  __/ | Stylize different aspects of the server!",
+      "\\____/ \\__|\\__, |_|_/___\\___|_| Currently supporting Spigot 1.8.8 - 1.16.4",
+      "            __/ |",
+      "           |___/ "
     );
   }
 
@@ -102,54 +109,70 @@ public class OmegaNames extends JavaPlugin {
     // Create the files
     getConfigFile().createConfig();
     getMessagesFile().createConfig();
+    getChatlog().createConfig();
     getPlayerData().createConfig();
 
     // Give the playerData.yml file a header
-    getPlayerData().getConfig().options().header(
+    getChatlog().getConfig().options().header(
       " -------------------------------------------------------------------------------------------\n" +
         " \n" +
-        " Welcome to OmegaNames' Player Data file.\n" +
+        " Welcome to Stylizer's Chat Log.\n" +
         " \n" +
-        " This file contains all the uuids and namecolour colours\n" +
-        " for all the players who have the permission stylizer.login\n" +
+        " Below will be a list of all the chat messages that have been said.\n" +
+        " The format used to log chat messages is <timestamp>: <players name> >> <message>\n" +
         " \n" +
         " -------------------------------------------------------------------------------------------"
     );
+    getChatlog().saveConfig();
+
+    getPlayerData().getConfig().options().header(
+      " -------------------------------------------------------------------------------------------\n" +
+      " \n" +
+      " Welcome to Stylizer Player Data file.\n" +
+      " \n" +
+      " This file contains all the uuids and namecolour colours\n" +
+      " for all the players who have the permission stylizer.login\n" +
+      " \n" +
+      " -------------------------------------------------------------------------------------------"
+    );
+    getPlayerData().saveConfig();
   }
 
   private void guiSetup() {
     // Create the GUI's
-    nameColourGUI = new NameColours();
+    nameColourGUI = new NameColours(plugin);
   }
 
   private void commandSetup() {
     Utilities.logInfo(true, "Registering the commands...");
 
-    Utilities.setCommand().put("stylizer", new MainCommand());
-    Utilities.setCommand().put("namecolour", new NameColour());
-    Utilities.setCommand().put("omeganamesdebug", new DebugCommand());
+    Utilities.setCommand().put("stylizer", new MainCommand(plugin));
+    Utilities.setCommand().put("namecolour", new NameColour(plugin));
+    Utilities.setCommand().put("stylizerdebug", new DebugCommand(plugin));
+    Utilities.setCommand().put("itemnamer", new ItemNamer(plugin));
+    Utilities.setCommand().put("stylizerclearlog", new ClearLog(plugin));
 
     Utilities.registerCommands();
 
-    Utilities.logInfo(true, "Commands Registered: " + Utilities.setCommand().size() + " / 2");
+    Utilities.logInfo(true, "Commands Registered: " + Utilities.setCommand().size() + " / 5");
   }
 
   private void eventsSetup() {
-    Utilities.registerEvents(new PlayerListener(), new MenuListener());
+    Utilities.registerEvents(new PlayerListener(plugin), new MenuListener(), new ChatListener(plugin));
   }
 
   private void spigotUpdater() {
     // The Updater
-    new SpigotUpdater(this, 78327).getVersion(version -> {
+    new SpigotUpdater(plugin, 78327).getVersion(version -> {
       int spigotVersion = Integer.parseInt(version.replace(".", ""));
-      int pluginVersion = Integer.parseInt(this.getDescription().getVersion().replace(".", ""));
+      int pluginVersion = Integer.parseInt(plugin.getDescription().getVersion().replace(".", ""));
 
       if(pluginVersion >= spigotVersion) {
         Utilities.logInfo(true, "You are already running the latest version");
         return;
       }
 
-      PluginDescriptionFile pdf = this.getDescription();
+      PluginDescriptionFile pdf = plugin.getDescription();
       Utilities.logWarning(true,
         "A new version of " + pdf.getName() + " is avaliable!",
         "Current Version: " + pdf.getVersion() + " > New Version: " + version,
@@ -162,16 +185,16 @@ public class OmegaNames extends JavaPlugin {
     Utilities.logInfo(true, "Attempting to update the config files....");
 
     try {
-      if(getConfigFile().getConfig().getDouble("Config_Version") != 1.2) {
-        getConfigFile().getConfig().set("Config_Version", 1.2);
+      if(getConfigFile().getConfig().getDouble("Config_Version") != 2.0) {
+        getConfigFile().getConfig().set("Config_Version", 2.0);
         getConfigFile().saveConfig();
-        ConfigUpdater.update(OmegaNames.getInstance(), "config.yml", getConfigFile().getFile(), Arrays.asList("Group_Name_Colour.Groups", "Items"));
+        ConfigUpdater.update(plugin, "config.yml", getConfigFile().getFile(), Arrays.asList("Group_Name_Colour.Groups", "Items", "Chat_Settings.Chat_Formats.Group_Formats.Groups"));
       }
 
-      if(getMessagesFile().getConfig().getDouble("Config_Version") != 1.1) {
-        getMessagesFile().getConfig().set("Config_Version", 1.1);
+      if(getMessagesFile().getConfig().getDouble("Config_Version") != 2.0) {
+        getMessagesFile().getConfig().set("Config_Version", 2.0);
         getMessagesFile().saveConfig();
-        ConfigUpdater.update(OmegaNames.getInstance(), "messages.yml", getMessagesFile().getFile(), Arrays.asList("none"));
+        ConfigUpdater.update(plugin, "messages.yml", getMessagesFile().getFile(), Arrays.asList("none"));
       }
       onReload();
       Utilities.logInfo(true, "Config Files have successfully been updated!");
@@ -198,15 +221,15 @@ public class OmegaNames extends JavaPlugin {
     return playerData;
   }
 
+  public ConfigCreator getChatlog() {
+    return chatlog;
+  }
+
   public NameColours getNameColourGUI() {
     return nameColourGUI;
   }
 
   public Chat getChat() {
     return chat;
-  }
-
-  public static OmegaNames getInstance() {
-    return instance;
   }
 }

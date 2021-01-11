@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------------------
 #
-#  Welcome to OmegaNames' main configuration file.
+#  Welcome to Stylizer's main configuration file.
 #
 #  Here you'll find of the settings and options that you can
 #  customize to your server needs. Most features are customizable
@@ -9,11 +9,16 @@
 #  For help you can visit the wiki at: https://github.com/OmegaWeaponDev/OmegaNames/wiki
 #  If you have any issues, report them here: https://github.com/OmegaWeaponDev/OmegaNames/issues
 #
+#  Stylizer Placeholders:
+#    %displayname% - Gets the players namecolour and name.
+#    %message% - Gets the players chat message.
+#
+#
 # -------------------------------------------------------------------------------------------
 
 # If true, each of the colours will require a specific permission
-# Use the permission `omeganames.namecolour.colour.<colour>` or `omeganames.namecolour.colour.all`
-# If false, use the permission `omeganames.namecolour.colours`
+# Use the permission `stylizer.namecolour.colour.<colour>` or `stylizer.namecolour.colour.all`
+# If false, use the permission `stylizer.namecolour.colours`
 Per_Name_Colour_Permissions: false
 
 # If true, when a player gets a name colour it will show the name colour on tablist
@@ -81,7 +86,7 @@ Items:
     Item: BLACK_WOOL
 
 # Group Specific name colours.
-# Use the permission `omeganames.namecolour.groups.<group name>`
+# Use the permission `stylizer.namecolour.groups.<group name>`
 Group_Name_Colour:
   # Whether or not you want per-group name colours
   Enabled: true
@@ -90,8 +95,41 @@ Group_Name_Colour:
     owner: '&4'
     admin: '&b'
 
-# If true, players with the permission `omeganames.update` will receive update messages
+# Here you are able to stylize how your chat messages look!
+# All PlaceholderAPI placeholders can be used!
+Chat_Settings:
+  # Whether or not you want Stylizer to style the chat.
+  Enabled: true
+  # Whether you want Stylizer to log all the chat messages.
+  Log_Chat_Messages: false
+  # This is where you can determine the different formats that players will use in chat messages.
+  Chat_Formats:
+    # This is the main chat format that all players will have if they don't have one of the group formats below.
+    Default_Format: "%displayname% #14abc9>> #6b6b6b%message%"
+    # Settings for the group chat formats.
+    Group_Formats:
+      # Whether you want Stylizer to handle group chat formats.
+      Enabled: true
+      # The different group formats that you want to implement.
+      # Playes will need the permissions `stylizer.chat.group.<group name>` to use one of the formats below.
+      Groups:
+        member: "%prefix% %displayname% %suffix%#14abc9>> #6b6b6b%message%"
+        admin: "#6b6b6b&l[#570000STAFF#6b6b6b&l] %prefix% %displayname% %suffix%#14abc9>> #ff4a4a%message%"
+        owner: "#6b6b6b&l[#570000STAFF#6b6b6b&l] %prefix% %displayname% %suffix%#ff4a4a>> #14abc9%message%"
+
+# Stylize how you would like the tablist to look like
+Tablist:
+  # Whether or not you want Stylizer to style the tablist.
+  Enabled: true
+  # The tablist header message
+  # Use %player% to get the players name (Prefixes and Suffixes included)
+  Tablist_Header: "#14abc9Welcome to the server %player%"
+  Tablist_Footer:
+    - "#14abc9Don't forget to check out our website!"
+    - "#14abc9Please remember to vote for us!"
+
+# If true, players with the permission `stylizer.update` will receive update messages
 Update_Messages: true
 
 # DO NOT EDIT THIS
-Config_Version: 1.2
+Config_Version: 2.0

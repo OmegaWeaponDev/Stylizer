@@ -1,12 +1,12 @@
-package me.omegaweapondev.omeganames.utilities;
+package me.omegaweapondev.stylizer.utilities;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import me.omegaweapondev.omeganames.OmegaNames;
+import me.omegaweapondev.stylizer.Stylizer;
 import org.bukkit.entity.Player;
 
 public class Placeholders extends PlaceholderExpansion {
 
-  private final OmegaNames plugin;
+  private final Stylizer plugin;
 
   /**
    * Since we register the expansion inside our own plugin, we
@@ -16,7 +16,7 @@ public class Placeholders extends PlaceholderExpansion {
    * @param plugin
    *        The instance of our plugin.
    */
-  public Placeholders(OmegaNames plugin){
+  public Placeholders(Stylizer plugin){
     this.plugin = plugin;
   }
 
@@ -65,7 +65,7 @@ public class Placeholders extends PlaceholderExpansion {
    */
   @Override
   public String getIdentifier(){
-    return "omeganames";
+    return "stylizer";
   }
 
   /**
@@ -96,18 +96,15 @@ public class Placeholders extends PlaceholderExpansion {
    */
   @Override
   public String onPlaceholderRequest(Player player, String identifier){
-
     if(player == null){
       return "";
     }
 
-    // %omeganames_namecolour%
-    if(!identifier.equals("namecolour")) {
-      return null;
-    }
+    final String playerNameColour = plugin.getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour");
 
-    if (OmegaNames.getInstance().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour") != null) {
-      return OmegaNames.getInstance().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour");
+    // %stylizer_namecolour%
+    if(identifier.equals("namecolour")) {
+      return (playerNameColour != null) ? playerNameColour : "";
     }
 
     return "";

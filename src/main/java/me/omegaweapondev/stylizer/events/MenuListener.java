@@ -1,4 +1,4 @@
-package me.omegaweapondev.omeganames.events;
+package me.omegaweapondev.stylizer.events;
 
 import me.ou.library.Utilities;
 import me.ou.library.menus.MenuCreator;
