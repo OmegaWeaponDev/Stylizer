@@ -1,4 +1,4 @@
-![alt text](https://i.imgur.com/DTZ7ZwG.png "banner") </span>
+![alt text](https://i.imgur.com/XzqaQrD.png "banner") </span>
 
 ## Stylizer
 
