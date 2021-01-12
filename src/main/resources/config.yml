@@ -128,8 +128,17 @@ Tablist:
     - "#14abc9Don't forget to check out our website!"
     - "#14abc9Please remember to vote for us!"
 
+# Display a pretty message for your server in the multiplayer server list
+Server_Listing:
+  # Whether or not you want Stylizer to display a message.
+  Enabled: true
+  # The message that you want displayed.
+  Format:
+    - "#14abc9[+] #ff4a4aEveryone is welcome! #14abc9[+]"
+    - "#14abc9=[*]= #ff4a4aAn amazing social minecraft server #14abc9=[*]="
+
 # If true, players with the permission `stylizer.update` will receive update messages
 Update_Messages: true
 
 # DO NOT EDIT THIS
-Config_Version: 2.0
+Config_Version: 2.1

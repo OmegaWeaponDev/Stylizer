@@ -4,6 +4,7 @@ import me.omegaweapondev.stylizer.commands.*;
 import me.omegaweapondev.stylizer.events.ChatListener;
 import me.omegaweapondev.stylizer.events.MenuListener;
 import me.omegaweapondev.stylizer.events.PlayerListener;
+import me.omegaweapondev.stylizer.events.ServerPingListener;
 import me.omegaweapondev.stylizer.menus.NameColours;
 import me.omegaweapondev.stylizer.utilities.Placeholders;
 import me.ou.library.SpigotUpdater;
@@ -158,7 +159,7 @@ public class Stylizer extends JavaPlugin {
   }
 
   private void eventsSetup() {
-    Utilities.registerEvents(new PlayerListener(plugin), new MenuListener(), new ChatListener(plugin));
+    Utilities.registerEvents(new PlayerListener(plugin), new MenuListener(), new ChatListener(plugin), new ServerPingListener(plugin));
   }
 
   private void spigotUpdater() {
@@ -185,8 +186,8 @@ public class Stylizer extends JavaPlugin {
     Utilities.logInfo(true, "Attempting to update the config files....");
 
     try {
-      if(getConfigFile().getConfig().getDouble("Config_Version") != 2.0) {
-        getConfigFile().getConfig().set("Config_Version", 2.0);
+      if(getConfigFile().getConfig().getDouble("Config_Version") != 2.1) {
+        getConfigFile().getConfig().set("Config_Version", 2.1);
         getConfigFile().saveConfig();
         ConfigUpdater.update(plugin, "config.yml", getConfigFile().getFile(), Arrays.asList("Group_Name_Colour.Groups", "Items", "Chat_Settings.Chat_Formats.Group_Formats.Groups"));
       }
