@@ -30,14 +30,14 @@ public class MessageAnnouncements {
     // Support PlaceholderAPI placeholders
     if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
       for(String message : configFile.getStringList("Announcement_Messages.Messages")) {
-        Utilities.broadcast(PlaceholderAPI.setPlaceholders(player, message));
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> Utilities.broadcast(PlaceholderAPI.setPlaceholders(player, message)), 20L * 10L, 20L * configFile.getInt("Announcement_Messages.Interval"));
       }
       return;
     }
 
     // If PlaceholderAPI is not installed
     for(String message : configFile.getStringList("Announcement_Messages.Messages")) {
-      Utilities.broadcast(PlaceholderAPI.setPlaceholders(player, message));
+      Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> Utilities.broadcast(PlaceholderAPI.setPlaceholders(player, message)), 20L * 10L, 20L * configFile.getInt("Announcement_Messages.Interval"));
     }
   }
 }
