@@ -128,6 +128,19 @@ Tablist:
     - "#14abc9Don't forget to check out our website!"
     - "#14abc9Please remember to vote for us!"
 
+# Set some special announcement messages that will be broadcast to your whole server.
+Announcement_Messages:
+  # Whether or not you want Stylizer to use annoucement messages.
+  Enabled: true
+  # The messages to be broadcast
+  # All messages fully support PlaceholderAPI placeholders.
+  Messages:
+    - "#fc0356Remember to vote for the server www.ourwebsite.com/vote"
+    - "#90fc03Get a free member rank on our website! www.ourwebsite.com/member"
+  # The time inbetween each announcement message.
+  # The time is in seconds.
+  Interval: 600
+
 # Display a pretty message for your server in the multiplayer server list
 Server_Listing:
   # Whether or not you want Stylizer to display a message.
@@ -141,4 +154,4 @@ Server_Listing:
 Update_Messages: true
 
 # DO NOT EDIT THIS
-Config_Version: 2.1
+Config_Version: 2.2

@@ -1,6 +1,7 @@
 package me.omegaweapondev.stylizer.events;
 
 import me.omegaweapondev.stylizer.Stylizer;
+import me.omegaweapondev.stylizer.utilities.MessageAnnouncements;
 import me.ou.library.SpigotUpdater;
 import me.ou.library.Utilities;
 import org.bukkit.Bukkit;
@@ -58,6 +59,11 @@ public class PlayerListener implements Listener {
           "Grab it here: https://github.com/OmegaWeaponDev/OmegaNames"
         );
       });
+    }
+
+    if(Bukkit.getOnlinePlayers().size() >= 1) {
+      MessageAnnouncements announcements = new MessageAnnouncements(plugin, player);
+      announcements.broadcastAnnouncements();
     }
   }
 

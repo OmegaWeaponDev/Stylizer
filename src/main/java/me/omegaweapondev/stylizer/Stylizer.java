@@ -100,7 +100,7 @@ public class Stylizer extends JavaPlugin {
       "\\ `--.| |_ _   _| |_ _______ _ __ ",
       " `--. \\ __| | | | | |_  / _ \\ '__| Stylizer v" + plugin.getDescription().getVersion() + " By OmegaWeaponDev" ,
       "/\\__/ / |_| |_| | | |/ /  __/ | Stylize different aspects of the server!",
-      "\\____/ \\__|\\__, |_|_/___\\___|_| Currently supporting Spigot 1.8.8 - 1.16.4",
+      "\\____/ \\__|\\__, |_|_/___\\___|_| Currently supporting Spigot 1.8.8 - 1.16.5",
       "            __/ |",
       "           |___/ "
     );
@@ -186,8 +186,8 @@ public class Stylizer extends JavaPlugin {
     Utilities.logInfo(true, "Attempting to update the config files....");
 
     try {
-      if(getConfigFile().getConfig().getDouble("Config_Version") != 2.1) {
-        getConfigFile().getConfig().set("Config_Version", 2.1);
+      if(getConfigFile().getConfig().getDouble("Config_Version") != 2.2) {
+        getConfigFile().getConfig().set("Config_Version", 2.2);
         getConfigFile().saveConfig();
         ConfigUpdater.update(plugin, "config.yml", getConfigFile().getFile(), Arrays.asList("Group_Name_Colour.Groups", "Items", "Chat_Settings.Chat_Formats.Group_Formats.Groups"));
       }
