@@ -38,7 +38,7 @@ public class PlayerListener implements Listener {
     tablistHeaderFooter(player);
     setNameColour(player);
 
-    BukkitTask tablistRefreashTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> tablistRefreash(player), 20 * 10L, 20 * 15L);
+    BukkitTask tablistRefreashTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> tablistRefreash(player), 20L * 5L, 20L * 10L);
     tablistRefreashMap.put(player.getUniqueId(), tablistRefreashTask.getTaskId());
 
     // Send the player a message on join if there is an update for the plugin

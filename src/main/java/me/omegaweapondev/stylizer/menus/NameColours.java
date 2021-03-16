@@ -8,7 +8,6 @@ import me.ou.library.Utilities;
 import me.ou.library.menus.MenuCreator;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -41,8 +40,6 @@ public class NameColours extends MenuCreator {
     setItem(34, createItemStack("SPONGE", Utilities.colourise("#570000Current"), Utilities.colourise(Arrays.asList("#ff4a4aClick here to view", "#ff4a4ayour current name colour"))), player -> {
       Utilities.message(player, messageHandler.string("Current_Name_Colour", "#14abc9Your name colour has been changed to: %namecolour%").replace("%namecolour%", player.getDisplayName()));
     });
-
-    setItem(35, createItemStack("BARRIER", Utilities.colourise("#570000Close"), Utilities.colourise(Arrays.asList("#ff4a4aClick here to close", "#ff4a4athe name colour gui"))), HumanEntity::closeInventory);
   }
 
   private void createItem(final Integer slot, final String material, final String name, final String colour) {
@@ -65,19 +62,7 @@ public class NameColours extends MenuCreator {
   }
 
   private ItemStack createItemStack(final String material, final String name, final List<String> lore) {
-    if(Material.getMaterial(material.toUpperCase()) == null) {
-      itemCreator = new ItemCreator(Material.BARRIER);
-      itemCreator.setDisplayName("#570000Invalid Material");
-      itemCreator.setLore("#ff4a4aThis item is invalid.", "#ff4a4aPlease pick another material to use", "#ff4a4athat is supported by your server version");
-
-      return itemCreator.getItem();
-    }
-
     itemCreator = new ItemCreator(Material.getMaterial(material.toUpperCase()));
-    itemCreator.setDisplayName(name);
-
-    itemCreator.setLore(lore);
-
-    return itemCreator.getItem();
+    return itemCreator.checkInvalidMaterial(material, name, lore);
   }
 }

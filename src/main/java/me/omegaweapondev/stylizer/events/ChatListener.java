@@ -33,6 +33,7 @@ public class ChatListener implements Listener {
     if(!configFile.getBoolean("Chat_Settings.Enabled")) {
       return;
     }
+
     formatChat(player, rawMessage, chatEvent);
   }
 
@@ -47,7 +48,12 @@ public class ChatListener implements Listener {
 
     for(String groupNames : configFile.getConfigurationSection("Chat_Settings.Chat_Formats.Group_Formats.Groups").getKeys(false)) {
       String configFormat = configFile.getString("Chat_Settings.Chat_Formats.Group_Formats.Groups." + groupNames);
-      String groupFormat = configFormat.replace("%displayname%", "%s").replace("%message%", "%s").replace("%prefix%", (playerPrefix != null ? playerPrefix : "")).replace("%suffix%",(playerSuffix != null ? playerSuffix : ""));
+
+      final String groupFormat = configFormat
+        .replace("%prefix%", "%%prefix%%").replace("%%prefix%%", (playerPrefix != null ? playerPrefix : ""))
+        .replace("%suffix%", "{suffix}").replace("{suffix}",(playerSuffix != null ? playerSuffix : ""))
+        .replace("%displayname%", "%s")
+        .replace("%message%", "%s");
 
       if(Utilities.checkPermission(player, false, "stylizer.chat.groups." + groupNames.toLowerCase())) {
         if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
@@ -74,10 +80,10 @@ public class ChatListener implements Listener {
 
     if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
       String format = Utilities.colourise(PlaceholderAPI.setPlaceholders(player, configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
+        .replace("%prefix%", "%%prefix%%").replace("%%prefix%%", (playerPrefix != null ? playerPrefix : ""))
+        .replace("%suffix%", "{suffix}").replace("{suffix}",(playerSuffix != null ? playerSuffix : ""))
         .replace("%displayname%", "%s")
         .replace("%message%", "%s")
-        .replace("%prefix%", (playerPrefix != null ? playerPrefix : ""))
-        .replace("%suffix%",(playerSuffix != null ? playerSuffix : ""))
       ));
 
       chatEvent.setFormat(format);
@@ -90,10 +96,10 @@ public class ChatListener implements Listener {
     }
 
     String format = Utilities.colourise(configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
+      .replace("%prefix%", "%%prefix%%").replace("%%prefix%%", (playerPrefix != null ? playerPrefix : ""))
+      .replace("%suffix%", "{suffix}").replace("{suffix}",(playerSuffix != null ? playerSuffix : ""))
       .replace("%displayname%", "%s")
       .replace("%message%", "%s")
-      .replace("%prefix%", (playerPrefix != null ? playerPrefix : ""))
-      .replace("%suffix%",(playerSuffix != null ? playerSuffix : ""))
     );
 
     chatEvent.setFormat(format);
