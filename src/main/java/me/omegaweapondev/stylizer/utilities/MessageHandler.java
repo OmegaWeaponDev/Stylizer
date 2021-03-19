@@ -42,7 +42,7 @@ public class MessageHandler {
   }
 
   public String getPrefix() {
-    if(messagesConfig.getString("Prefix") == null || messagesConfig.getString("Prefix") == "") {
+    if(messagesConfig.getString("Prefix") == null || messagesConfig.getString("Prefix").equals("")) {
       return "";
     }
     return messagesConfig.getString("Prefix") + " ";

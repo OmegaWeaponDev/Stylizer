@@ -2,9 +2,9 @@ package me.omegaweapondev.stylizer.menus;
 
 import me.omegaweapondev.stylizer.Stylizer;
 import me.omegaweapondev.stylizer.utilities.GUIPermissionsChecker;
-import me.omegaweapondev.stylizer.utilities.ItemCreator;
 import me.omegaweapondev.stylizer.utilities.MessageHandler;
 import me.ou.library.Utilities;
+import me.ou.library.builders.ItemBuilder;
 import me.ou.library.menus.MenuCreator;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,7 +17,7 @@ import java.util.List;
 public class NameColours extends MenuCreator {
   private final Stylizer plugin;
   private final MessageHandler messageHandler;
-  private ItemCreator itemCreator;
+  private ItemBuilder itemBuilder;
   private final FileConfiguration configFile;
 
   public NameColours(final Stylizer plugin) {
@@ -62,7 +62,7 @@ public class NameColours extends MenuCreator {
   }
 
   private ItemStack createItemStack(final String material, final String name, final List<String> lore) {
-    itemCreator = new ItemCreator(Material.getMaterial(material.toUpperCase()));
-    return itemCreator.checkInvalidMaterial(material, name, lore);
+    itemBuilder = new ItemBuilder(Material.getMaterial(material.toUpperCase()));
+    return itemBuilder.checkInvalidMaterial(material, name, lore);
   }
 }
