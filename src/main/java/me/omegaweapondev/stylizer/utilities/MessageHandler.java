@@ -42,9 +42,8 @@ public class MessageHandler {
   }
 
   public String getPrefix() {
-    if(messagesConfig.getString("Prefix") == null) {
-      getErrorMessage("Prefix");
-      return "#6b6b6b&l[#6928f7Stylizer#6b6b6b&l]" + " ";
+    if(messagesConfig.getString("Prefix") == null || messagesConfig.getString("Prefix") == "") {
+      return "";
     }
     return messagesConfig.getString("Prefix") + " ";
   }
