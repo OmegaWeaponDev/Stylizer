@@ -4,11 +4,16 @@ import me.omegaweapondev.stylizer.Stylizer;
 import me.omegaweapondev.stylizer.utilities.MessageHandler;
 import me.ou.library.Utilities;
 import me.ou.library.commands.GlobalCommand;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-public class ClearLog extends GlobalCommand {
+import java.util.Collections;
+import java.util.List;
+
+public class ClearLog extends GlobalCommand implements TabCompleter {
   private final Stylizer plugin;
   private final MessageHandler messageHandler;
   private final FileConfiguration chatLog;
@@ -38,5 +43,10 @@ public class ClearLog extends GlobalCommand {
     chatLog.set("Chat_Log", null);
     plugin.getChatlog().saveConfig();
     Utilities.message(player, messageHandler.string("Clear_Chat_Log", "#14abc9You have cleared the chat log."));
+  }
+
+  @Override
+  public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+    return Collections.emptyList();
   }
 }

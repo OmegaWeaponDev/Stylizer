@@ -3,15 +3,21 @@ package me.omegaweapondev.stylizer.commands;
 import me.omegaweapondev.stylizer.Stylizer;
 import me.omegaweapondev.stylizer.utilities.MessageHandler;
 import me.ou.library.Utilities;
+import me.ou.library.builders.TabCompleteBuilder;
 import me.ou.library.commands.GlobalCommand;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class NameColour extends GlobalCommand {
+public class NameColour extends GlobalCommand implements TabCompleter {
   private final Stylizer plugin;
 
   private final MessageHandler messageHandler;
@@ -71,7 +77,7 @@ public class NameColour extends GlobalCommand {
     plugin.getNameColourGUI().openInventory(player);
   }
 
-  private void addNameColour(@Nullable final Player player, final String[] strings) {
+  private void addNameColour(final Player player, final String[] strings) {
     final Player target = Bukkit.getPlayer(strings[1]);
     final String nameColour = strings[2];
 
@@ -106,7 +112,7 @@ public class NameColour extends GlobalCommand {
     Utilities.message(target, messageHandler.string("Name_Colour_Applied", "&bYour name colour has been changed to: %namecolour%").replace("%namecolour%", nameColour + player.getName()));
   }
 
-  private void removeNameColour(@Nullable final Player player, final String[] strings) {
+  private void removeNameColour(final Player player, final String[] strings) {
     final Player target = Bukkit.getPlayer(strings[1]);
 
     if(!strings[0].equalsIgnoreCase("remove")) {
@@ -144,5 +150,44 @@ public class NameColour extends GlobalCommand {
       plugin.getPlayerData().saveConfig();
       Utilities.message(target, messageHandler.string("Name_Colour_Removed", "&cYour name colour has been reverted to the default colour"));
     }
+  }
+
+  @Override
+  public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+    if(strings.length <= 1) {
+      return new TabCompleteBuilder(commandSender)
+        .checkCommand("add", true, "stylizer.namecolour.add", "stylizer.admin")
+        .checkCommand("remove", true, "stylizer.namecolour.remove", "stylizer.admin")
+        .build(strings[0]);
+    }
+
+    if(strings.length <= 2 && strings[0].equalsIgnoreCase("add")) {
+      List<String> players = new ArrayList<>();
+      for(Player player : Bukkit.getOnlinePlayers()) {
+        players.add(player.getName());
+      }
+
+      return new TabCompleteBuilder(commandSender).addCommand(players).build(strings[1]);
+    }
+
+    if(strings.length == 2 && strings[0].equalsIgnoreCase("remove")) {
+      List<String> players = new ArrayList<>();
+      for(Player player : Bukkit.getOnlinePlayers()) {
+        players.add(player.getName());
+      }
+
+      return new TabCompleteBuilder(commandSender).addCommand(players).build(strings[1]);
+    }
+
+    if(strings.length == 3 && strings[0].equalsIgnoreCase("add")) {
+      List<String> colours = new ArrayList<>();
+      for(ChatColor color : ChatColor.values()) {
+        colours.add(color.toString().replaceAll("§", "&"));
+      }
+
+      return new TabCompleteBuilder(commandSender).addCommand(colours).build(strings[2]);
+    }
+
+    return Collections.emptyList();
   }
 }

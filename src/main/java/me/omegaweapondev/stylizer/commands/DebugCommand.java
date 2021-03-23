@@ -6,11 +6,16 @@ import me.ou.library.Utilities;
 import me.ou.library.commands.GlobalCommand;
 import me.ou.library.menus.MenuCreator;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-public class DebugCommand extends GlobalCommand {
+import java.util.Collections;
+import java.util.List;
+
+public class DebugCommand extends GlobalCommand implements TabCompleter {
   private final Stylizer plugin;
   private final MessageHandler messageHandler;
 
@@ -81,5 +86,10 @@ public class DebugCommand extends GlobalCommand {
       " " + plugins.toString(),
       "==========================================="
     );
+  }
+
+  @Override
+  public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+    return Collections.emptyList();
   }
 }

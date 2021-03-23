@@ -3,13 +3,19 @@ package me.omegaweapondev.stylizer.commands;
 import me.omegaweapondev.stylizer.Stylizer;
 import me.omegaweapondev.stylizer.utilities.MessageHandler;
 import me.ou.library.Utilities;
+import me.ou.library.builders.TabCompleteBuilder;
 import me.ou.library.commands.GlobalCommand;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-public class MainCommand extends GlobalCommand {
+import java.util.Collections;
+import java.util.List;
+
+public class MainCommand extends GlobalCommand implements TabCompleter {
   private final Stylizer plugin;
   private final MessageHandler messageHandler;
   private final String versionMessage;
@@ -42,6 +48,7 @@ public class MainCommand extends GlobalCommand {
         invalidArgsCommand(sender);
         break;
     }
+
   }
 
   private void reloadCommand(final CommandSender sender) {
@@ -123,5 +130,18 @@ public class MainCommand extends GlobalCommand {
         "Item Namer Command: /itemnamer <option> <value>"
       );
     }
+  }
+
+  @Override
+  public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+    if(strings.length <= 1) {
+      return new TabCompleteBuilder(commandSender)
+        .checkCommand("version", true, "stylizer.admin")
+        .checkCommand("help", true, "stylizer.admin")
+        .checkCommand("reload", true, "stylizer.reload", "stylizer.admin")
+        .build(strings[0]);
+    }
+
+    return Collections.emptyList();
   }
 }

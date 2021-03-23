@@ -3,21 +3,23 @@ package me.omegaweapondev.stylizer.commands;
 import me.omegaweapondev.stylizer.Stylizer;
 import me.omegaweapondev.stylizer.utilities.MessageHandler;
 import me.ou.library.Utilities;
+import me.ou.library.builders.TabCompleteBuilder;
 import me.ou.library.commands.PlayerCommand;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ItemNamer extends PlayerCommand {
+public class ItemNamer extends PlayerCommand implements TabCompleter {
   private final Stylizer plugin;
   private final MessageHandler messageHandler;
   private final FileConfiguration configFile;
@@ -162,7 +164,33 @@ public class ItemNamer extends PlayerCommand {
       playerItemMeta.setLore(new ArrayList<>());
       playerItem.setItemMeta(playerItemMeta);
       Utilities.message(player, messageHandler.string("ItemNamer.Remove_Item_Lore", "#14abc9You have removed the items"));
-      return;
     }
+  }
+
+  @Override
+  public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+
+    if(strings.length <= 1) {
+      return new TabCompleteBuilder(commandSender)
+        .checkCommand("set", true, "stylizer.itemnamer.use", "stylizer.itemnamer.set.name", "stylizer.itemnamer.set.lore", "stylizer.itemnamer.admin", "stylizer.itemnamer.admin")
+        .checkCommand("remove", true, "stylizer.itemnamer.use", "stylizer.itemnamer.set.name", "stylizer.itemnamer.set.lore", "stylizer.itemnamer.admin", "stylizer.itemnamer.admin")
+        .build(strings[0]);
+    }
+
+    if(strings.length == 2 && strings[0].equalsIgnoreCase("set")) {
+      return new TabCompleteBuilder(commandSender)
+        .checkCommand("name", true, "stylizer.itemnamer.set.name", "stylizer.itemnamer.admin", "stylizer.admin")
+        .checkCommand("lore", true, "stylizer.itemnamer.set.lore", "stylizer.itemnamer.admin", "stylizer.admin")
+        .build(strings[1]);
+    }
+
+    if(strings.length == 2 && strings[0].equalsIgnoreCase("remove")) {
+        return new TabCompleteBuilder(commandSender)
+        .checkCommand("name", true, "stylizer.itemnamer.remove.name", "stylizer.itemnamer.admin", "stylizer.admin")
+        .checkCommand("lore", true, "stylizer.itemnamer.remove.lore", "stylizer.itemnamer.admin", "stylizer.admin")
+        .build(strings[1]);
+    }
+
+    return Collections.emptyList();
   }
 }
