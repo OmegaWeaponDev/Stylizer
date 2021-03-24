@@ -17,6 +17,9 @@ commands:
   namecolour:
     description: The name colour command
     aliases: [nc, namec, namecolours, ncolours]
+  chatcolour:
+    description: The chat colour command
+    aliases: [cc, chatc, chatcolours, ccolours]
   stylizerdebug:
     description: Display useful information to help debug issues
     aliases: [styledebug]
@@ -41,6 +44,12 @@ permissions:
       - stylizer.namecolour.colour.all
       - stylizer.namecolour.login
       - stylizer.namecolour.open
+      - stylizer.chatcolour.add
+      - stylizer.chatcolour.remove
+      - stylizer.chatcolour.colours
+      - stylizer.chatcolour.colour.all
+      - stylizer.chatcolour.login
+      - stylizer.chatcolour.open
       - stylizer.itemnamer.admin
       - stylizer.clearlog
   stylizer.reload:
@@ -97,3 +106,20 @@ permissions:
   stylizer.clearlog:
     description: Allows the user to use the clearlog command
     default: false
+  stylizer.chatcolour.add:
+    description: Allows the user to use the chat colour add command
+    default: false
+  stylizer.chatcolour.remove:
+    description: Allows the user to use the chat colour remove command
+    default: false
+  stylizer.chatcolour.colours:
+    description: Allows the user to use all the colours if Per_Chat_Colour_Permissions is disabled
+    default: false
+  stylizer.chatcolour.colour.all:
+    description: Allows the user to use all the colours if Per_Chat_Colour_Permissions is enabled
+    default: false
+  stylizer.chatcolour.login:
+    description: Allows the user to retain their chat colour when they login/logout
+    default: false
+  stylizer.chatcolour.open:
+    description: Allows the user to open the chat colour menu

@@ -33,9 +33,64 @@ Name_Colour_Login: true
 # The default namecolour players will have if they have not chosen a current name colour
 Default_Name_Colour: "&e"
 
+# The default chatcolour players will have if they have not chosen a current chat colour
+Default_Chat_Colour: "&f"
+
 # Set all the different name colours and the item that you want in the GUI
 # This will accept both the normal colour codes (&4) and hex colour codes (#123456)
-Items:
+Name_Colour_Items:
+  Dark Red:
+    Colour: "#670E00"
+    Item: NETHER_WART
+  Red:
+    Colour: "#FF0101"
+    Item: RED_WOOL
+  Gold:
+    Colour: "#FFDC01"
+    Item: GOLD_BLOCK
+  Yellow:
+    Colour: "#FFFB01"
+    Item: YELLOW_WOOL
+  Green:
+    Colour: "#1FAA00"
+    Item: GREEN_WOOL
+  Lime:
+    Colour: "#36FF09"
+    Item: LIME_DYE
+  Aqua:
+    Colour: "#09FFEC"
+    Item: LIGHT_BLUE_WOOL
+  Dark Aqua:
+    Colour: "#00B4A6"
+    Item: CYAN_WOOL
+  Dark Blue:
+    Colour: "#000E86"
+    Item: BLUE_WOOL
+  Blue:
+    Colour: "#004DFF"
+    Item: BLUE_ORCHID
+  Pink:
+    Colour: "#FF00FF"
+    Item: PINK_TULIP
+  Purple:
+    Colour: "#8000FF"
+    Item: MAGENTA_SHULKER_BOX
+  White:
+    Colour: "#FFFFFF"
+    Item: QUARTZ_BLOCK
+  Light Gray:
+    Colour: "#CBCBCB"
+    Item: LIGHT_GRAY_WOOL
+  Gray:
+    Colour: "#818181"
+    Item: STONE
+  Black:
+    Colour: "#000000"
+    Item: BLACK_WOOL
+
+# Set all the different chat colours and the item that you want in the GUI
+# This will accept both the normal colour codes (&4) and hex colour codes (#123456)
+Chat_Colour_Items:
   Dark Red:
     Colour: "#670E00"
     Item: NETHER_WART
@@ -91,6 +146,16 @@ Group_Name_Colour:
   # Whether or not you want per-group name colours
   Enabled: true
   # The groups and their respective name colour
+  Groups:
+    owner: '&4'
+    admin: '&b'
+    
+# Group Specific chat colours.
+# Use the permission `stylizer.chatcolour.groups.<group chat>`
+Group_Chat_Colour:
+  # Whether or not you want per-group chat colours
+  Enabled: true
+  # The groups and their respective chat colour
   Groups:
     owner: '&4'
     admin: '&b'
@@ -154,4 +219,4 @@ Server_Listing:
 Update_Messages: true
 
 # DO NOT EDIT THIS
-Config_Version: 2.2
+Config_Version: 2.3

@@ -7,6 +7,7 @@
 #
 #  Placeholders:
 #   - %namecolour% -> Displaying the name colour applied to the players name
+#   - %chatcolour%
 #   - %itemName% -> Displaying the new item name
 #   - %itemLore% -> Displaying the new item lore
 #
@@ -34,6 +35,25 @@ Name_Colour_Removed: "#14abc9Your name colour has been reverted to the default c
 # Set the message players receive when they check their name colour
 Current_Name_Colour: "#14abc9Your name colour is currently set to: %namecolour%"
 
+# Customize the look of the Chat Colour GUI
+Chat_Colour_GUI:
+  # Set the title for the Chat Colours GUI
+  GUI_Title: "&3Chat&aColours"
+  # Set the lore messages for the chat colours
+  Colour_Lore:
+    - "#ff4a4aClick here to change"
+    - "#ff4a4ayour chat colour to"
+    - "%chatcolour%"
+
+# Set the message players receive when they change their chat colour
+Chat_Colour_Applied: "#14abc9Your chat colour has been changed to: %chatcolour%"
+
+# Set the message players receive when they remove their chat colour
+Chat_Colour_Removed: "#14abc9Your chat colour has been reverted to the default colour"
+
+# Set the message players receive when they check their chat colour
+Current_Chat_Colour: "#14abc9Your chat colour is currently set to: %chatcolour%"
+
 ItemNamer:
   # Set the message players get when they set a custom name to an item
   Set_Item_Name: "#14abc9You have set the items name to %itemName%"
@@ -57,4 +77,4 @@ Invalid_Player: "#570000Sorry, that player cannot be found."
 No_Permission: "#570000I'm sorry, but you do not have permission to do that!"
 
 # DO NOT EDIT THIS
-Config_Version: 2.0
+Config_Version: 2.1

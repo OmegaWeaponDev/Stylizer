@@ -28,13 +28,13 @@ public class NameColours extends MenuCreator {
 
     int slot = -2;
 
-    for(String itemName : configFile.getConfigurationSection("Items").getKeys(false)) {
+    for(String itemName : configFile.getConfigurationSection("Name_Colour_Items").getKeys(false)) {
       if(slot++ > 33) {
-        Utilities.logWarning(true, "You can only have 33 colours in the GUI!");
+        Utilities.logWarning(true, "You can only have 33 colours in the Name Colour GUI!");
         return;
       }
 
-      createItem(slot + 1, configFile.getString("Items." + itemName + ".Item"), itemName,configFile.getString("Items." + itemName + ".Colour"));
+      createItem(slot + 1, configFile.getString("Name_Colour_Items." + itemName + ".Item"), itemName,configFile.getString("Name_Colour_Items." + itemName + ".Colour"));
     }
 
     setItem(34, createItemStack("SPONGE", Utilities.colourise("#570000Current"), Utilities.colourise(Arrays.asList("#ff4a4aClick here to view", "#ff4a4ayour current name colour"))), player -> {

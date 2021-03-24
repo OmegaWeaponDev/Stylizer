@@ -17,12 +17,14 @@ import java.util.Date;
 public class ChatListener implements Listener {
   private final Stylizer plugin;
   private final FileConfiguration configFile;
+  private final FileConfiguration userData;
   private final FileConfiguration chatlog;
 
   public ChatListener(final Stylizer plugin) {
     this.plugin = plugin;
     configFile = plugin.getConfigFile().getConfig();
     chatlog = plugin.getChatlog().getConfig();
+    userData = plugin.getPlayerData().getConfig();
   }
 
   @EventHandler(priority = EventPriority.HIGH)
@@ -53,7 +55,7 @@ public class ChatListener implements Listener {
         .replace("%prefix%", "%%prefix%%").replace("%%prefix%%", (playerPrefix != null ? playerPrefix : ""))
         .replace("%suffix%", "{suffix}").replace("{suffix}",(playerSuffix != null ? playerSuffix : ""))
         .replace("%displayname%", "%s")
-        .replace("%message%", "%s");
+        .replace("%message%", getChatColour(player) + "%s");
 
       if(Utilities.checkPermission(player, false, "stylizer.chat.groups." + groupNames.toLowerCase())) {
         if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
@@ -99,7 +101,7 @@ public class ChatListener implements Listener {
       .replace("%prefix%", "%%prefix%%").replace("%%prefix%%", (playerPrefix != null ? playerPrefix : ""))
       .replace("%suffix%", "{suffix}").replace("{suffix}",(playerSuffix != null ? playerSuffix : ""))
       .replace("%displayname%", "%s")
-      .replace("%message%", "%s")
+      .replace("%message%", getChatColour(player) + "%s")
     );
 
     chatEvent.setFormat(format);
@@ -108,5 +110,23 @@ public class ChatListener implements Listener {
       chatlog.set("Chat_Log." + chatLogTime, player.getName() + " >> " + rawMessage);
       plugin.getChatlog().saveConfig();
     }
+  }
+
+  private String getChatColour(final Player player) {
+    if(userData.getString(player.getUniqueId().toString() + ".Chat_Colour") != null) {
+      return userData.getString(player.getUniqueId().toString() + ".Chat_Colour");
+    }
+
+    if(!configFile.getBoolean("Group_Chat_Colour")) {
+      return configFile.getString("Default_Chat_Colour");
+    }
+
+    for(String groupName : configFile.getStringList("Group_Chat_Colour.Groups")) {
+      if(Utilities.checkPermission(player, false, "stylizer.chatcolour.groups." + groupName.toLowerCase())) {
+        return configFile.getString("Group_Chat_Colour.Groups." + groupName);
+      }
+    }
+
+    return "";
   }
 }

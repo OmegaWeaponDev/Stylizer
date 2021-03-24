@@ -5,6 +5,7 @@ import me.omegaweapondev.stylizer.events.ChatListener;
 import me.omegaweapondev.stylizer.events.MenuListener;
 import me.omegaweapondev.stylizer.events.PlayerListener;
 import me.omegaweapondev.stylizer.events.ServerPingListener;
+import me.omegaweapondev.stylizer.menus.ChatColours;
 import me.omegaweapondev.stylizer.menus.NameColours;
 import me.omegaweapondev.stylizer.utilities.Placeholders;
 import me.ou.library.SpigotUpdater;
@@ -26,6 +27,7 @@ public class Stylizer extends JavaPlugin {
   private Stylizer plugin;
   private Chat chat;
   private NameColours nameColourGUI;
+  private ChatColours chatColourGUI;
   private final ConfigCreator configFile = new ConfigCreator("config.yml");
   private final ConfigCreator messagesFile = new ConfigCreator("messages.yml");
   private final ConfigCreator playerData = new ConfigCreator("playerData.yml");
@@ -50,6 +52,7 @@ public class Stylizer extends JavaPlugin {
     // Set the instance to null when the plugin is disabled
     if(!MenuCreator.getOpenInventories().isEmpty()) {
       nameColourGUI.deleteInventory();
+      chatColourGUI.deleteInventory();
     }
 
     super.onDisable();
@@ -142,6 +145,7 @@ public class Stylizer extends JavaPlugin {
   private void guiSetup() {
     // Create the GUI's
     nameColourGUI = new NameColours(plugin);
+    chatColourGUI = new ChatColours(plugin);
   }
 
   private void commandSetup() {
@@ -152,10 +156,11 @@ public class Stylizer extends JavaPlugin {
     Utilities.setCommand().put("stylizerdebug", new DebugCommand(plugin));
     Utilities.setCommand().put("itemnamer", new ItemNamer(plugin));
     Utilities.setCommand().put("stylizerclearlog", new ClearLog(plugin));
+    Utilities.setCommand().put("chatcolour", new ChatColour(plugin));
 
     Utilities.registerCommands();
 
-    Utilities.logInfo(true, "Commands Registered: " + Utilities.setCommand().size() + " / 5");
+    Utilities.logInfo(true, "Commands Registered: " + Utilities.setCommand().size() + " / 6");
   }
 
   private void eventsSetup() {
@@ -177,7 +182,7 @@ public class Stylizer extends JavaPlugin {
       Utilities.logWarning(true,
         "A new version of " + pdf.getName() + " is avaliable!",
         "Current Version: " + pdf.getVersion() + " > New Version: " + version,
-        "Grab it here: https://github.com/OmegaWeaponDev/OmegaNames"
+        "Grab it here: https://github.com/OmegaWeaponDev/Stylizer"
       );
     });
   }
@@ -186,14 +191,14 @@ public class Stylizer extends JavaPlugin {
     Utilities.logInfo(true, "Attempting to update the config files....");
 
     try {
-      if(getConfigFile().getConfig().getDouble("Config_Version") != 2.2) {
-        getConfigFile().getConfig().set("Config_Version", 2.2);
+      if(getConfigFile().getConfig().getDouble("Config_Version") != 2.3) {
+        getConfigFile().getConfig().set("Config_Version", 2.3);
         getConfigFile().saveConfig();
-        ConfigUpdater.update(plugin, "config.yml", getConfigFile().getFile(), Arrays.asList("Group_Name_Colour.Groups", "Items", "Chat_Settings.Chat_Formats.Group_Formats.Groups"));
+        ConfigUpdater.update(plugin, "config.yml", getConfigFile().getFile(), Arrays.asList("Group_Name_Colour.Groups", "Name_Colour_Items", "Chat_Colour_Items", "Chat_Settings.Chat_Formats.Group_Formats.Groups"));
       }
 
-      if(getMessagesFile().getConfig().getDouble("Config_Version") != 2.0) {
-        getMessagesFile().getConfig().set("Config_Version", 2.0);
+      if(getMessagesFile().getConfig().getDouble("Config_Version") != 2.1) {
+        getMessagesFile().getConfig().set("Config_Version", 2.1);
         getMessagesFile().saveConfig();
         ConfigUpdater.update(plugin, "messages.yml", getMessagesFile().getFile(), Arrays.asList("none"));
       }
@@ -228,6 +233,10 @@ public class Stylizer extends JavaPlugin {
 
   public NameColours getNameColourGUI() {
     return nameColourGUI;
+  }
+
+  public ChatColours getChatColourGUI() {
+    return chatColourGUI;
   }
 
   public Chat getChat() {

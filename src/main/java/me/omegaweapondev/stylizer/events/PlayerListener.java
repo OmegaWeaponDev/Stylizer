@@ -56,7 +56,7 @@ public class PlayerListener implements Listener {
         Utilities.logWarning(true,
           "A new version of " + pdf.getName() + " is avaliable!",
           "Current Version: " + pdf.getVersion() + " > New Version: " + version,
-          "Grab it here: https://github.com/OmegaWeaponDev/OmegaNames"
+          "Grab it here: https://github.com/OmegaWeaponDev/Stylizer"
         );
       });
     }
