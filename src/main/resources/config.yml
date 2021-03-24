@@ -16,10 +16,15 @@
 #
 # -------------------------------------------------------------------------------------------
 
-# If true, each of the colours will require a specific permission
+# If true, each of the name colours will require a specific permission
 # Use the permission `stylizer.namecolour.colour.<colour>` or `stylizer.namecolour.colour.all`
 # If false, use the permission `stylizer.namecolour.colours`
 Per_Name_Colour_Permissions: false
+
+# If true, each of the chat colours will require a specific permission
+# Use the permission `stylizer.chatcolour.colour.<colour>` or `stylizer.chatcolour.colour.all`
+# If false, use the permission `stylizer.chatcolour.colours`
+Per_Chat_Colour_Permissions: false
 
 # If true, when a player gets a name colour it will show the name colour on tablist
 Tablist_Name_Colour: true
