@@ -82,9 +82,9 @@ public class ChatListener implements Listener {
     }
 
     if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-      String playerPrefix = configFile.getString("Chat_Settings.Chat_Formats.Group_Formats.Groups." + groupNames)
+      String playerPrefix = configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
         .replace("%prefix%", (plugin.getChat().getPlayerPrefix(player) != null ? plugin.getChat().getPlayerPrefix(player) : ""));
-      String playerSuffix = configFile.getString("Chat_Settings.Chat_Formats.Group_Formats.Groups." + groupNames)
+      String playerSuffix = configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
         .replace("%suffix%", (plugin.getChat().getPlayerSuffix(player) != null ? plugin.getChat().getPlayerSuffix(player) : ""));
 
       String format = Utilities.colourise(PlaceholderAPI.setPlaceholders(player, configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
@@ -103,9 +103,14 @@ public class ChatListener implements Listener {
       return;
     }
 
+    String playerPrefix = configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
+      .replace("%prefix%", (plugin.getChat().getPlayerPrefix(player) != null ? plugin.getChat().getPlayerPrefix(player) : ""));
+    String playerSuffix = configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
+      .replace("%suffix%", (plugin.getChat().getPlayerSuffix(player) != null ? plugin.getChat().getPlayerSuffix(player) : ""));
+
     String format = Utilities.colourise(configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
-      .replace("%prefix%", "{prefix}").replace("{prefix}", (playerPrefix != null ? playerPrefix : ""))
-      .replace("%suffix%", "{suffix}").replace("{suffix}",(playerSuffix != null ? playerSuffix : ""))
+      .replace("%prefix%", "{prefix}").replace("{prefix}", playerPrefix)
+      .replace("%suffix%", "{suffix}").replace("{suffix}", playerSuffix)
       .replace("%displayname%", "%s")
       .replace("%message%", getChatColour(player) + "%s")
     );
