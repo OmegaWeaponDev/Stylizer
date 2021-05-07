@@ -72,7 +72,10 @@ public class PlayerListener implements Listener {
     final Player player = playerQuitEvent.getPlayer();
 
     Bukkit.getScheduler().cancelTask(tablistRefreashMap.get(player.getUniqueId()));
-    tablistRefreashMap.remove(player.getUniqueId());
+
+    if(tablistRefreashMap.get(player.getUniqueId()) != null) {
+      tablistRefreashMap.remove(player.getUniqueId());
+    }
   }
 
   private void setNameColour(final Player player) {

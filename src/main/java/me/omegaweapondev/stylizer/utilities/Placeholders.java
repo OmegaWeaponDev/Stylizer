@@ -100,11 +100,17 @@ public class Placeholders extends PlaceholderExpansion {
       return "";
     }
 
-    final String playerNameColour = plugin.getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour");
+    final String playerNameColour = plugin.getPlayerData().getConfig().getString(player.getUniqueId() + ".Name_Colour");
+    final String playerChatColour = plugin.getPlayerData().getConfig().getString(player.getUniqueId() + ".Chat_Colour");
 
     // %stylizer_namecolour%
     if(identifier.equals("namecolour")) {
       return (playerNameColour != null) ? playerNameColour : "";
+    }
+
+    // %stylizer_namecolour%
+    if(identifier.equals("chatcolour")) {
+      return (playerChatColour != null) ? playerChatColour : "";
     }
 
     return "";

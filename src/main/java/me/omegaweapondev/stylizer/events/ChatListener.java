@@ -45,15 +45,16 @@ public class ChatListener implements Listener {
     Date date = new Date(currentTime);
     String chatLogTime = simpleDateFormat.format(date);
 
-    final String playerPrefix = plugin.getChat().getPlayerPrefix(player);
-    final String playerSuffix = plugin.getChat().getPlayerSuffix(player);
-
     for(String groupNames : configFile.getConfigurationSection("Chat_Settings.Chat_Formats.Group_Formats.Groups").getKeys(false)) {
       String configFormat = configFile.getString("Chat_Settings.Chat_Formats.Group_Formats.Groups." + groupNames);
+      String playerPrefix = configFile.getString("Chat_Settings.Chat_Formats.Group_Formats.Groups." + groupNames)
+        .replace("%prefix%", (plugin.getChat().getPlayerPrefix(player) != null ? plugin.getChat().getPlayerPrefix(player) : ""));
+      String playerSuffix = configFile.getString("Chat_Settings.Chat_Formats.Group_Formats.Groups." + groupNames)
+        .replace("%suffix%", (plugin.getChat().getPlayerSuffix(player) != null ? plugin.getChat().getPlayerSuffix(player) : ""));
 
       final String groupFormat = configFormat
-        .replace("%prefix%", "%%prefix%%").replace("%%prefix%%", (playerPrefix != null ? playerPrefix : ""))
-        .replace("%suffix%", "{suffix}").replace("{suffix}",(playerSuffix != null ? playerSuffix : ""))
+        .replace("%prefix%", playerPrefix)
+        .replace("%suffix%", playerSuffix)
         .replace("%displayname%", "%s")
         .replace("%message%", getChatColour(player) + "%s");
 
@@ -81,9 +82,14 @@ public class ChatListener implements Listener {
     }
 
     if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+      String playerPrefix = configFile.getString("Chat_Settings.Chat_Formats.Group_Formats.Groups." + groupNames)
+        .replace("%prefix%", (plugin.getChat().getPlayerPrefix(player) != null ? plugin.getChat().getPlayerPrefix(player) : ""));
+      String playerSuffix = configFile.getString("Chat_Settings.Chat_Formats.Group_Formats.Groups." + groupNames)
+        .replace("%suffix%", (plugin.getChat().getPlayerSuffix(player) != null ? plugin.getChat().getPlayerSuffix(player) : ""));
+
       String format = Utilities.colourise(PlaceholderAPI.setPlaceholders(player, configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
-        .replace("%prefix%", "%%prefix%%").replace("%%prefix%%", (playerPrefix != null ? playerPrefix : ""))
-        .replace("%suffix%", "{suffix}").replace("{suffix}",(playerSuffix != null ? playerSuffix : ""))
+        .replace("%prefix%", playerPrefix)
+        .replace("%suffix%", playerSuffix)
         .replace("%displayname%", "%s")
         .replace("%message%", "%s")
       ));
@@ -98,7 +104,7 @@ public class ChatListener implements Listener {
     }
 
     String format = Utilities.colourise(configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
-      .replace("%prefix%", "%%prefix%%").replace("%%prefix%%", (playerPrefix != null ? playerPrefix : ""))
+      .replace("%prefix%", "{prefix}").replace("{prefix}", (playerPrefix != null ? playerPrefix : ""))
       .replace("%suffix%", "{suffix}").replace("{suffix}",(playerSuffix != null ? playerSuffix : ""))
       .replace("%displayname%", "%s")
       .replace("%message%", getChatColour(player) + "%s")
@@ -113,8 +119,8 @@ public class ChatListener implements Listener {
   }
 
   private String getChatColour(final Player player) {
-    if(userData.getString(player.getUniqueId().toString() + ".Chat_Colour") != null) {
-      return userData.getString(player.getUniqueId().toString() + ".Chat_Colour");
+    if(userData.getString(player.getUniqueId() + ".Chat_Colour") != null) {
+      return userData.getString(player.getUniqueId() + ".Chat_Colour");
     }
 
     if(!configFile.getBoolean("Group_Chat_Colour")) {
