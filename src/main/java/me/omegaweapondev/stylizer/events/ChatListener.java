@@ -46,21 +46,15 @@ public class ChatListener implements Listener {
     String chatLogTime = simpleDateFormat.format(date);
 
     for(String groupNames : configFile.getConfigurationSection("Chat_Settings.Chat_Formats.Group_Formats.Groups").getKeys(false)) {
-      String configFormat = configFile.getString("Chat_Settings.Chat_Formats.Group_Formats.Groups." + groupNames);
-      String playerPrefix = configFile.getString("Chat_Settings.Chat_Formats.Group_Formats.Groups." + groupNames)
-        .replace("%prefix%", (plugin.getChat().getPlayerPrefix(player) != null ? plugin.getChat().getPlayerPrefix(player) : ""));
-      String playerSuffix = configFile.getString("Chat_Settings.Chat_Formats.Group_Formats.Groups." + groupNames)
-        .replace("%suffix%", (plugin.getChat().getPlayerSuffix(player) != null ? plugin.getChat().getPlayerSuffix(player) : ""));
-
-      final String groupFormat = configFormat
-        .replace("%prefix%", playerPrefix)
-        .replace("%suffix%", playerSuffix)
+      String configFormat = configFile.getString("Chat_Settings.Chat_Formats.Group_Formats.Groups." + groupNames)
+        .replace("%prefix%", (plugin.getChat().getPlayerPrefix(player) != null ? plugin.getChat().getPlayerPrefix(player) : ""))
+        .replace("%suffix%", (plugin.getChat().getPlayerSuffix(player) != null ? plugin.getChat().getPlayerSuffix(player) : ""))
         .replace("%displayname%", "%s")
         .replace("%message%", getChatColour(player) + "%s");
 
       if(Utilities.checkPermission(player, false, "stylizer.chat.groups." + groupNames.toLowerCase())) {
         if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-          String format = Utilities.colourise(PlaceholderAPI.setPlaceholders(player, groupFormat));
+          String format = Utilities.colourise(PlaceholderAPI.setPlaceholders(player, configFormat));
           chatEvent.setFormat(format);
 
           if(configFile.getBoolean("Chat_Settings.Log_Chat_Messages")) {
@@ -70,7 +64,7 @@ public class ChatListener implements Listener {
           return;
         }
 
-        String format = Utilities.colourise(groupFormat);
+        String format = Utilities.colourise(configFormat);
         chatEvent.setFormat(format);
 
         if(configFile.getBoolean("Chat_Settings.Log_Chat_Messages")) {
@@ -82,19 +76,14 @@ public class ChatListener implements Listener {
     }
 
     if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-      String playerPrefix = configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
-        .replace("%prefix%", (plugin.getChat().getPlayerPrefix(player) != null ? plugin.getChat().getPlayerPrefix(player) : ""));
-      String playerSuffix = configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
-        .replace("%suffix%", (plugin.getChat().getPlayerSuffix(player) != null ? plugin.getChat().getPlayerSuffix(player) : ""));
-
-      String format = Utilities.colourise(PlaceholderAPI.setPlaceholders(player, configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
-        .replace("%prefix%", playerPrefix)
-        .replace("%suffix%", playerSuffix)
+      String configFormat = PlaceholderAPI.setPlaceholders(player, configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
+        .replace("%prefix%", (plugin.getChat().getPlayerPrefix(player) != null ? plugin.getChat().getPlayerPrefix(player) : ""))
+        .replace("%suffix%", (plugin.getChat().getPlayerSuffix(player) != null ? plugin.getChat().getPlayerSuffix(player) : ""))
         .replace("%displayname%", "%s")
-        .replace("%message%", "%s")
-      ));
+        .replace("%message%", getChatColour(player) + "%s")
+      );
 
-      chatEvent.setFormat(format);
+      chatEvent.setFormat(configFormat);
 
       if(configFile.getBoolean("Chat_Settings.Log_Chat_Messages")) {
         chatlog.set("Chat_Log." + chatLogTime, player.getName() + " >> " + rawMessage);
@@ -103,19 +92,14 @@ public class ChatListener implements Listener {
       return;
     }
 
-    String playerPrefix = configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
-      .replace("%prefix%", (plugin.getChat().getPlayerPrefix(player) != null ? plugin.getChat().getPlayerPrefix(player) : ""));
-    String playerSuffix = configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
-      .replace("%suffix%", (plugin.getChat().getPlayerSuffix(player) != null ? plugin.getChat().getPlayerSuffix(player) : ""));
-
-    String format = Utilities.colourise(configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
-      .replace("%prefix%", "{prefix}").replace("{prefix}", playerPrefix)
-      .replace("%suffix%", "{suffix}").replace("{suffix}", playerSuffix)
+    String configFormat = configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
+      .replace("%prefix%", (plugin.getChat().getPlayerPrefix(player) != null ? plugin.getChat().getPlayerPrefix(player) : ""))
+      .replace("%suffix%", (plugin.getChat().getPlayerSuffix(player) != null ? plugin.getChat().getPlayerSuffix(player) : ""))
       .replace("%displayname%", "%s")
-      .replace("%message%", getChatColour(player) + "%s")
-    );
+      .replace("%message%", getChatColour(player) + "%s");
 
-    chatEvent.setFormat(format);
+
+    chatEvent.setFormat(configFormat);
 
     if(configFile.getBoolean("Chat_Settings.Log_Chat_Messages")) {
       chatlog.set("Chat_Log." + chatLogTime, player.getName() + " >> " + rawMessage);
