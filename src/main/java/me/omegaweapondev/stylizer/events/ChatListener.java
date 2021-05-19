@@ -4,6 +4,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import me.omegaweapondev.stylizer.Stylizer;
 import me.ou.library.Utilities;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,6 +45,7 @@ public class ChatListener implements Listener {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     Date date = new Date(currentTime);
     String chatLogTime = simpleDateFormat.format(date);
+    player.setDisplayName(Utilities.colourise(getNameColour(player) + player.getName() + ChatColor.RESET));
 
     for(String groupNames : configFile.getConfigurationSection("Chat_Settings.Chat_Formats.Group_Formats.Groups").getKeys(false)) {
       String configFormat = configFile.getString("Chat_Settings.Chat_Formats.Group_Formats.Groups." + groupNames)
@@ -83,7 +85,7 @@ public class ChatListener implements Listener {
         .replace("%message%", getChatColour(player) + "%s")
       );
 
-      chatEvent.setFormat(configFormat);
+      chatEvent.setFormat(Utilities.colourise(configFormat));
 
       if(configFile.getBoolean("Chat_Settings.Log_Chat_Messages")) {
         chatlog.set("Chat_Log." + chatLogTime, player.getName() + " >> " + rawMessage);
@@ -99,7 +101,7 @@ public class ChatListener implements Listener {
       .replace("%message%", getChatColour(player) + "%s");
 
 
-    chatEvent.setFormat(configFormat);
+    chatEvent.setFormat(Utilities.colourise(configFormat));
 
     if(configFile.getBoolean("Chat_Settings.Log_Chat_Messages")) {
       chatlog.set("Chat_Log." + chatLogTime, player.getName() + " >> " + rawMessage);
@@ -123,5 +125,42 @@ public class ChatListener implements Listener {
     }
 
     return "";
+  }
+
+  private String getNameColour(final Player player) {
+    if(plugin.getPlayerData().getConfig().isSet(player.getUniqueId() + ".Name_Colour")) {
+      return Utilities.colourise(plugin.getPlayerData().getConfig().getString(player.getUniqueId() + ".Name_Colour"));
+    }
+
+    for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
+
+      if(Utilities.checkPermission(player, false, "stylizer.namecolour.groups." + groupName.toLowerCase())) {
+        return Utilities.colourise(groupNameColour(player, groupName));
+      }
+    }
+
+    return Utilities.colourise(configFile.getString("Default_Name_Colour", "#fff954"));
+  }
+
+  private String groupNameColour(final Player player, final String groupName) {
+
+    if(!configFile.getBoolean("Group_Name_Colour.Enabled")) {
+      return playerNameColour(player);
+    }
+
+    if(configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false).size() == 0) {
+      return playerNameColour(player);
+    }
+
+    return configFile.getString("Group_Name_Colour.Groups." + groupName);
+  }
+
+  private String playerNameColour(final Player player) {
+
+    if(!plugin.getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
+      return configFile.getString("Default_Name_Colour", "&e");
+    }
+
+    return plugin.getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour");
   }
 }

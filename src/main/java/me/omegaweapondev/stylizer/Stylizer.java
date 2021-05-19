@@ -37,6 +37,17 @@ public class Stylizer extends JavaPlugin {
   public void onEnable() {
     plugin = this;
 
+    Utilities.logInfo(false,
+      " _____ _         _ _",
+      "/  ___| |       | (_) " ,
+      "\\ `--.| |_ _   _| |_ _______ _ __ ",
+      " `--. \\ __| | | | | |_  / _ \\ '__| Stylizer v" + plugin.getDescription().getVersion() + " By OmegaWeaponDev" ,
+      "/\\__/ / |_| |_| | | |/ /  __/ | Running on version: " + Bukkit.getVersion(),
+      "\\____/ \\__|\\__, |_|_/___\\___|_|",
+      "            __/ |",
+      "           |___/ "
+    );
+
     initialSetup();
     configSetup();
     configUpdater();
@@ -95,18 +106,6 @@ public class Stylizer extends JavaPlugin {
     // Setup bStats
     final int bstatsPluginId = 7490;
     Metrics metrics = new Metrics(plugin, bstatsPluginId);
-
-    // Log message for successful enabling of the plugin
-    Utilities.logInfo(true,
-      " _____ _         _ _",
-      "/  ___| |       | (_) " ,
-      "\\ `--.| |_ _   _| |_ _______ _ __ ",
-      " `--. \\ __| | | | | |_  / _ \\ '__| Stylizer v" + plugin.getDescription().getVersion() + " By OmegaWeaponDev" ,
-      "/\\__/ / |_| |_| | | |/ /  __/ | Stylize different aspects of the server!",
-      "\\____/ \\__|\\__, |_|_/___\\___|_| Currently supporting Spigot 1.8.8 - 1.16.5",
-      "            __/ |",
-      "           |___/ "
-    );
   }
 
   private void configSetup() {

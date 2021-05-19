@@ -82,7 +82,7 @@ public class PlayerListener implements Listener {
     if(configFile.getBoolean("Name_Colour_Login")) {
 
       if(plugin.getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
-        player.setDisplayName(Utilities.colourise(plugin.getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour") + player.getName()) + ChatColor.RESET);
+        player.setDisplayName(Utilities.colourise(plugin.getPlayerData().getConfig().getString(player.getUniqueId() + ".Name_Colour") + player.getName()) + ChatColor.RESET);
         formatTablist(player);
         return;
       }
@@ -105,7 +105,7 @@ public class PlayerListener implements Listener {
 
   private void tablistRefreash(final Player player) {
     if(plugin.getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
-      player.setDisplayName(Utilities.colourise(plugin.getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour") + player.getName()) + ChatColor.RESET);
+      player.setDisplayName(Utilities.colourise(plugin.getPlayerData().getConfig().getString(player.getUniqueId() + ".Name_Colour") + player.getName()) + ChatColor.RESET);
       formatTablist(player);
       return;
     }
@@ -142,16 +142,42 @@ public class PlayerListener implements Listener {
     }
 
     if(configFile.getBoolean("Tablist_Name_Colour") && !configFile.getBoolean("Tablist_Prefix_Suffix")) {
-      player.setPlayerListName(player.getDisplayName());
+      if(!configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false).isEmpty()) {
+        for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
+
+          if(Utilities.checkPermission(player, false, "stylizer.namecolour.groups." + groupName.toLowerCase())) {
+            player.setPlayerListName(
+              Utilities.colourise(
+                groupNameColour(player, groupName) + player.getName()
+              )
+            );
+            return;
+          }
+          player.setPlayerListName(Utilities.colourise(
+            configFile.getString("Default_Name_Colour", "#fff954") + player.getName()
+          ));
+        }
+      }
       return;
     }
 
     if(configFile.getBoolean("Tablist_Name_Colour") && configFile.getBoolean("Tablist_Prefix_Suffix") && player.isOnline()) {
-      player.setPlayerListName(
-        Utilities.colourise(
-          (playerPrefix != null ? playerPrefix  + " " : "") + player.getDisplayName() + (playerSuffix != null ? playerSuffix  + " " : "")
-        )
-      );
+      if(!configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false).isEmpty()) {
+        for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
+
+          if(Utilities.checkPermission(player, false, "stylizer.namecolour.groups." + groupName.toLowerCase())) {
+            player.setPlayerListName(
+              Utilities.colourise(
+                (playerPrefix != null ? playerPrefix  + " " : "") + groupNameColour(player, groupName) + player.getName() + (playerSuffix != null ? playerSuffix  + " " : "")
+              )
+            );
+            return;
+          }
+          player.setPlayerListName(Utilities.colourise(
+            (playerPrefix != null ? playerPrefix  + " " : "") + configFile.getString("Default_Name_Colour", "#fff954") + player.getName() + (playerSuffix != null ? playerSuffix  + " " : "")
+          ));
+        }
+      }
     }
   }
 
@@ -170,11 +196,11 @@ public class PlayerListener implements Listener {
 
   private String playerNameColour(final Player player) {
 
-    if(!plugin.getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
-      return configFile.getString("Default_Name_Colour", "&e");
+    if(!plugin.getPlayerData().getConfig().isSet(player.getUniqueId() + ".Name_Colour")) {
+      return configFile.getString("Default_Name_Colour", "#fff954");
     }
 
-    return plugin.getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour");
+    return plugin.getPlayerData().getConfig().getString(player.getUniqueId() + ".Name_Colour");
   }
 
   private void tablistHeaderFooter(final Player player) {
