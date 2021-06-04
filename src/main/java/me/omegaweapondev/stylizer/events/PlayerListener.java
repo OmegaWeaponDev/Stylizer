@@ -1,5 +1,6 @@
 package me.omegaweapondev.stylizer.events;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.omegaweapondev.stylizer.Stylizer;
 import me.omegaweapondev.stylizer.utilities.MessageAnnouncements;
 import me.ou.library.SpigotUpdater;
@@ -62,8 +63,8 @@ public class PlayerListener implements Listener {
     }
 
     if(Bukkit.getOnlinePlayers().size() >= 1) {
-      MessageAnnouncements announcements = new MessageAnnouncements(plugin, player);
-      announcements.broadcastAnnouncements();
+      MessageAnnouncements messageAnnouncements = new MessageAnnouncements(plugin, player);
+      messageAnnouncements.broadcastAnnouncements();
     }
   }
 
@@ -104,6 +105,7 @@ public class PlayerListener implements Listener {
   }
 
   private void tablistRefreash(final Player player) {
+
     if(plugin.getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
       player.setDisplayName(Utilities.colourise(plugin.getPlayerData().getConfig().getString(player.getUniqueId() + ".Name_Colour") + player.getName()) + ChatColor.RESET);
       formatTablist(player);
@@ -126,18 +128,28 @@ public class PlayerListener implements Listener {
   private void formatTablist(final Player player) {
     final String playerPrefix = plugin.getChat().getPlayerPrefix(player);
     final String playerSuffix = plugin.getChat().getPlayerSuffix(player);
+    boolean isPlaceholderAPI = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
 
     if(!configFile.getBoolean("Tablist_Name_Colour") && !configFile.getBoolean("Tablist_Prefix_Suffix")) {
-      player.setPlayerListName(player.getName());
+      player.setPlayerListName(PlaceholderAPI.setPlaceholders(player, player.getName()));
       return;
     }
 
     if(!configFile.getBoolean("Tablist_Name_Colour") && configFile.getBoolean("Tablist_Prefix_Suffix") && player.isOnline()) {
+      if(isPlaceholderAPI) {
+        player.setPlayerListName(
+          Utilities.colourise(PlaceholderAPI.setPlaceholders(player,
+            (playerPrefix != null ? playerPrefix  + " " : "") + player.getName() + (playerSuffix != null ? playerSuffix  + " " : "")
+          )
+        ));
+        return;
+      }
+
       player.setPlayerListName(
         Utilities.colourise(
           (playerPrefix != null ? playerPrefix  + " " : "") + player.getName() + (playerSuffix != null ? playerSuffix  + " " : "")
-        )
-      );
+          )
+        );
       return;
     }
 
@@ -146,11 +158,20 @@ public class PlayerListener implements Listener {
         for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
 
           if(Utilities.checkPermission(player, false, "stylizer.namecolour.groups." + groupName.toLowerCase())) {
+            if(isPlaceholderAPI) {
+              player.setPlayerListName(
+                Utilities.colourise(PlaceholderAPI.setPlaceholders(player,
+                  groupNameColour(player, groupName) + player.getName()
+                )
+              ));
+              return;
+            }
+
             player.setPlayerListName(
               Utilities.colourise(
                 groupNameColour(player, groupName) + player.getName()
-              )
-            );
+                )
+              );
             return;
           }
           player.setPlayerListName(Utilities.colourise(
@@ -166,16 +187,35 @@ public class PlayerListener implements Listener {
         for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
 
           if(Utilities.checkPermission(player, false, "stylizer.namecolour.groups." + groupName.toLowerCase())) {
+
+            if(isPlaceholderAPI) {
+              player.setPlayerListName(
+                Utilities.colourise(PlaceholderAPI.setPlaceholders(player,
+                  (playerPrefix != null ? playerPrefix  + " " : "") + groupNameColour(player, groupName) + player.getName() + (playerSuffix != null ? playerSuffix  + " " : "")
+                )
+              ));
+              return;
+            }
+
             player.setPlayerListName(
-              Utilities.colourise(
+              Utilities.colourise(PlaceholderAPI.setPlaceholders(player,
                 (playerPrefix != null ? playerPrefix  + " " : "") + groupNameColour(player, groupName) + player.getName() + (playerSuffix != null ? playerSuffix  + " " : "")
-              )
-            );
+                )
+              ));
+            return;
+          }
+
+          if(isPlaceholderAPI) {
+            player.setPlayerListName(Utilities.colourise(PlaceholderAPI.setPlaceholders(player,
+              (playerPrefix != null ? playerPrefix  + " " : "") + configFile.getString("Default_Name_Colour", "#fff954") + player.getName() + (playerSuffix != null ? playerSuffix  + " " : "")
+            )));
             return;
           }
           player.setPlayerListName(Utilities.colourise(
             (playerPrefix != null ? playerPrefix  + " " : "") + configFile.getString("Default_Name_Colour", "#fff954") + player.getName() + (playerSuffix != null ? playerSuffix  + " " : "")
           ));
+          return;
+
         }
       }
     }
