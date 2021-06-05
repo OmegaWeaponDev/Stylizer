@@ -41,7 +41,7 @@ public class GUIPermissionsChecker {
 
     player.setDisplayName(Utilities.colourise(colour + player.getName() + "&r"));
 
-    playerData.set(player.getUniqueId().toString() + ".Name_Colour", colour);
+    playerData.set(player.getUniqueId() + ".Name_Colour", colour);
     plugin.getPlayerData().saveConfig();
 
     Utilities.message(player, messageHandler.string("Name_Colour_Applied", "#14abc9Your name colour has been changed to: %namecolour%").replace("%namecolour%", colour + player.getName()));
@@ -59,7 +59,7 @@ public class GUIPermissionsChecker {
       plugin.getPlayerData().getConfig().createSection(player.getUniqueId().toString());
     }
 
-    playerData.set(player.getUniqueId().toString() + ".Name_Colour", colour);
+    playerData.set(player.getUniqueId() + ".Name_Colour", colour);
     plugin.getPlayerData().saveConfig();
 
     Utilities.message(player, messageHandler.string("Name_Colour_Applied", "#14abc9Your name colour has been changed to: %namecolour%").replace("%namecolour%", colour + player.getName()));
@@ -68,7 +68,7 @@ public class GUIPermissionsChecker {
   public void chatColourPermsCheck() {
 
     if(configFile.getBoolean("Per_Chat_Colour_Permissions")) {
-      perNameColourPerms();
+      perChatColourPerms();
       return;
     }
 
@@ -77,9 +77,7 @@ public class GUIPermissionsChecker {
       return;
     }
 
-    player.setDisplayName(Utilities.colourise(colour + player.getName() + "&r"));
-
-    playerData.set(player.getUniqueId().toString() + ".Chat_Colour", colour);
+    playerData.set(player.getUniqueId() + ".Chat_Colour", colour);
     plugin.getPlayerData().saveConfig();
 
     Utilities.message(player, messageHandler.string("Chat_Colour_Applied", "#14abc9Your chat colour has been changed to: %chatcolour%").replace("%chatcolour%", colour + player.getName()));
@@ -91,13 +89,11 @@ public class GUIPermissionsChecker {
       return;
     }
 
-    player.setDisplayName(Utilities.colourise(colour + player.getName() + "&r"));
-
     if(!playerData.isConfigurationSection(player.getUniqueId().toString())) {
       plugin.getPlayerData().getConfig().createSection(player.getUniqueId().toString());
     }
 
-    playerData.set(player.getUniqueId().toString() + ".Chat_Colour", colour);
+    playerData.set(player.getUniqueId() + ".Chat_Colour", colour);
     plugin.getPlayerData().saveConfig();
 
     Utilities.message(player, messageHandler.string("Chat_Colour_Applied", "#14abc9Your chat colour has been changed to: %chatcolour%").replace("%chatcolour%", colour + player.getName()));
