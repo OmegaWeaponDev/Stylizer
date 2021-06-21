@@ -21,15 +21,15 @@ public class ClearLog extends GlobalCommand implements TabCompleter {
   public ClearLog(final Stylizer plugin) {
     this.plugin = plugin;
 
-    messageHandler = new MessageHandler(plugin, plugin.getMessagesFile().getConfig());
-    chatLog = plugin.getChatlog().getConfig();
+    messageHandler = new MessageHandler(plugin, plugin.getSettingsHandler().getMessagesFile().getConfig());
+    chatLog = plugin.getSettingsHandler().getChatLog().getConfig();
   }
 
   @Override
   protected void execute(CommandSender commandSender, String[] strings) {
     if(!(commandSender instanceof Player)) {
       chatLog.set("Chat_Log", null);
-      plugin.getChatlog().saveConfig();
+      plugin.getSettingsHandler().getChatLog().saveConfig();
       return;
     }
 
@@ -41,7 +41,7 @@ public class ClearLog extends GlobalCommand implements TabCompleter {
     }
 
     chatLog.set("Chat_Log", null);
-    plugin.getChatlog().saveConfig();
+    plugin.getSettingsHandler().getChatLog().saveConfig();
     Utilities.message(player, messageHandler.string("Clear_Chat_Log", "#14abc9You have cleared the chat log."));
   }
 

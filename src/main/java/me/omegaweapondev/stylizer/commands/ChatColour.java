@@ -25,9 +25,9 @@ public class ChatColour extends GlobalCommand implements TabCompleter {
   
   public ChatColour(final Stylizer plugin) {
     this.plugin = plugin;
-    messageHandler = new MessageHandler(plugin, plugin.getMessagesFile().getConfig());
-    configFile = plugin.getConfigFile().getConfig();
-    playerData = plugin.getPlayerData().getConfig();
+    messageHandler = new MessageHandler(plugin, plugin.getSettingsHandler().getMessagesFile().getConfig());
+    configFile = plugin.getSettingsHandler().getConfigFile().getConfig();
+    playerData = plugin.getSettingsHandler().getPlayerData().getConfig();
   }
 
   @Override
@@ -106,7 +106,7 @@ public class ChatColour extends GlobalCommand implements TabCompleter {
     }
 
     playerData.set(target.getUniqueId().toString() + ".Chat_Colour", chatColour);
-    plugin.getPlayerData().saveConfig();
+    plugin.getSettingsHandler().getPlayerData().saveConfig();
     Utilities.message(target, messageHandler.string("Chat_Colour_Applied", "&bYour chat colour has been changed to: %chatcolour%").replace("%chatcolour%", chatColour + player.getName()));
   }
 
@@ -136,14 +136,14 @@ public class ChatColour extends GlobalCommand implements TabCompleter {
     for(String groupName : configFile.getConfigurationSection("Group_Chat_Colour.Groups").getKeys(false)) {
 
       if(Utilities.checkPermission(target, false, "stylizer.chatcolour.groups." + groupName)) {
-        playerData.set(target.getUniqueId().toString() + ".Chat_Colour", plugin.getConfigFile().getConfig().getString("Group_Chat_Colour.Groups." + groupName));
-        plugin.getPlayerData().saveConfig();
+        playerData.set(target.getUniqueId().toString() + ".Chat_Colour", plugin.getSettingsHandler().getConfigFile().getConfig().getString("Group_Chat_Colour.Groups." + groupName));
+        plugin.getSettingsHandler().getPlayerData().saveConfig();
         Utilities.message(target, messageHandler.string("Chat_Colour_Removed", "&cYour chat colour has been reverted to the default colour"));
         return;
       }
 
       playerData.set(target.getUniqueId().toString() + ".Chat_Colour", configFile.getString("Default_Chat_Colour", "&e"));
-      plugin.getPlayerData().saveConfig();
+      plugin.getSettingsHandler().getPlayerData().saveConfig();
       Utilities.message(target, messageHandler.string("Chat_Colour_Removed", "&cYour chat colour has been reverted to the default colour"));
     }
   }

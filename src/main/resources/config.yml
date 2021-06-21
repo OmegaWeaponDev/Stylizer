@@ -195,8 +195,27 @@ Tablist:
   # Use %player% to get the players name (Prefixes and Suffixes included)
   Tablist_Header: "#14abc9Welcome to the server %player%"
   Tablist_Footer:
-    - "#14abc9Don't forget to check out our website!"
-    - "#14abc9Please remember to vote for us!"
+    - "#14abc9Please check out our website!"
+    - "#14abc9Remember to vote for us!"
+  # Determine the order which the tablist will be sorted in
+  # Assign the permission `stylizer.tablist.order.<group name>` to the groups
+  # The order will go from top to bottom
+  Sorting_Order:
+    Enabled: true
+    Order:
+      - owner
+      - admin
+      - moderator
+      - vip
+      - default
+
+# Set the name colour that will be used for the above head names
+# Sadly these cannot be hex colours, thus, cannot use the normal name colours set.
+Player_Name_Tags:
+  Groups:
+    owner: "&c"
+    moderator: "&b"
+    default: "&e"
 
 # Set some special announcement messages that will be broadcast to your whole server.
 Announcement_Messages:
@@ -205,11 +224,32 @@ Announcement_Messages:
   # The messages to be broadcast
   # All messages fully support PlaceholderAPI placeholders.
   Messages:
-    - "#fc0356Remember to vote for the server www.ourwebsite.com/vote"
-    - "#90fc03Get a free member rank on our website! www.ourwebsite.com/member"
+    vote:
+      Message: "#fc0356Remember to vote for the server www.ourwebsite.com/vote"
+      Hover:
+        Enabled: true
+        Hover_Message:
+          - "#FF4A4AOur Website"
+          - "#FF4A4AAll are welcome!"
+    website:
+      Message: "#90fc03Get a free member rank on our website! www.ourwebsite.com/member"
+      Hover:
+        Enabled: true
+        Hover_Message:
+          - "#FF4A4AIf you vote for us, you will"
+          - "#FF4A4Aget some amazing shiny new rewards."
+          - "#FF4A4ASo what are you waiting for? Vote!"
+    discord:
+      Message: "#90FC03Join our amazing discord community! discord.gg/fakediscordserver"
+      Hover:
+        Enabled: true
+        Hover_Message:
+          - "#FF4A4ACheck out out discord server"
+          - "#FF4A4Aand you might get a special"
+          - "#FF4A4Arank in-game or some rewards!"
   # The time inbetween each announcement message.
   # The time is in seconds.
-  Interval: 600
+  Interval: 300 # default 300 - 5 minutes
 
 # Display a pretty message for your server in the multiplayer server list
 Server_Listing:
@@ -224,4 +264,4 @@ Server_Listing:
 Update_Messages: true
 
 # DO NOT EDIT THIS
-Config_Version: 2.3
+Config_Version: 2.5

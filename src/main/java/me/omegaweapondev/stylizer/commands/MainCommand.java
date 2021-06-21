@@ -22,7 +22,7 @@ public class MainCommand extends GlobalCommand implements TabCompleter {
 
   public MainCommand(final Stylizer plugin) {
     this.plugin = plugin;
-    messageHandler = new MessageHandler(plugin, plugin.getMessagesFile().getConfig());
+    messageHandler = new MessageHandler(plugin, plugin.getSettingsHandler().getMessagesFile().getConfig());
     versionMessage = messageHandler.getPrefix() + "&bStylizer &cv" + plugin.getDescription().getVersion() + "&b By OmegaWeaponDev";
   }
 

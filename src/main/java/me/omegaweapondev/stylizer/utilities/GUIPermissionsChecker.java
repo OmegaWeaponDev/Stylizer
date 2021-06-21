@@ -22,9 +22,9 @@ public class GUIPermissionsChecker {
 
     this.colour = colour;
 
-    messageHandler = new MessageHandler(plugin, plugin.getMessagesFile().getConfig());
-    configFile = plugin.getConfigFile().getConfig();
-    playerData = plugin.getPlayerData().getConfig();
+    messageHandler = new MessageHandler(plugin, plugin.getSettingsHandler().getMessagesFile().getConfig());
+    configFile = plugin.getSettingsHandler().getConfigFile().getConfig();
+    playerData = plugin.getSettingsHandler().getPlayerData().getConfig();
   }
 
   public void nameColourPermsCheck() {
@@ -42,7 +42,7 @@ public class GUIPermissionsChecker {
     player.setDisplayName(Utilities.colourise(colour + player.getName() + "&r"));
 
     playerData.set(player.getUniqueId() + ".Name_Colour", colour);
-    plugin.getPlayerData().saveConfig();
+    plugin.getSettingsHandler().getPlayerData().saveConfig();
 
     Utilities.message(player, messageHandler.string("Name_Colour_Applied", "#14abc9Your name colour has been changed to: %namecolour%").replace("%namecolour%", colour + player.getName()));
   }
@@ -56,11 +56,11 @@ public class GUIPermissionsChecker {
     player.setDisplayName(Utilities.colourise(colour + player.getName() + "&r"));
 
     if(!playerData.isConfigurationSection(player.getUniqueId().toString())) {
-      plugin.getPlayerData().getConfig().createSection(player.getUniqueId().toString());
+      plugin.getSettingsHandler().getPlayerData().getConfig().createSection(player.getUniqueId().toString());
     }
 
     playerData.set(player.getUniqueId() + ".Name_Colour", colour);
-    plugin.getPlayerData().saveConfig();
+    plugin.getSettingsHandler().getPlayerData().saveConfig();
 
     Utilities.message(player, messageHandler.string("Name_Colour_Applied", "#14abc9Your name colour has been changed to: %namecolour%").replace("%namecolour%", colour + player.getName()));
   }
@@ -78,7 +78,7 @@ public class GUIPermissionsChecker {
     }
 
     playerData.set(player.getUniqueId() + ".Chat_Colour", colour);
-    plugin.getPlayerData().saveConfig();
+    plugin.getSettingsHandler().getPlayerData().saveConfig();
 
     Utilities.message(player, messageHandler.string("Chat_Colour_Applied", "#14abc9Your chat colour has been changed to: %chatcolour%").replace("%chatcolour%", colour + player.getName()));
   }
@@ -90,11 +90,11 @@ public class GUIPermissionsChecker {
     }
 
     if(!playerData.isConfigurationSection(player.getUniqueId().toString())) {
-      plugin.getPlayerData().getConfig().createSection(player.getUniqueId().toString());
+      plugin.getSettingsHandler().getPlayerData().getConfig().createSection(player.getUniqueId().toString());
     }
 
     playerData.set(player.getUniqueId() + ".Chat_Colour", colour);
-    plugin.getPlayerData().saveConfig();
+    plugin.getSettingsHandler().getPlayerData().saveConfig();
 
     Utilities.message(player, messageHandler.string("Chat_Colour_Applied", "#14abc9Your chat colour has been changed to: %chatcolour%").replace("%chatcolour%", colour + player.getName()));
   }

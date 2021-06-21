@@ -21,10 +21,10 @@ public class NameColours extends MenuCreator {
   private final FileConfiguration configFile;
 
   public NameColours(final Stylizer plugin) {
-    super(4, plugin.getMessagesFile().getConfig().getString("Name_Colour_GUI.GUI_Title"), "#6928f7&lNameColours");
+    super(4, plugin.getSettingsHandler().getMessagesFile().getConfig().getString("Name_Colour_GUI.GUI_Title"), "#6928f7&lNameColours");
     this.plugin = plugin;
-    configFile = plugin.getConfigFile().getConfig();
-    messageHandler = new MessageHandler(plugin, plugin.getMessagesFile().getConfig());
+    configFile = plugin.getSettingsHandler().getConfigFile().getConfig();
+    messageHandler = new MessageHandler(plugin, plugin.getSettingsHandler().getMessagesFile().getConfig());
 
     int slot = -2;
 

@@ -1,9 +1,8 @@
 name: ${project.name}
 version: ${project.version}
-api-version: 1.15
+api-version: ${pl.apiver}
 description: ${project.description}
 main: ${main.class}
-
 author: ${pl.author}
 
 softdepend:

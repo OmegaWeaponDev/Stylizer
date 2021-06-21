@@ -7,35 +7,31 @@ import me.omegaweapondev.stylizer.events.PlayerListener;
 import me.omegaweapondev.stylizer.events.ServerPingListener;
 import me.omegaweapondev.stylizer.menus.ChatColours;
 import me.omegaweapondev.stylizer.menus.NameColours;
+import me.omegaweapondev.stylizer.utilities.MessageAnnouncements;
 import me.omegaweapondev.stylizer.utilities.Placeholders;
+import me.omegaweapondev.stylizer.utilities.SettingsHandler;
 import me.ou.library.SpigotUpdater;
 import me.ou.library.Utilities;
-import me.ou.library.configs.ConfigCreator;
-import me.ou.library.configs.ConfigUpdater;
 import me.ou.library.menus.MenuCreator;
 import net.milkbowl.vault.chat.Chat;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.IOException;
-import java.util.Arrays;
 
 public class Stylizer extends JavaPlugin {
   private Stylizer plugin;
   private Chat chat;
   private NameColours nameColourGUI;
   private ChatColours chatColourGUI;
-  private final ConfigCreator configFile = new ConfigCreator("config.yml");
-  private final ConfigCreator messagesFile = new ConfigCreator("messages.yml");
-  private final ConfigCreator playerData = new ConfigCreator("playerData.yml");
-  private final ConfigCreator chatlog = new ConfigCreator("chatlog.yml");
+  private SettingsHandler settingsHandler;
 
   @Override
   public void onEnable() {
     plugin = this;
+    settingsHandler = new SettingsHandler(plugin);
 
     Utilities.logInfo(false,
       " _____ _         _ _",
@@ -49,13 +45,15 @@ public class Stylizer extends JavaPlugin {
     );
 
     initialSetup();
-    configSetup();
-    configUpdater();
+    getSettingsHandler().setupConfigs();
+    getSettingsHandler().configUpdater();
     commandSetup();
     eventsSetup();
     guiSetup();
     spigotUpdater();
     setupChat();
+
+    messageAnnouncements();
   }
 
   @Override
@@ -65,17 +63,12 @@ public class Stylizer extends JavaPlugin {
       nameColourGUI.deleteInventory();
       chatColourGUI.deleteInventory();
     }
-
     super.onDisable();
   }
 
   public void onReload() {
-
     // Reload the files
-    configFile.reloadConfig();
-    messagesFile.reloadConfig();
-    playerData.reloadConfig();
-    chatlog.reloadConfig();
+    getSettingsHandler().reloadFiles();
   }
 
   private void initialSetup() {
@@ -106,39 +99,6 @@ public class Stylizer extends JavaPlugin {
     // Setup bStats
     final int bstatsPluginId = 7490;
     Metrics metrics = new Metrics(plugin, bstatsPluginId);
-  }
-
-  private void configSetup() {
-    // Create the files
-    getConfigFile().createConfig();
-    getMessagesFile().createConfig();
-    getChatlog().createConfig();
-    getPlayerData().createConfig();
-
-    // Give the playerData.yml file a header
-    getChatlog().getConfig().options().header(
-      " -------------------------------------------------------------------------------------------\n" +
-        " \n" +
-        " Welcome to Stylizer's Chat Log.\n" +
-        " \n" +
-        " Below will be a list of all the chat messages that have been said.\n" +
-        " The format used to log chat messages is <timestamp>: <players name> >> <message>\n" +
-        " \n" +
-        " -------------------------------------------------------------------------------------------"
-    );
-    getChatlog().saveConfig();
-
-    getPlayerData().getConfig().options().header(
-      " -------------------------------------------------------------------------------------------\n" +
-      " \n" +
-      " Welcome to Stylizer Player Data file.\n" +
-      " \n" +
-      " This file contains all the uuids and namecolour colours\n" +
-      " for all the players who have the permission stylizer.login\n" +
-      " \n" +
-      " -------------------------------------------------------------------------------------------"
-    );
-    getPlayerData().saveConfig();
   }
 
   private void guiSetup() {
@@ -181,53 +141,28 @@ public class Stylizer extends JavaPlugin {
       Utilities.logWarning(true,
         "A new version of " + pdf.getName() + " is avaliable!",
         "Current Version: " + pdf.getVersion() + " > New Version: " + version,
-        "Grab it here: https://github.com/OmegaWeaponDev/Stylizer"
+        "Grab it here: https://www.spigotmc.org/resources/stylizer.78327/"
       );
     });
   }
 
-  private void configUpdater() {
-    Utilities.logInfo(true, "Attempting to update the config files....");
-
-    try {
-      if(getConfigFile().getConfig().getDouble("Config_Version") != 2.3) {
-        getConfigFile().getConfig().set("Config_Version", 2.3);
-        getConfigFile().saveConfig();
-        ConfigUpdater.update(plugin, "config.yml", getConfigFile().getFile(), Arrays.asList("Group_Name_Colour.Groups", "Name_Colour_Items", "Chat_Colour_Items", "Chat_Settings.Chat_Formats.Group_Formats.Groups"));
-      }
-
-      if(getMessagesFile().getConfig().getDouble("Config_Version") != 2.1) {
-        getMessagesFile().getConfig().set("Config_Version", 2.1);
-        getMessagesFile().saveConfig();
-        ConfigUpdater.update(plugin, "messages.yml", getMessagesFile().getFile(), Arrays.asList("none"));
-      }
-      onReload();
-      Utilities.logInfo(true, "Config Files have successfully been updated!");
-    } catch(IOException ex) {
-      ex.printStackTrace();
-    }
+  private void messageAnnouncements() {
+    Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+        if(!Bukkit.getOnlinePlayers().isEmpty()) {
+          for(Player player : Bukkit.getOnlinePlayers()) {
+            MessageAnnouncements messageAnnouncements = new MessageAnnouncements(plugin, player);
+            messageAnnouncements.broadcastAnnouncements();
+          }
+        }},
+      20L * getSettingsHandler().getConfigFile().getConfig().getInt("Announcement_Messages.Interval"),
+      20L * getSettingsHandler().getConfigFile().getConfig().getInt("Announcement_Messages.Interval")
+    );
   }
 
   private boolean setupChat() {
     RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
     chat = rsp.getProvider();
     return chat != null;
-  }
-
-  public ConfigCreator getConfigFile() {
-    return configFile;
-  }
-
-  public ConfigCreator getMessagesFile() {
-    return messagesFile;
-  }
-
-  public ConfigCreator getPlayerData() {
-    return playerData;
-  }
-
-  public ConfigCreator getChatlog() {
-    return chatlog;
   }
 
   public NameColours getNameColourGUI() {
@@ -240,5 +175,9 @@ public class Stylizer extends JavaPlugin {
 
   public Chat getChat() {
     return chat;
+  }
+
+  public SettingsHandler getSettingsHandler() {
+    return settingsHandler;
   }
 }

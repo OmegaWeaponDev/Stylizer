@@ -20,10 +20,10 @@ public class ChatColours extends MenuCreator {
   private final FileConfiguration configFile;
 
   public ChatColours(final Stylizer plugin) {
-    super(4, plugin.getMessagesFile().getConfig().getString("Chat_Colour_GUI.GUI_Title"), "#6928f7&lChatColours");
+    super(4, plugin.getSettingsHandler().getMessagesFile().getConfig().getString("Chat_Colour_GUI.GUI_Title"), "#6928f7&lChatColours");
     this.plugin = plugin;
-    configFile = plugin.getConfigFile().getConfig();
-    messageHandler = new MessageHandler(plugin, plugin.getMessagesFile().getConfig());
+    configFile = plugin.getSettingsHandler().getConfigFile().getConfig();
+    messageHandler = new MessageHandler(plugin, plugin.getSettingsHandler().getMessagesFile().getConfig());
 
     int slot = -2;
     for(String itemName : configFile.getConfigurationSection("Chat_Colour_Items").getKeys(false)) {
@@ -36,7 +36,7 @@ public class ChatColours extends MenuCreator {
     }
 
     setItem(34, createItemStack("SPONGE", Utilities.colourise("#570000Current"), Utilities.colourise(Arrays.asList("#ff4a4aClick here to view", "#ff4a4ayour current chat colour"))), player -> {
-      Utilities.message(player, messageHandler.string("Current_Chat_Colour", "#14abc9Your name colour has been changed to: %chatcolour%").replace("%chatcolour%", plugin.getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Chat_Colour")));
+      Utilities.message(player, messageHandler.string("Current_Chat_Colour", "#14abc9Your name colour has been changed to: %chatcolour%").replace("%chatcolour%", plugin.getSettingsHandler().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Chat_Colour")));
     });
   }
 

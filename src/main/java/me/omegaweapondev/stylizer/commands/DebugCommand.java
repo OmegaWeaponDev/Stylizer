@@ -21,7 +21,7 @@ public class DebugCommand extends GlobalCommand implements TabCompleter {
 
   public DebugCommand(final Stylizer plugin) {
     this.plugin = plugin;
-    messageHandler = new MessageHandler(plugin, plugin.getMessagesFile().getConfig());
+    messageHandler = new MessageHandler(plugin, plugin.getSettingsHandler().getMessagesFile().getConfig());
   }
 
   @Override

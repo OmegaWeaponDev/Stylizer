@@ -15,7 +15,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,8 +29,8 @@ public class ItemNamer extends PlayerCommand implements TabCompleter {
 
   public ItemNamer(final Stylizer plugin) {
     this.plugin = plugin;
-    messageHandler = new MessageHandler(plugin, plugin.getMessagesFile().getConfig());
-    configFile = plugin.getConfigFile().getConfig();
+    messageHandler = new MessageHandler(plugin, plugin.getSettingsHandler().getMessagesFile().getConfig());
+    configFile = plugin.getSettingsHandler().getConfigFile().getConfig();
   }
 
   @Override

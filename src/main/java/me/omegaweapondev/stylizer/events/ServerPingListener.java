@@ -14,7 +14,7 @@ public class ServerPingListener implements Listener {
 
   public ServerPingListener(final Stylizer plugin) {
     this.plugin = plugin;
-    configFile = plugin.getConfigFile().getConfig();
+    configFile = plugin.getSettingsHandler().getConfigFile().getConfig();
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)

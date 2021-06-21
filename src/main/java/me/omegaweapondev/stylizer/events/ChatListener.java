@@ -23,9 +23,9 @@ public class ChatListener implements Listener {
 
   public ChatListener(final Stylizer plugin) {
     this.plugin = plugin;
-    configFile = plugin.getConfigFile().getConfig();
-    chatlog = plugin.getChatlog().getConfig();
-    userData = plugin.getPlayerData().getConfig();
+    configFile = plugin.getSettingsHandler().getConfigFile().getConfig();
+    chatlog = plugin.getSettingsHandler().getChatLog().getConfig();
+    userData = plugin.getSettingsHandler().getPlayerData().getConfig();
   }
 
   @EventHandler(priority = EventPriority.HIGH)
@@ -61,7 +61,7 @@ public class ChatListener implements Listener {
 
           if(configFile.getBoolean("Chat_Settings.Log_Chat_Messages")) {
             chatlog.set("Chat_Log." + chatLogTime, player.getName() + " >> " + rawMessage);
-            plugin.getChatlog().saveConfig();
+            plugin.getSettingsHandler().getChatLog().saveConfig();
           }
           return;
         }
@@ -71,7 +71,7 @@ public class ChatListener implements Listener {
 
         if(configFile.getBoolean("Chat_Settings.Log_Chat_Messages")) {
           chatlog.set("Chat_Log." + chatLogTime, player.getName() + " >> " + rawMessage);
-          plugin.getChatlog().saveConfig();
+          plugin.getSettingsHandler().getChatLog().saveConfig();
         }
         return;
       }
@@ -89,7 +89,7 @@ public class ChatListener implements Listener {
 
       if(configFile.getBoolean("Chat_Settings.Log_Chat_Messages")) {
         chatlog.set("Chat_Log." + chatLogTime, player.getName() + " >> " + rawMessage);
-        plugin.getChatlog().saveConfig();
+        plugin.getSettingsHandler().getChatLog().saveConfig();
       }
       return;
     }
@@ -105,7 +105,7 @@ public class ChatListener implements Listener {
 
     if(configFile.getBoolean("Chat_Settings.Log_Chat_Messages")) {
       chatlog.set("Chat_Log." + chatLogTime, player.getName() + " >> " + rawMessage);
-      plugin.getChatlog().saveConfig();
+      plugin.getSettingsHandler().getChatLog().saveConfig();
     }
   }
 
@@ -128,8 +128,8 @@ public class ChatListener implements Listener {
   }
 
   private String getNameColour(final Player player) {
-    if(plugin.getPlayerData().getConfig().isSet(player.getUniqueId() + ".Name_Colour")) {
-      return Utilities.colourise(plugin.getPlayerData().getConfig().getString(player.getUniqueId() + ".Name_Colour"));
+    if(plugin.getSettingsHandler().getPlayerData().getConfig().isSet(player.getUniqueId() + ".Name_Colour")) {
+      return Utilities.colourise(plugin.getSettingsHandler().getPlayerData().getConfig().getString(player.getUniqueId() + ".Name_Colour"));
     }
 
     for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
@@ -157,10 +157,10 @@ public class ChatListener implements Listener {
 
   private String playerNameColour(final Player player) {
 
-    if(!plugin.getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
+    if(!plugin.getSettingsHandler().getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
       return configFile.getString("Default_Name_Colour", "&e");
     }
 
-    return plugin.getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour");
+    return plugin.getSettingsHandler().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour");
   }
 }

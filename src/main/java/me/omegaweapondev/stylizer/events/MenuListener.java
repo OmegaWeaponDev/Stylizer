@@ -37,7 +37,7 @@ public class MenuListener implements Listener {
       return;
     }
 
-    if(clickedItem.getItemMeta().getDisplayName().equals(Utilities.colourise("&cInvalid Item"))) {
+    if(clickedItem.getItemMeta().getDisplayName().equals(Utilities.colourise("#FF4A4AInvalid Item"))) {
       return;
     }
 

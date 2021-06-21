@@ -100,8 +100,8 @@ public class Placeholders extends PlaceholderExpansion {
       return "";
     }
 
-    final String playerNameColour = plugin.getPlayerData().getConfig().getString(player.getUniqueId() + ".Name_Colour");
-    final String playerChatColour = plugin.getPlayerData().getConfig().getString(player.getUniqueId() + ".Chat_Colour");
+    final String playerNameColour = plugin.getSettingsHandler().getPlayerData().getConfig().getString(player.getUniqueId() + ".Name_Colour");
+    final String playerChatColour = plugin.getSettingsHandler().getPlayerData().getConfig().getString(player.getUniqueId() + ".Chat_Colour");
 
     // %stylizer_namecolour%
     if(identifier.equals("namecolour")) {
