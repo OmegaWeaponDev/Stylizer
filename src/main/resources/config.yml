@@ -164,7 +164,6 @@ Group_Chat_Colour:
   Groups:
     owner: '&4'
     admin: '&b'
-
 # Here you are able to stylize how your chat messages look!
 # All PlaceholderAPI placeholders can be used!
 Chat_Settings:
@@ -181,19 +180,20 @@ Chat_Settings:
       # Whether you want Stylizer to handle group chat formats.
       Enabled: true
       # The different group formats that you want to implement.
-      # Playes will need the permissions `stylizer.chat.group.<group name>` to use one of the formats below.
+      # Players will need the permissions `stylizer.chat.groups.<group name>` to use one of the formats below.
       Groups:
-        member: "%prefix% %displayname% %suffix%#14abc9>> #6b6b6b%message%"
-        admin: "#6b6b6b&l[#570000STAFF#6b6b6b&l] %prefix% %displayname% %suffix%#14abc9>> #ff4a4a%message%"
         owner: "#6b6b6b&l[#570000STAFF#6b6b6b&l] %prefix% %displayname% %suffix%#ff4a4a>> #14abc9%message%"
-
+        admin: "#6b6b6b&l[#570000STAFF#6b6b6b&l] %prefix% %displayname% %suffix%#14abc9>> #ff4a4a%message%"
+        member: "%prefix% %displayname% %suffix%#14abc9>> #6b6b6b%message%"
 # Stylize how you would like the tablist to look like
 Tablist:
   # Whether or not you want Stylizer to style the tablist.
   Enabled: true
   # The tablist header message
   # Use %player% to get the players name (Prefixes and Suffixes included)
-  Tablist_Header: "#14abc9Welcome to the server %player%"
+  Tablist_Header:
+    - "#14abc9Welcome to the server %player%"
+    - "#00D4FFI hope you enjoy your time with us!"
   Tablist_Footer:
     - "#14abc9Please check out our website!"
     - "#14abc9Remember to vote for us!"
@@ -212,6 +212,10 @@ Tablist:
 # Set the name colour that will be used for the above head names
 # Sadly these cannot be hex colours, thus, cannot use the normal name colours set.
 Player_Name_Tags:
+  # Whether or not you're wanting above head names
+  Enabled: true
+  # If you're wanting a players prefix to display above their heads.
+  Player_Prefixes: true
   Groups:
     owner: "&c"
     moderator: "&b"
@@ -264,4 +268,4 @@ Server_Listing:
 Update_Messages: true
 
 # DO NOT EDIT THIS
-Config_Version: 2.5
+Config_Version: 2.8

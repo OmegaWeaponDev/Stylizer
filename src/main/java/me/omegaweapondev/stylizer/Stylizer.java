@@ -90,10 +90,11 @@ public class Stylizer extends JavaPlugin {
     if(Bukkit.getPluginManager().getPlugin("Vault") == null) {
       Utilities.logWarning(true,
         "Stylizer has detected that you do not have vault installed.",
-        "If you are wanting to use the prefix and suffixes in the tablist",
-        "it is recommended that you install vault and a chat plugin otherwise these features won't work.",
+        "A majority of Stylizers features rely on Vault for them to work correctly.",
+        "So it is recommended that you install vault otherwise these features won't work.",
         "You can install vault here: https://www.spigotmc.org/resources/vault.34315/"
       );
+      Bukkit.getPluginManager().disablePlugin(plugin);
     }
 
     // Setup bStats
@@ -102,9 +103,11 @@ public class Stylizer extends JavaPlugin {
   }
 
   private void guiSetup() {
+
     // Create the GUI's
     nameColourGUI = new NameColours(plugin);
     chatColourGUI = new ChatColours(plugin);
+
   }
 
   private void commandSetup() {
@@ -116,6 +119,7 @@ public class Stylizer extends JavaPlugin {
     Utilities.setCommand().put("itemnamer", new ItemNamer(plugin));
     Utilities.setCommand().put("stylizerclearlog", new ClearLog(plugin));
     Utilities.setCommand().put("chatcolour", new ChatColour(plugin));
+
 
     Utilities.registerCommands();
 
@@ -164,6 +168,7 @@ public class Stylizer extends JavaPlugin {
     chat = rsp.getProvider();
     return chat != null;
   }
+
 
   public NameColours getNameColourGUI() {
     return nameColourGUI;

@@ -79,8 +79,11 @@ public class MainCommand extends GlobalCommand implements TabCompleter {
         messageHandler.getPrefix() + "&bReload Command: &c/stylizer reload",
         messageHandler.getPrefix() + "&bVersion Command: &c/stylizer version",
         messageHandler.getPrefix() + "&bName colour command: &c/namecolour",
+        messageHandler.getPrefix() + "&bChat colour command: &c/chatcolour",
         messageHandler.getPrefix() + "&bDebug Command: &c/stylizerdebug",
-        messageHandler.getPrefix() + "&bItem Namer Command: &c/itemnamer <option> <value>"
+        messageHandler.getPrefix() + "&bItem Namer Command: &c/itemnamer <option> <value>",
+        messageHandler.getPrefix() + "&bPrivate message Command: &c/privatemessage <player> <command>",
+        messageHandler.getPrefix() + "&bReply Command: &c/reply <message>"
       );
       return;
     }
@@ -115,8 +118,11 @@ public class MainCommand extends GlobalCommand implements TabCompleter {
         messageHandler.getPrefix() + "&bReload Command: &c/stylizer reload",
         messageHandler.getPrefix() + "&bVersion Command: &c/stylizer version",
         messageHandler.getPrefix() + "&bName colour command: &c/namecolour",
+        messageHandler.getPrefix() + "&bChat colour command: &c/chatcolour",
         messageHandler.getPrefix() + "&bDebug Command: &c/stylizerdebug",
-        messageHandler.getPrefix() + "&bItem Namer Command: &c/itemnamer <option> <value>"
+        messageHandler.getPrefix() + "&bItem Namer Command: &c/itemnamer <option> <value>",
+        messageHandler.getPrefix() + "&bPrivate message Command: &c/privatemessage <player> <command>",
+        messageHandler.getPrefix() + "&bReply Command: &c/reply <message>"
       );
       return;
     }

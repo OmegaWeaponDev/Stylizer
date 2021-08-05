@@ -4,7 +4,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import me.omegaweapondev.stylizer.Stylizer;
 import me.ou.library.Utilities;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -45,13 +44,12 @@ public class ChatListener implements Listener {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     Date date = new Date(currentTime);
     String chatLogTime = simpleDateFormat.format(date);
-    player.setDisplayName(Utilities.colourise(getNameColour(player) + player.getName() + ChatColor.RESET));
 
     for(String groupNames : configFile.getConfigurationSection("Chat_Settings.Chat_Formats.Group_Formats.Groups").getKeys(false)) {
       String configFormat = configFile.getString("Chat_Settings.Chat_Formats.Group_Formats.Groups." + groupNames)
         .replace("%prefix%", (plugin.getChat().getPlayerPrefix(player) != null ? plugin.getChat().getPlayerPrefix(player) : ""))
         .replace("%suffix%", (plugin.getChat().getPlayerSuffix(player) != null ? plugin.getChat().getPlayerSuffix(player) : ""))
-        .replace("%displayname%", "%s")
+        .replace("%displayname%", getNameColour(player) + "%s")
         .replace("%message%", getChatColour(player) + "%s");
 
       if(Utilities.checkPermission(player, false, "stylizer.chat.groups." + groupNames.toLowerCase())) {
@@ -67,6 +65,7 @@ public class ChatListener implements Listener {
         }
 
         String format = Utilities.colourise(configFormat);
+
         chatEvent.setFormat(format);
 
         if(configFile.getBoolean("Chat_Settings.Log_Chat_Messages")) {
@@ -81,7 +80,7 @@ public class ChatListener implements Listener {
       String configFormat = PlaceholderAPI.setPlaceholders(player, configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
         .replace("%prefix%", (plugin.getChat().getPlayerPrefix(player) != null ? plugin.getChat().getPlayerPrefix(player) : ""))
         .replace("%suffix%", (plugin.getChat().getPlayerSuffix(player) != null ? plugin.getChat().getPlayerSuffix(player) : ""))
-        .replace("%displayname%", "%s")
+        .replace("%displayname%", getNameColour(player) + "%s")
         .replace("%message%", getChatColour(player) + "%s")
       );
 
@@ -97,7 +96,7 @@ public class ChatListener implements Listener {
     String configFormat = configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
       .replace("%prefix%", (plugin.getChat().getPlayerPrefix(player) != null ? plugin.getChat().getPlayerPrefix(player) : ""))
       .replace("%suffix%", (plugin.getChat().getPlayerSuffix(player) != null ? plugin.getChat().getPlayerSuffix(player) : ""))
-      .replace("%displayname%", "%s")
+      .replace("%displayname%", getNameColour(player) + "%s")
       .replace("%message%", getChatColour(player) + "%s");
 
 
@@ -114,22 +113,22 @@ public class ChatListener implements Listener {
       return userData.getString(player.getUniqueId() + ".Chat_Colour");
     }
 
-    if(!configFile.getBoolean("Group_Chat_Colour")) {
+    if(!configFile.getBoolean("Group_Chat_Colour.Enabled")) {
       return configFile.getString("Default_Chat_Colour");
     }
 
-    for(String groupName : configFile.getStringList("Group_Chat_Colour.Groups")) {
+    for(String groupName : configFile.getConfigurationSection("Group_Chat_Colour.Groups").getKeys(false)) {
       if(Utilities.checkPermission(player, false, "stylizer.chatcolour.groups." + groupName.toLowerCase())) {
         return configFile.getString("Group_Chat_Colour.Groups." + groupName);
       }
     }
 
-    return "";
+    return configFile.getString("Default_Chat_Colour");
   }
 
   private String getNameColour(final Player player) {
-    if(plugin.getSettingsHandler().getPlayerData().getConfig().isSet(player.getUniqueId() + ".Name_Colour")) {
-      return Utilities.colourise(plugin.getSettingsHandler().getPlayerData().getConfig().getString(player.getUniqueId() + ".Name_Colour"));
+    if(userData.isSet(player.getUniqueId() + ".Name_Colour")) {
+      return Utilities.colourise(userData.getString(player.getUniqueId() + ".Name_Colour"));
     }
 
     for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
@@ -157,10 +156,10 @@ public class ChatListener implements Listener {
 
   private String playerNameColour(final Player player) {
 
-    if(!plugin.getSettingsHandler().getPlayerData().getConfig().isConfigurationSection(player.getUniqueId().toString())) {
+    if(!userData.isSet(player.getUniqueId() + ".Name_Colour")) {
       return configFile.getString("Default_Name_Colour", "&e");
     }
 
-    return plugin.getSettingsHandler().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Name_Colour");
+    return userData.getString(player.getUniqueId() + ".Name_Colour");
   }
 }

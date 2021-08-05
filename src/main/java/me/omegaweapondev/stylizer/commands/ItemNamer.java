@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ItemNamer extends PlayerCommand implements TabCompleter {
   private final Stylizer plugin;
@@ -48,16 +46,18 @@ public class ItemNamer extends PlayerCommand implements TabCompleter {
 
     String[] values = Arrays.copyOfRange(strings, 2, strings.length);
     StringBuilder stringBuilder = new StringBuilder();
-
     for(String string : values) {
       stringBuilder.append(string).append(" ");
     }
+
+    List<String> loreMessages = new ArrayList<>();
+    Collections.addAll(loreMessages, stringBuilder.toString().split("\\|"));
 
     final String action = strings[0];
     final String type = strings[1];
     final String value = stringBuilder.toString();
 
-    updateItemName(player, action, type, value);
+    updateItemName(player, action, type, value, loreMessages);
   }
 
   private void invalidArgs(final Player player) {
@@ -73,14 +73,14 @@ public class ItemNamer extends PlayerCommand implements TabCompleter {
     );
   }
 
-  private void updateItemName(final Player player, final String action, final String type, final String value) {
+  private void updateItemName(final Player player, final String action, final String type, final String value, final List<String> lore) {
     if(player.getInventory().getItemInMainHand().getType() == Material.AIR) {
       Utilities.message(player, messageHandler.getPrefix() + "#ff4a4aPlease equip the item you are wanting to update.");
       return;
     }
 
     if(type.equals("lore")) {
-      updateItemLore(player, action, type, value);
+      updateItemLore(player, action, type, value, lore);
       return;
     }
 
@@ -116,14 +116,14 @@ public class ItemNamer extends PlayerCommand implements TabCompleter {
     }
   }
 
-  private void updateItemLore(final Player player, final String action, final String type, final String value) {
+  private void updateItemLore(final Player player, final String action, final String type, final String value, final List<String> lore) {
     if(player.getInventory().getItemInMainHand().getType() == Material.AIR) {
       Utilities.message(player, messageHandler.getPrefix() + "#ff4a4aPlease equip the item you are wanting to update.");
       return;
     }
 
     if(type.equals("name")) {
-      updateItemName(player, action, type, value);
+      updateItemName(player, action, type, value, lore);
       return;
     }
 
@@ -139,17 +139,6 @@ public class ItemNamer extends PlayerCommand implements TabCompleter {
       if(!Utilities.checkPermissions(player, true, "stylizer.itemnamer.set.lore", "stylizer.itemnamer.admin", "stylizer.admin")) {
         Utilities.message(player, messageHandler.string("No_Permission", "#570000Sorry, you do not have permission to do that."));
         return;
-      }
-
-      List<String> lore = new ArrayList<>();
-      final String regex = "((?:[^\\s]*\\s){0,4}[^\\s]*)\\s";
-      final Pattern pattern = Pattern.compile(regex);
-      final Matcher matcher = pattern.matcher(value);
-
-      while(matcher.find()) {
-        for (int i = 1; i <= matcher.groupCount(); i++) {
-          lore.add(matcher.group(i));
-        }
       }
 
       playerItemMeta.setLore(Utilities.colourise(lore));

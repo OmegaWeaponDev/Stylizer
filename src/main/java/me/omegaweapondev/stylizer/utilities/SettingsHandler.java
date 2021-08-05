@@ -55,19 +55,20 @@ public class SettingsHandler {
     Utilities.logInfo(true, "Attempting to update the config files....");
 
     try {
-      if(getConfigFile().getConfig().getDouble("Config_Version") != 2.5) {
-        getConfigFile().getConfig().set("Config_Version", 2.5);
+      if(getConfigFile().getConfig().getDouble("Config_Version") != 2.8) {
+        getConfigFile().getConfig().set("Config_Version", 2.8);
         getConfigFile().saveConfig();
-        ConfigUpdater.update(plugin, "config.yml", getConfigFile().getFile(), Arrays.asList("Group_Name_Colour.Groups", "Name_Colour_Items", "Chat_Colour_Items", "Chat_Settings.Chat_Formats.Group_Formats.Groups"));
+        ConfigUpdater.update(plugin, "config.yml", getConfigFile().getFile(), Arrays.asList("Group_Name_Colour.Groups", "Group_Chat_Colour.Groups" ,"Name_Colour_Items", "Chat_Colour_Items", "Chat_Settings.Chat_Formats.Group_Formats.Groups"));
+        Utilities.logInfo(true, "Stylizer has automatically updated your config.yml!");
       }
 
       if(getMessagesFile().getConfig().getDouble("Config_Version") != 2.1) {
-        getMessagesFile().getConfig().set("Config_Version", 2.1);
+        getMessagesFile().getConfig().set("Config_Version.", 2.1);
         getMessagesFile().saveConfig();
         ConfigUpdater.update(plugin, "messages.yml", getMessagesFile().getFile(), Arrays.asList("none"));
+        Utilities.logInfo(true, "Stylizer has automatically updated your messages.yml!");
       }
       plugin.onReload();
-      Utilities.logInfo(true, "Config Files have successfully been updated!");
     } catch(IOException ex) {
       ex.printStackTrace();
     }

@@ -107,7 +107,7 @@ public class NameColour extends GlobalCommand implements TabCompleter {
     }
 
     target.setDisplayName(Utilities.colourise(nameColour + target.getName()));
-    playerData.set(target.getUniqueId().toString() + ".Name_Colour", nameColour);
+    playerData.set(target.getUniqueId() + ".Name_Colour", nameColour);
     plugin.getSettingsHandler().getPlayerData().saveConfig();
     Utilities.message(target, messageHandler.string("Name_Colour_Applied", "&bYour name colour has been changed to: %namecolour%").replace("%namecolour%", nameColour + player.getName()));
   }
@@ -139,14 +139,14 @@ public class NameColour extends GlobalCommand implements TabCompleter {
 
       if(Utilities.checkPermission(target, false, "stylizer.namecolour.groups." + groupName)) {
         target.setDisplayName(Utilities.colourise(configFile.getString("Group_Name_Colour.Groups." + groupName) + target.getName()));
-        playerData.set(target.getUniqueId().toString() + ".Name_Colour", plugin.getSettingsHandler().getConfigFile().getConfig().getString("Group_Name_Colour.Groups." + groupName));
+        playerData.set(target.getUniqueId() + ".Name_Colour", null);
         plugin.getSettingsHandler().getPlayerData().saveConfig();
         Utilities.message(target, messageHandler.string("Name_Colour_Removed", "&cYour name colour has been reverted to the default colour"));
         return;
       }
 
       target.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "&e") + target.getName()));
-      playerData.set(target.getUniqueId().toString() + ".Name_Colour", configFile.getString("Default_Name_Colour", "&e"));
+      playerData.set(target.getUniqueId() + ".Name_Colour", configFile.getString("Default_Name_Colour", "&e"));
       plugin.getSettingsHandler().getPlayerData().saveConfig();
       Utilities.message(target, messageHandler.string("Name_Colour_Removed", "&cYour name colour has been reverted to the default colour"));
     }

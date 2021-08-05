@@ -55,11 +55,11 @@ public class DebugCommand extends GlobalCommand implements TabCompleter {
       " #14abc9Server Version: #ff4a4a" + Bukkit.getServer().getVersion(),
       " #14abc9Online Mode: #ff4a4a" + Bukkit.getOnlineMode(),
       " #14abc9Players Online: #ff4a4a" + Bukkit.getOnlinePlayers().size() + " / " + Bukkit.getMaxPlayers(),
-      " #14abc9Stylizer Commands: #ff4a4a" + Utilities.setCommand().size() + " / 5 #14abc9registered",
+      " #14abc9Stylizer Commands: #ff4a4a" + Utilities.setCommand().size() + " / 6 #14abc9registered",
       " #14abc9Open Inventories: #ff4a4a" + MenuCreator.getOpenInventories().size(),
       " #14abc9Unique Inventories: #ff4a4a" + MenuCreator.getInventoriesByUUID().size(),
       " #14abc9Currently Installed Plugins...",
-      " " + plugins.toString(),
+      " " + plugins,
       "#14abc9==========================================="
     );
   }
@@ -79,11 +79,11 @@ public class DebugCommand extends GlobalCommand implements TabCompleter {
       " Server Version: " + Bukkit.getServer().getVersion(),
       " Online Mode: " + Bukkit.getServer().getOnlineMode(),
       " Players Online: " + Bukkit.getOnlinePlayers().size() + " / " + Bukkit.getMaxPlayers(),
-      " Stylizer Commands: " + Utilities.setCommand().size() + " / 5 registered",
+      " Stylizer Commands: " + Utilities.setCommand().size() + " / 6 registered",
       " Open Inventories: " + MenuCreator.getOpenInventories().size(),
       " Unique Inventories: " + MenuCreator.getInventoriesByUUID().size(),
       " Currently Installed Plugins...",
-      " " + plugins.toString(),
+      " " + plugins,
       "==========================================="
     );
   }

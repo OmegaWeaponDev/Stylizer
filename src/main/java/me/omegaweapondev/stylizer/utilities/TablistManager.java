@@ -29,14 +29,32 @@ public class TablistManager {
       return;
     }
 
-
-    player.setPlayerListHeader(Utilities.colourise(
-      configFile.getString("Tablist.Tablist_Header")
-        .replace("%player%", playerPrefix + playerNameColour(player) + player.getName())
-      )
-    );
-
+    StringBuilder header = new StringBuilder();
     StringBuilder footer = new StringBuilder();
+
+    if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+      for(String headerMessage : configFile.getStringList("Tablist.Tablist_Header")) {
+        header.append(headerMessage.replace("%player%", playerPrefix + playerNameColour(player) + player.getName())).append("\n");
+      }
+
+      player.setPlayerListHeader(PlaceholderAPI.setPlaceholders(player, Utilities.colourise(header.toString())));
+
+      for(String footerMessage : configFile.getStringList("Tablist.Tablist_Footer")) {
+        footer.append(footerMessage.replace("%player%", playerPrefix + playerNameColour(player) + player.getName())).append("\n");
+      }
+
+      player.setPlayerListFooter(PlaceholderAPI.setPlaceholders(player, Utilities.colourise(footer.toString())));
+      return;
+    }
+
+
+    for(String headerMessage : configFile.getStringList("Tablist.Tablist_Header")) {
+      header.append(headerMessage.replace("%player%", playerPrefix + playerNameColour(player) + player.getName())).append("\n");
+    }
+
+    player.setPlayerListHeader(Utilities.colourise(header.toString()));
+
+
     for(String footerMessage : configFile.getStringList("Tablist.Tablist_Footer")) {
       footer.append(footerMessage.replace("%player%", playerPrefix + playerNameColour(player) + player.getName())).append("\n");
     }

@@ -122,3 +122,4 @@ permissions:
     default: false
   stylizer.chatcolour.open:
     description: Allows the user to open the chat colour menu
+    default: false
