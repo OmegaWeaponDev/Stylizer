@@ -68,7 +68,7 @@ public class SettingsHandler {
         ConfigUpdater.update(plugin, "messages.yml", getMessagesFile().getFile(), Arrays.asList("none"));
         Utilities.logInfo(true, "Stylizer has automatically updated your messages.yml!");
       }
-      plugin.onReload();
+      reloadFiles();
     } catch(IOException ex) {
       ex.printStackTrace();
     }

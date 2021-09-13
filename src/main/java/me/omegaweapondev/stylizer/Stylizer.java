@@ -45,14 +45,13 @@ public class Stylizer extends JavaPlugin {
     );
 
     initialSetup();
+    setupChat();
     getSettingsHandler().setupConfigs();
     getSettingsHandler().configUpdater();
     commandSetup();
     eventsSetup();
     guiSetup();
     spigotUpdater();
-    setupChat();
-
     messageAnnouncements();
   }
 

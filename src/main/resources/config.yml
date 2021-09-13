@@ -164,6 +164,7 @@ Group_Chat_Colour:
   Groups:
     owner: '&4'
     admin: '&b'
+
 # Here you are able to stylize how your chat messages look!
 # All PlaceholderAPI placeholders can be used!
 Chat_Settings:
@@ -185,6 +186,7 @@ Chat_Settings:
         owner: "#6b6b6b&l[#570000STAFF#6b6b6b&l] %prefix% %displayname% %suffix%#ff4a4a>> #14abc9%message%"
         admin: "#6b6b6b&l[#570000STAFF#6b6b6b&l] %prefix% %displayname% %suffix%#14abc9>> #ff4a4a%message%"
         member: "%prefix% %displayname% %suffix%#14abc9>> #6b6b6b%message%"
+
 # Stylize how you would like the tablist to look like
 Tablist:
   # Whether or not you want Stylizer to style the tablist.

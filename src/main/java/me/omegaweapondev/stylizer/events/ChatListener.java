@@ -54,7 +54,7 @@ public class ChatListener implements Listener {
 
       if(Utilities.checkPermission(player, false, "stylizer.chat.groups." + groupNames.toLowerCase())) {
         if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-          String format = Utilities.colourise(PlaceholderAPI.setPlaceholders(player, configFormat));
+          String format = PlaceholderAPI.setPlaceholders(player, Utilities.colourise(configFormat));
           chatEvent.setFormat(format);
 
           if(configFile.getBoolean("Chat_Settings.Log_Chat_Messages")) {
@@ -77,7 +77,7 @@ public class ChatListener implements Listener {
     }
 
     if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-      String configFormat = PlaceholderAPI.setPlaceholders(player, configFile.getString("Chat_Settings.Chat_Formats.Default_Format")
+      String configFormat = configFile.getString(PlaceholderAPI.setPlaceholders(player, "Chat_Settings.Chat_Formats.Default_Format")
         .replace("%prefix%", (plugin.getChat().getPlayerPrefix(player) != null ? plugin.getChat().getPlayerPrefix(player) : ""))
         .replace("%suffix%", (plugin.getChat().getPlayerSuffix(player) != null ? plugin.getChat().getPlayerSuffix(player) : ""))
         .replace("%displayname%", getNameColour(player) + "%s")
