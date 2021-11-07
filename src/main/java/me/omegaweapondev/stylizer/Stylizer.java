@@ -23,10 +23,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Stylizer extends JavaPlugin {
   private Stylizer plugin;
-  private Chat chat;
   private NameColours nameColourGUI;
   private ChatColours chatColourGUI;
   private SettingsHandler settingsHandler;
+
+  private static Chat chat = null;
 
   @Override
   public void onEnable() {
@@ -167,7 +168,6 @@ public class Stylizer extends JavaPlugin {
     chat = rsp.getProvider();
     return chat != null;
   }
-
 
   public NameColours getNameColourGUI() {
     return nameColourGUI;

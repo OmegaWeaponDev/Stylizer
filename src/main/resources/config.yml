@@ -32,6 +32,11 @@ Tablist_Name_Colour: true
 # Apply the players prefix and suffix to their tablist name along with your name colour
 Tablist_Prefix_Suffix: true
 
+# If true, Stylizer will gets the players displayname and use that in the tablist
+# This is useful if you're wanting another plugin to control the players name in tablist.
+# This requires Tablist_Name_Colour to be false
+Tablist_Use_Displayname: false
+
 # If true, players will retain their name colour when they login/logout
 Name_Colour_Login: true
 
@@ -270,4 +275,4 @@ Server_Listing:
 Update_Messages: true
 
 # DO NOT EDIT THIS
-Config_Version: 2.8
+Config_Version: 2.9

@@ -64,15 +64,26 @@ public class TablistManager {
 
   public void tablistPlayerName() {
     if(!configFile.getBoolean("Tablist_Name_Colour") && !configFile.getBoolean("Tablist_Prefix_Suffix")) {
-      player.setPlayerListName(player.getName());
+      if(!configFile.getBoolean("Tablist_Use_Displayname")) {
+        player.setPlayerListName(player.getName());
+        return;
+      }
+      player.setPlayerListName(player.getDisplayName());
       return;
     }
 
     if(!configFile.getBoolean("Tablist_Name_Colour") && configFile.getBoolean("Tablist_Prefix_Suffix") && player.isOnline()) {
       if(isPlaceholderAPI) {
+        if(!configFile.getBoolean("Tablist_Use_Displayname")) {
+          player.setPlayerListName(
+            Utilities.colourise(PlaceholderAPI.setPlaceholders(player,
+              playerPrefix + player.getName() + playerSuffix)
+            ));
+          return;
+        }
         player.setPlayerListName(
           Utilities.colourise(PlaceholderAPI.setPlaceholders(player,
-            playerPrefix + player.getName() + playerSuffix)
+            playerPrefix + player.getDisplayName() + playerSuffix)
           ));
         return;
       }

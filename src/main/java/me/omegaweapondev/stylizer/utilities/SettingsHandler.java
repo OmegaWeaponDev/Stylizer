@@ -55,8 +55,8 @@ public class SettingsHandler {
     Utilities.logInfo(true, "Attempting to update the config files....");
 
     try {
-      if(getConfigFile().getConfig().getDouble("Config_Version") != 2.8) {
-        getConfigFile().getConfig().set("Config_Version", 2.8);
+      if(getConfigFile().getConfig().getDouble("Config_Version") != 2.9) {
+        getConfigFile().getConfig().set("Config_Version", 2.9);
         getConfigFile().saveConfig();
         ConfigUpdater.update(plugin, "config.yml", getConfigFile().getFile(), Arrays.asList("Group_Name_Colour.Groups", "Group_Chat_Colour.Groups" ,"Name_Colour_Items", "Chat_Colour_Items", "Chat_Settings.Chat_Formats.Group_Formats.Groups"));
         Utilities.logInfo(true, "Stylizer has automatically updated your config.yml!");
