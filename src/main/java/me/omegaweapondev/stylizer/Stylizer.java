@@ -44,8 +44,19 @@ public class Stylizer extends JavaPlugin {
       "            __/ |",
       "           |___/ "
     );
-
     initialSetup();
+
+    if(Bukkit.getPluginManager().getPlugin("Vault") == null) {
+      Utilities.logSevere(true,
+        "Stylizer has detected that you do not have vault installed.",
+        "A majority of Stylizers features rely on Vault for them to work correctly.",
+        "So it is required that you install vault otherwise these features won't work.",
+        "You can install vault here: https://www.spigotmc.org/resources/vault.34315/"
+      );
+      Bukkit.getPluginManager().disablePlugin(plugin);
+      return;
+    }
+
     setupChat();
     getSettingsHandler().setupConfigs();
     getSettingsHandler().configUpdater();
@@ -85,16 +96,6 @@ public class Stylizer extends JavaPlugin {
         "It is also required if you are wanting to use placeholders in any of the chat formats.",
         "You can install PlaceholderAPI here: https://www.spigotmc.org/resources/placeholderapi.6245/ "
       );
-    }
-
-    if(Bukkit.getPluginManager().getPlugin("Vault") == null) {
-      Utilities.logWarning(true,
-        "Stylizer has detected that you do not have vault installed.",
-        "A majority of Stylizers features rely on Vault for them to work correctly.",
-        "So it is recommended that you install vault otherwise these features won't work.",
-        "You can install vault here: https://www.spigotmc.org/resources/vault.34315/"
-      );
-      Bukkit.getPluginManager().disablePlugin(plugin);
     }
 
     // Setup bStats

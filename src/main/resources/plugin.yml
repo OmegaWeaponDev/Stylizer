@@ -5,9 +5,11 @@ description: ${project.description}
 main: ${main.class}
 author: ${pl.author}
 
+depend:
+  - Vault
+
 softdepend:
   - PlaceholderAPI
-  - Vault
 
 commands:
   stylizer:
