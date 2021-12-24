@@ -43,15 +43,16 @@ dependencies {
     implementation 'me.ou:library:1.6.3'
     implementation 'org.bstats:bstats-bukkit:2.2.1'
     compileOnly 'org.spigotmc:spigot:1.18-R0.1-SNAPSHOT'
-    compileOnly 'me.clip:placeholderapi:2.10.10'
+    compileOnly 'me.clip:placeholderapi:2.11.1'
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+    compileOnly 'org.jetbrains:annotations:22.0.0'
+
 }
 
 group = 'me.omegaweapondev'
-version = '2.0.30'
+version = '2.0.31'
 
-sourceCompatibility = 17
-targetCompatibility = 17
+sourceCompatibility = JavaVersion.VERSION_17
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
