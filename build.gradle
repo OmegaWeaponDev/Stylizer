@@ -37,10 +37,13 @@ shadowJar {
     archiveClassifier.set('')
     relocate 'me.ou', 'me.omegaweapondev.libs.ou'
     relocate 'org.bstats', 'me.omegaweapondev.libs.bstats'
+    relocate 'net.kyori', 'me.omegaweapondev.libs.adventure'
+    relocate 'com.tchristofferson', 'me.omegaweapondev.libs.configupdater'
+    relocate 'dev.dbassett', 'me.omegaweapondev.libs.skullcreator'
 }
 
 dependencies {
-    implementation 'me.ou:library:1.6.3'
+    implementation 'me.ou:library:1.6.4'
     implementation 'org.bstats:bstats-bukkit:2.2.1'
     compileOnly 'org.spigotmc:spigot:1.18-R0.1-SNAPSHOT'
     compileOnly 'me.clip:placeholderapi:2.11.1'
@@ -50,9 +53,10 @@ dependencies {
 }
 
 group = 'me.omegaweapondev'
-version = '2.0.31'
+version = '2.0.32'
 
-sourceCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = 11
+targetCompatibility = 11
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
