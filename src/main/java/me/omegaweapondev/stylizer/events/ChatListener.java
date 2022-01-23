@@ -68,7 +68,7 @@ public class ChatListener implements Listener {
     configFormat = configFormat.replace("%", "%%");
     configFormat = configFormat.replace("%%prefix%%", prefix);
     configFormat = configFormat.replace("%%suffix%%", suffix);
-    configFormat = configFormat.replace("%%displayname%%", "%1$s");
+    configFormat = configFormat.replace("%%displayname%%", getNameColour(player) + "%1$s");
     configFormat = configFormat.replace("%%message%%", "%2$s");
 
     if(isPlaceholderAPIEnabled()) {
@@ -76,6 +76,24 @@ public class ChatListener implements Listener {
     }
 
     return Utilities.colourise(configFormat);
+  }
+
+  private String getNameColour(final Player player) {
+    if(userData.getString(player.getUniqueId() + ".Name_Colour") != null) {
+      return userData.getString(player.getUniqueId() + ".Name_Colour");
+    }
+
+    if(!configFile.getBoolean("Group_Name_Colour.Enabled")) {
+      return configFile.getString("Default_Name_Colour");
+    }
+
+    for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
+      if(Utilities.checkPermission(player, false, "stylizer.chatcolour.groups." + groupName.toLowerCase())) {
+        return configFile.getString("Group_Name_Colour.Groups." + groupName);
+      }
+    }
+
+    return configFile.getString("Default_Name_Colour");
   }
 
   private String getChatColour(final Player player) {
