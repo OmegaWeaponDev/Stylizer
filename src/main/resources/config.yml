@@ -169,6 +169,8 @@ Chat_Settings:
   # This is where you can determine the different formats that players will use in chat messages.
   Chat_Formats:
     # This is the main chat format that all players will have if they don't have one of the group formats below.
+    # Spaces will automatically be added after the prefix if you use `%prefix%`
+    # Spaces will automatically be added before and after the suffix if you use `%suffix%`
     Default_Format: "%displayname% #14abc9>> #6b6b6b%message%"
     # Settings for the group chat formats.
     Group_Formats:
@@ -177,9 +179,9 @@ Chat_Settings:
       # The different group formats that you want to implement.
       # Players will need the permissions `stylizer.chat.groups.<group name>` to use one of the formats below.
       Groups:
-        owner: "#6b6b6b&l[#570000STAFF#6b6b6b&l] %prefix% %displayname% %suffix%#ff4a4a>> #14abc9%message%"
-        admin: "#6b6b6b&l[#570000STAFF#6b6b6b&l] %prefix% %displayname% %suffix%#14abc9>> #ff4a4a%message%"
-        member: "%prefix% %displayname% %suffix% #14abc9>> #6b6b6b%message%"
+        owner: "#6b6b6b&l[#570000STAFF#6b6b6b&l] %prefix%%displayname%%suffix%#ff4a4a>> #14abc9%message%"
+        admin: "#6b6b6b&l[#570000STAFF#6b6b6b&l] %prefix%%displayname%%suffix%#14abc9>> #ff4a4a%message%"
+        member: "%prefix%%displayname%%suffix% #14abc9>> #6b6b6b%message%"
 # Stylize how you would like the tablist to look like
 Tablist:
   # Whether or not you want Stylizer to style the tablist.

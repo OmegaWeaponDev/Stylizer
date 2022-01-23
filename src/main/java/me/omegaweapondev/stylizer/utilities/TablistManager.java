@@ -15,14 +15,17 @@ public class TablistManager {
   public final String playerPrefix;
   public final String playerSuffix;
   private final boolean isPlaceholderAPI;
+  private final PlayerUtil playerUtil;
 
   public TablistManager(final Stylizer plugin, final Player player) {
     this.plugin = plugin;
     this.player = player;
     configFile = plugin.getSettingsHandler().getConfigFile().getConfig();
-    playerPrefix = (plugin.getChat().getPlayerPrefix(player) != null ? plugin.getChat().getPlayerPrefix(player) + " " : "");
-    playerSuffix = (plugin.getChat().getPlayerSuffix(player) != null ? plugin.getChat().getPlayerSuffix(player) + " " : "");
     isPlaceholderAPI = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
+    playerUtil = new PlayerUtil(plugin, player);
+    playerPrefix = playerUtil.getPrefix();
+    playerSuffix = playerUtil.getSuffix();
+
   }
 
   public void tablistHeaderFooter() {
@@ -35,13 +38,13 @@ public class TablistManager {
 
     if(isPlaceholderAPI) {
       for(String headerMessage : configFile.getStringList("Tablist.Tablist_Header")) {
-        header.append(headerMessage.replace("%player%", playerPrefix + playerNameColour(player) + player.getName())).append("\n");
+        header.append(headerMessage.replace("%player%", playerPrefix + playerUtil.getNameColour() + player.getName())).append("\n");
       }
 
       player.setPlayerListHeader(PlaceholderAPI.setPlaceholders(player, Utilities.colourise(header.toString())));
 
       for(String footerMessage : configFile.getStringList("Tablist.Tablist_Footer")) {
-        footer.append(footerMessage.replace("%player%", playerPrefix + playerNameColour(player) + player.getName())).append("\n");
+        footer.append(footerMessage.replace("%player%", playerPrefix + playerUtil.getNameColour() + player.getName())).append("\n");
       }
 
       player.setPlayerListFooter(PlaceholderAPI.setPlaceholders(player, Utilities.colourise(footer.toString())));
@@ -50,14 +53,14 @@ public class TablistManager {
 
 
     for(String headerMessage : configFile.getStringList("Tablist.Tablist_Header")) {
-      header.append(headerMessage.replace("%player%", playerPrefix + playerNameColour(player) + player.getName())).append("\n");
+      header.append(headerMessage.replace("%player%", playerPrefix + playerUtil.getNameColour() + player.getName())).append("\n");
     }
 
     player.setPlayerListHeader(Utilities.colourise(header.toString()));
 
 
     for(String footerMessage : configFile.getStringList("Tablist.Tablist_Footer")) {
-      footer.append(footerMessage.replace("%player%", playerPrefix + playerNameColour(player) + player.getName())).append("\n");
+      footer.append(footerMessage.replace("%player%", playerPrefix + playerUtil.getNameColour() + player.getName())).append("\n");
     }
 
     player.setPlayerListFooter(Utilities.colourise(footer.toString()));
@@ -73,7 +76,7 @@ public class TablistManager {
       return;
     }
 
-    for(String groupName : configFile.getStringList("Tablist.Player_Name_Formats.Group_Formats.Groups")) {
+    for(String groupName : configFile.getConfigurationSection("Tablist.Player_Name_Formats.Group_Formats.Groups").getKeys(false)) {
       if(Utilities.checkPermissions(player, false, "stylizer.tablist.groups." + groupName)) {
         player.setPlayerListName(setFormat(player, configFile.getString("Tablist.Player_Name_Formats.Group_Formats.Groups." + groupName)));
         return;
@@ -81,29 +84,9 @@ public class TablistManager {
     }
   }
 
-  public String groupNameColour(final String groupName) {
-    if(!configFile.getBoolean("Group_Name_Colour.Enabled")) {
-      return playerNameColour(player);
-    }
-
-    if(configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false).size() == 0) {
-      return playerNameColour(player);
-    }
-
-    return configFile.getString("Group_Name_Colour.Groups." + groupName);
-  }
-
-  public String playerNameColour(final Player player) {
-    if(!plugin.getSettingsHandler().getPlayerData().getConfig().isSet(player.getUniqueId() + ".Name_Colour")) {
-      return configFile.getString("Default_Name_Colour", "#fff954");
-    }
-
-    return plugin.getSettingsHandler().getPlayerData().getConfig().getString(player.getUniqueId() + ".Name_Colour");
-  }
-
   private String setFormat(@NotNull final Player player, @NotNull String tablistFormat) {
     String finalFormat = tablistFormat.replace("%playername%", player.getName());
-    finalFormat = finalFormat.replace("%displayname%", player.getDisplayName());
+    finalFormat = finalFormat.replace("%displayname%", playerUtil.getNameColour() + player.getName());
     finalFormat = finalFormat.replace("%prefix%", playerPrefix);
     finalFormat = finalFormat.replace("%suffix%", playerSuffix);
 

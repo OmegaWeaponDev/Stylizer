@@ -3,6 +3,7 @@ package me.omegaweapondev.stylizer.utilities;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.omegaweapondev.stylizer.Stylizer;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class Placeholders extends PlaceholderExpansion {
 
@@ -95,22 +96,20 @@ public class Placeholders extends PlaceholderExpansion {
    * @return possibly-null String of the requested identifier.
    */
   @Override
-  public String onPlaceholderRequest(Player player, String identifier){
+  public String onPlaceholderRequest(Player player, @NotNull String identifier){
     if(player == null){
       return "";
     }
-
-    final String playerNameColour = plugin.getSettingsHandler().getPlayerData().getConfig().getString(player.getUniqueId() + ".Name_Colour");
-    final String playerChatColour = plugin.getSettingsHandler().getPlayerData().getConfig().getString(player.getUniqueId() + ".Chat_Colour");
+    PlayerUtil playerUtil = new PlayerUtil(plugin, player);
 
     // %stylizer_namecolour%
     if(identifier.equals("namecolour")) {
-      return (playerNameColour != null) ? playerNameColour : "";
+      return playerUtil.getNameColour();
     }
 
     // %stylizer_namecolour%
     if(identifier.equals("chatcolour")) {
-      return (playerChatColour != null) ? playerChatColour : "";
+      return playerUtil.getChatColour();
     }
 
     return "";

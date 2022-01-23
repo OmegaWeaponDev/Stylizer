@@ -2,6 +2,7 @@ package me.omegaweapondev.stylizer.events;
 
 import me.omegaweapondev.stylizer.Stylizer;
 import me.omegaweapondev.stylizer.utilities.MessageHandler;
+import me.omegaweapondev.stylizer.utilities.PlayerUtil;
 import me.omegaweapondev.stylizer.utilities.TablistManager;
 import me.ou.library.SpigotUpdater;
 import me.ou.library.Utilities;
@@ -27,6 +28,7 @@ public class PlayerListener implements Listener {
   private final FileConfiguration userData;
 
   private TablistManager tablistManager;
+  private PlayerUtil playerUtil;
 
   public PlayerListener(final Stylizer plugin) {
     this.plugin = plugin;
@@ -38,8 +40,9 @@ public class PlayerListener implements Listener {
   public void onPlayerJoin(PlayerJoinEvent playerJoinEvent) {
     Player player = playerJoinEvent.getPlayer();
     tablistManager = new TablistManager(plugin, player);
+    playerUtil = new PlayerUtil(plugin, player);
 
-    setNameColour(player);
+    player.setDisplayName(playerUtil.getNameColour() + player.getName() + ChatColor.RESET);
     Bukkit.getScheduler().runTaskTimer(plugin, () -> tablistManager.tablistHeaderFooter(), 20L * 5L, 20 * 20L);
 
     if(configFile.getBoolean("Tablist.Sorting_Order.Enabled")) {
@@ -77,28 +80,6 @@ public class PlayerListener implements Listener {
     if(Bukkit.getOnlinePlayers().size() < 2) {
       Bukkit.getScheduler().cancelTasks(plugin);
     }
-  }
-
-  private void setNameColour(final Player player) {
-    tablistManager = new TablistManager(plugin, player);
-
-    if(configFile.getBoolean("Name_Colour_Login")) {
-
-      if(userData.isSet(player.getUniqueId() + ".Name_Colour")) {
-        player.setDisplayName(Utilities.colourise(userData.getString(player.getUniqueId() + ".Name_Colour") + player.getName()) + ChatColor.RESET);
-        return;
-      }
-
-      for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
-
-        if(Utilities.checkPermission(player, false, "stylizer.namecolour.groups." + groupName.toLowerCase())) {
-          player.setDisplayName(Utilities.colourise(tablistManager.groupNameColour(groupName) + player.getName()) + ChatColor.RESET);
-          return;
-        }
-      }
-      return;
-    }
-    player.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "#fff954") + player.getName()) + ChatColor.RESET);
   }
 
   private void formatTablistAndNames() {
