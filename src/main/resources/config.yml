@@ -26,17 +26,6 @@ Per_Name_Colour_Permissions: false
 # If false, use the permission `stylizer.chatcolour.colours`
 Per_Chat_Colour_Permissions: false
 
-# If true, when a player gets a name colour it will show the name colour on tablist
-Tablist_Name_Colour: true
-
-# Apply the players prefix and suffix to their tablist name along with your name colour
-Tablist_Prefix_Suffix: true
-
-# If true, Stylizer will gets the players displayname and use that in the tablist
-# This is useful if you're wanting another plugin to control the players name in tablist.
-# This requires Tablist_Name_Colour to be false
-Tablist_Use_Displayname: false
-
 # If true, players will retain their name colour when they login/logout
 Name_Colour_Login: true
 
@@ -214,6 +203,25 @@ Tablist:
       - moderator
       - vip
       - default
+  # Set the different formats for players in the tablist.
+  # Use `%playername%` to get the players name without any colour added.
+  # ALL PlaceholderAPI placeholders are accepted.
+  Player_Name_Formats:
+    # Whether you want to use the custom tablist player names.
+    Enabled: true
+    # The default format used if a player does not have one of the group formats below.
+    Default_Format: "%playername%"
+    # The different group formats.
+    Group_Formats:
+      # Whether you want to use group formats or not.
+      Enabled: true
+      # The specific group formats.
+      # Use the permission `stylizer.tablist.groups.<group name>` to give players access to one of the groups
+      # It goes from top to bottom - So the first one it finds if the one it will use.
+      Groups:
+        owner: "#6b6b6b&l[#570000OWNER#6b6b6b&l] %displayname%"
+        staff: "#6b6b6b&l[#570000STAFF#6b6b6b&l] %displayname%"
+        player: "%prefix% %displayname%"
 
 # Set the name colour that will be used for the above head names
 # Sadly these cannot be hex colours, thus, cannot use the normal name colours set.
@@ -274,4 +282,4 @@ Server_Listing:
 Update_Messages: true
 
 # DO NOT EDIT THIS
-Config_Version: 2.9
+Config_Version: 2.10

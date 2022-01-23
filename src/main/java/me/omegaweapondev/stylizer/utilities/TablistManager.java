@@ -6,6 +6,7 @@ import me.ou.library.Utilities;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class TablistManager {
   private final Stylizer plugin;
@@ -32,7 +33,7 @@ public class TablistManager {
     StringBuilder header = new StringBuilder();
     StringBuilder footer = new StringBuilder();
 
-    if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+    if(isPlaceholderAPI) {
       for(String headerMessage : configFile.getStringList("Tablist.Tablist_Header")) {
         header.append(headerMessage.replace("%player%", playerPrefix + playerNameColour(player) + player.getName())).append("\n");
       }
@@ -63,98 +64,19 @@ public class TablistManager {
   }
 
   public void tablistPlayerName() {
-    if(!configFile.getBoolean("Tablist_Name_Colour") && !configFile.getBoolean("Tablist_Prefix_Suffix")) {
-      if(!configFile.getBoolean("Tablist_Use_Displayname")) {
-        player.setPlayerListName(player.getName());
+    if(!configFile.getBoolean("Tablist.Enabled") && !configFile.getBoolean("Tablist.Player_Name_Formats.Enabled")) {
+      return;
+    }
+
+    if(!configFile.getBoolean("Tablist.Player_Name_Formats.Group_Formats.Enabled")) {
+      player.setPlayerListName(setFormat(player, configFile.getString("Tablist.Player_Name_Formats.Default_Format")));;
+      return;
+    }
+
+    for(String groupName : configFile.getStringList("Tablist.Player_Name_Formats.Group_Formats.Groups")) {
+      if(Utilities.checkPermissions(player, false, "stylizer.tablist.groups." + groupName)) {
+        player.setPlayerListName(setFormat(player, configFile.getString("Tablist.Player_Name_Formats.Group_Formats.Groups." + groupName)));
         return;
-      }
-      player.setPlayerListName(player.getDisplayName());
-      return;
-    }
-
-    if(!configFile.getBoolean("Tablist_Name_Colour") && configFile.getBoolean("Tablist_Prefix_Suffix") && player.isOnline()) {
-      if(isPlaceholderAPI) {
-        if(!configFile.getBoolean("Tablist_Use_Displayname")) {
-          player.setPlayerListName(
-            Utilities.colourise(PlaceholderAPI.setPlaceholders(player,
-              playerPrefix + player.getName() + playerSuffix)
-            ));
-          return;
-        }
-        player.setPlayerListName(
-          Utilities.colourise(PlaceholderAPI.setPlaceholders(player,
-            playerPrefix + player.getDisplayName() + playerSuffix)
-          ));
-        return;
-      }
-
-      player.setPlayerListName(Utilities.colourise(playerPrefix + player.getName() + playerSuffix));
-      return;
-    }
-
-    if(configFile.getBoolean("Tablist_Name_Colour") && !configFile.getBoolean("Tablist_Prefix_Suffix")) {
-      if(!configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false).isEmpty()) {
-        for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
-
-          if(Utilities.checkPermission(player, false, "stylizer.namecolour.groups." + groupName.toLowerCase())) {
-            if(isPlaceholderAPI) {
-              player.setPlayerListName(
-                Utilities.colourise(PlaceholderAPI.setPlaceholders(player,
-                  groupNameColour(groupName) + player.getName()
-                  )
-                ));
-              return;
-            }
-
-            player.setPlayerListName(
-              Utilities.colourise(
-                groupNameColour(groupName) + player.getName()
-              )
-            );
-            return;
-          }
-          player.setPlayerListName(Utilities.colourise(
-            playerNameColour(player)
-          ));
-          return;
-        }
-      }
-      return;
-    }
-
-    if(configFile.getBoolean("Tablist_Name_Colour") && configFile.getBoolean("Tablist_Prefix_Suffix") && player.isOnline()) {
-      if(!configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false).isEmpty()) {
-        for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
-
-          if(Utilities.checkPermission(player, false, "stylizer.namecolour.groups." + groupName.toLowerCase())) {
-
-            if(isPlaceholderAPI) {
-              player.setPlayerListName(
-                Utilities.colourise(PlaceholderAPI.setPlaceholders(player,
-                  playerPrefix + groupNameColour(groupName) + player.getName() + playerSuffix)
-                ));
-              return;
-            }
-
-            player.setPlayerListName(
-              Utilities.colourise(PlaceholderAPI.setPlaceholders(player,
-                playerPrefix + groupNameColour(groupName) + player.getName() + playerSuffix)
-              ));
-            return;
-          }
-
-          if(isPlaceholderAPI) {
-            player.setPlayerListName(Utilities.colourise(PlaceholderAPI.setPlaceholders(player,
-              playerPrefix + playerNameColour(player) + player.getName() + playerSuffix
-            )));
-            return;
-          }
-          player.setPlayerListName(Utilities.colourise(
-            playerPrefix + playerNameColour(player) + playerSuffix
-          ));
-          return;
-
-        }
       }
     }
   }
@@ -177,5 +99,18 @@ public class TablistManager {
     }
 
     return plugin.getSettingsHandler().getPlayerData().getConfig().getString(player.getUniqueId() + ".Name_Colour");
+  }
+
+  private String setFormat(@NotNull final Player player, @NotNull String tablistFormat) {
+    String finalFormat = tablistFormat.replace("%playername%", player.getName());
+    finalFormat = finalFormat.replace("%displayname%", player.getDisplayName());
+    finalFormat = finalFormat.replace("%prefix%", playerPrefix);
+    finalFormat = finalFormat.replace("%suffix%", playerSuffix);
+
+    if(isPlaceholderAPI) {
+      return Utilities.colourise(PlaceholderAPI.setPlaceholders(player, finalFormat));
+    }
+
+    return Utilities.colourise(finalFormat);
   }
 }
