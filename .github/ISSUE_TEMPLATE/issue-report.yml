@@ -1,6 +1,9 @@
 name: Issue reports
 description: Report any issues that you encounter with Stylizer
-labels: ["type: issue"]
+title: "[Bug]: "
+labels: ["bug"]
+assignees:
+  - OmegaWeaponDev
 body:
   - type: markdown
     attributes:

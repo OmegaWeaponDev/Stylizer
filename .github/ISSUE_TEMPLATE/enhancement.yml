@@ -1,6 +1,9 @@
 name: Enhancements
 description: Feature requests and plugin Enhancements
-labels: ["type: suggestion"]
+title: "[Feature]: "
+labels: ["enhancement"]
+assignees:
+  - OmegaWeaponDev
 body:
   - type: markdown
     attributes:

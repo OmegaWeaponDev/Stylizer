@@ -10,6 +10,12 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.1'
 }
 
+group = 'me.omegaweapondev'
+version = '2.0.33'
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
 repositories {
     mavenLocal()
     maven {
@@ -52,11 +58,17 @@ dependencies {
 
 }
 
-group = 'me.omegaweapondev'
-version = '2.0.32'
-
-sourceCompatibility = 11
-targetCompatibility = 11
+tasks.processResources {
+    filesMatching("plugin.yml") {
+        expand(
+            "name": project.name,
+            "version": project.version,
+            "mainClass": project.group + ".stylizer.Stylizer",
+            "apiVersion": 1.13,
+            "author": 'OmegaWeaponDev'
+        )
+    }
+}
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'

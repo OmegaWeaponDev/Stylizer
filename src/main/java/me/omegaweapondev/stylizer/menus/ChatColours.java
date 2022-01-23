@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,16 +37,26 @@ public class ChatColours extends MenuCreator {
     }
 
     setItem(34, createItemStack("SPONGE", Utilities.colourise("#570000Current"), Utilities.colourise(Arrays.asList("#ff4a4aClick here to view", "#ff4a4ayour current chat colour"))), player -> {
-      Utilities.message(player, messageHandler.string("Current_Chat_Colour", "#14abc9Your name colour has been changed to: %chatcolour%").replace("%chatcolour%", plugin.getSettingsHandler().getPlayerData().getConfig().getString(player.getUniqueId().toString() + ".Chat_Colour")));
+      Utilities.message(player, messageHandler.string("Current_Chat_Colour", "#14abc9Your name colour has been changed to: %chatcolour%").replace("%chatcolour%", plugin.getSettingsHandler().getPlayerData().getConfig().getString(player.getUniqueId() + ".Chat_Colour")));
     });
   }
 
   private void createItem(final Integer slot, final String material, final String name, final String colour) {
-    setItem(slot, createItemStack(material, name, messageHandler.stringList("Chat_Colour_GUI.Colour_Lore", Arrays.asList("&cClick here to change", "&cyour chat colour to", colour + name))), player -> {
+    setItem(slot, createItemStack(material, Utilities.colourise(colour + name), Utilities.colourise(loreMessage(messageHandler.stringList("Chat_Colour_GUI.Colour_Lore", Arrays.asList("#ff4a4aClick here to change", "#ff4a4ayour chat colour to", colour + name)), colour + name))), player -> {
       final GUIPermissionsChecker permChecker = new GUIPermissionsChecker(plugin, player, name, colour);
 
       permChecker.chatColourPermsCheck();
     });
+  }
+
+  private List<String> loreMessage(final List<String> lore, String name) {
+    List<String> formattedLore = new ArrayList<>();
+
+    for(String message : lore) {
+      formattedLore.add(message.replace("%chatcolour%", name));
+    }
+
+    return formattedLore;
   }
 
   private ItemStack createItemStack(final String material, final String name, final List<String> lore) {
