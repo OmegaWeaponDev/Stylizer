@@ -132,6 +132,9 @@ public class Stylizer extends JavaPlugin {
   }
 
   private void spigotUpdater() {
+    if(!getSettingsHandler().getConfigFile().getConfig().getBoolean("Update_Messages")) {
+      return;
+    }
     // The Updater
     new SpigotUpdater(plugin, 78327).getVersion(version -> {
       int spigotVersion = Integer.parseInt(version.replace(".", ""));

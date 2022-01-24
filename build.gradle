@@ -11,7 +11,7 @@ plugins {
 }
 
 group = 'me.omegaweapondev'
-version = '2.0.33'
+version = '2.0.34'
 
 sourceCompatibility = 11
 targetCompatibility = 11

@@ -19,13 +19,13 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class PlayerListener implements Listener {
   private final Stylizer plugin;
   private final FileConfiguration configFile;
-  private final FileConfiguration userData;
 
   private TablistManager tablistManager;
   private PlayerUtil playerUtil;
@@ -33,7 +33,6 @@ public class PlayerListener implements Listener {
   public PlayerListener(final Stylizer plugin) {
     this.plugin = plugin;
     configFile = plugin.getSettingsHandler().getConfigFile().getConfig();
-    userData = plugin.getSettingsHandler().getPlayerData().getConfig();
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
@@ -51,28 +50,7 @@ public class PlayerListener implements Listener {
       Bukkit.getScheduler().runTaskTimer(plugin, this::formatTablistAndNames, 20L * 5, 20 * 20L);
     }
 
-
-    // Send the player a message on join if there is an update for the plugin
-    if(Utilities.checkPermissions(player, true, "stylizer.update", "stylizer.admin")) {
-      new SpigotUpdater(plugin, 78327).getVersion(version -> {
-        int spigotVersion = Integer.parseInt(version.replace(".", ""));
-        int pluginVersion = Integer.parseInt(plugin.getDescription().getVersion().replace(".", ""));
-
-        if(pluginVersion >= spigotVersion) {
-          MessageHandler messageHandler = new MessageHandler(plugin, plugin.getSettingsHandler().getMessagesFile().getConfig());
-
-          Utilities.message(player, messageHandler.getPrefix() + "#00D4FFYou are already running the latest version");
-          return;
-        }
-
-        PluginDescriptionFile pdf = plugin.getDescription();
-        Utilities.message(player,
-          "#00D4FFA new version of #FF4A4A" + pdf.getName() + " #00D4FFis avaliable!",
-          "#00D4FFCurrent Version: #FF4A4A" + pdf.getVersion() + " #00D4FF> New Version: #FF4A4A" + version,
-          "#00D4FFGrab it here:#FF4A4A https://www.spigotmc.org/resources/stylizer.78327/"
-        );
-      });
-    }
+    SpigotUpdater(player);
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
@@ -153,6 +131,34 @@ public class PlayerListener implements Listener {
         player.setScoreboard(scoreboard);
         break;
       }
+    }
+  }
+
+  private void SpigotUpdater(@NotNull final Player player) {
+    if(!configFile.getBoolean("Update_Messages")) {
+      return;
+    }
+
+    // Send the player a message on join if there is an update for the plugin
+    if(Utilities.checkPermissions(player, true, "stylizer.update", "stylizer.admin")) {
+      new SpigotUpdater(plugin, 78327).getVersion(version -> {
+        int spigotVersion = Integer.parseInt(version.replace(".", ""));
+        int pluginVersion = Integer.parseInt(plugin.getDescription().getVersion().replace(".", ""));
+
+        if(pluginVersion >= spigotVersion) {
+          MessageHandler messageHandler = new MessageHandler(plugin, plugin.getSettingsHandler().getMessagesFile().getConfig());
+
+          Utilities.message(player, messageHandler.getPrefix() + "#00D4FFYou are already running the latest version");
+          return;
+        }
+
+        PluginDescriptionFile pdf = plugin.getDescription();
+        Utilities.message(player,
+          "#00D4FFA new version of #FF4A4A" + pdf.getName() + " #00D4FFis avaliable!",
+          "#00D4FFCurrent Version: #FF4A4A" + pdf.getVersion() + " #00D4FF> New Version: #FF4A4A" + version,
+          "#00D4FFGrab it here:#FF4A4A https://www.spigotmc.org/resources/stylizer.78327/"
+        );
+      });
     }
   }
 }
