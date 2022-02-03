@@ -1,6 +1,7 @@
 package me.omegaweapondev.stylizer.events;
 
 import me.omegaweapondev.stylizer.Stylizer;
+import me.omegaweapondev.stylizer.utilities.MessageAnnouncements;
 import me.omegaweapondev.stylizer.utilities.MessageHandler;
 import me.omegaweapondev.stylizer.utilities.PlayerUtil;
 import me.omegaweapondev.stylizer.utilities.TablistManager;
@@ -50,12 +51,16 @@ public class PlayerListener implements Listener {
       Bukkit.getScheduler().runTaskTimer(plugin, this::formatTablistAndNames, 20L * 5, 20 * 20L);
     }
 
+    if(Bukkit.getOnlinePlayers().size() == 1) {
+      messageAnnouncements();
+    }
+
     SpigotUpdater(player);
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onPlayerQuit(PlayerQuitEvent playerQuitEvent) {
-    if(Bukkit.getOnlinePlayers().size() < 2) {
+    if(Bukkit.getOnlinePlayers().size() - 1 <= 0) {
       Bukkit.getScheduler().cancelTasks(plugin);
     }
   }
@@ -160,5 +165,22 @@ public class PlayerListener implements Listener {
         );
       });
     }
+  }
+
+  private void messageAnnouncements() {
+    if(!configFile.getBoolean("Announcement_Messages.Enabled")) {
+      return;
+    }
+
+    if(configFile.getConfigurationSection("Announcement_Messages.Messages").getKeys(false).isEmpty()) {
+      return;
+    }
+
+    MessageAnnouncements messageAnnouncements = new MessageAnnouncements(plugin);
+
+    Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, messageAnnouncements::broadcastAnnouncements,
+    20L * plugin.getSettingsHandler().getConfigFile().getConfig().getInt("Announcement_Messages.Interval"),
+    20L * plugin.getSettingsHandler().getConfigFile().getConfig().getInt("Announcement_Messages.Interval")
+    );
   }
 }

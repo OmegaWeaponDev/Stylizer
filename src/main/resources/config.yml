@@ -249,16 +249,16 @@ Announcement_Messages:
       Hover:
         Enabled: true
         Hover_Message:
-          - "#FF4A4AOur Website"
-          - "#FF4A4AAll are welcome!"
+          - "#FF4A4AIf you vote for us, you will"
+          - "#FF4A4Aget some amazing shiny new rewards."
+          - "#FF4A4ASo what are you waiting for? Vote!"
     website:
       Message: "#90fc03Get a free member rank on our website! www.ourwebsite.com/member"
       Hover:
         Enabled: true
         Hover_Message:
-          - "#FF4A4AIf you vote for us, you will"
-          - "#FF4A4Aget some amazing shiny new rewards."
-          - "#FF4A4ASo what are you waiting for? Vote!"
+          - "#FF4A4AOur Website"
+          - "#FF4A4AAll are welcome!"
     discord:
       Message: "#90FC03Join our amazing discord community! discord.gg/fakediscordserver"
       Hover:

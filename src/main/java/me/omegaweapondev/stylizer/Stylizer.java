@@ -7,7 +7,6 @@ import me.omegaweapondev.stylizer.events.PlayerListener;
 import me.omegaweapondev.stylizer.events.ServerPingListener;
 import me.omegaweapondev.stylizer.menus.ChatColours;
 import me.omegaweapondev.stylizer.menus.NameColours;
-import me.omegaweapondev.stylizer.utilities.MessageAnnouncements;
 import me.omegaweapondev.stylizer.utilities.Placeholders;
 import me.omegaweapondev.stylizer.utilities.SettingsHandler;
 import me.ou.library.SpigotUpdater;
@@ -16,7 +15,6 @@ import me.ou.library.menus.MenuCreator;
 import net.milkbowl.vault.chat.Chat;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -64,7 +62,6 @@ public class Stylizer extends JavaPlugin {
     eventsSetup();
     guiSetup();
     spigotUpdater();
-    messageAnnouncements();
   }
 
   @Override
@@ -152,19 +149,6 @@ public class Stylizer extends JavaPlugin {
         "Grab it here: https://www.spigotmc.org/resources/stylizer.78327/"
       );
     });
-  }
-
-  private void messageAnnouncements() {
-    Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-        if(!Bukkit.getOnlinePlayers().isEmpty()) {
-          for(Player player : Bukkit.getOnlinePlayers()) {
-            MessageAnnouncements messageAnnouncements = new MessageAnnouncements(plugin, player);
-            messageAnnouncements.broadcastAnnouncements();
-          }
-        }},
-      20L * getSettingsHandler().getConfigFile().getConfig().getInt("Announcement_Messages.Interval"),
-      20L * getSettingsHandler().getConfigFile().getConfig().getInt("Announcement_Messages.Interval")
-    );
   }
 
   private boolean setupChat() {
