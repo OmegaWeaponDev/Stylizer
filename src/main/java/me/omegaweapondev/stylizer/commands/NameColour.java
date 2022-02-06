@@ -86,13 +86,6 @@ public class NameColour extends GlobalCommand implements TabCompleter {
       return;
     }
 
-    if(player != null) {
-      if(!Utilities.checkPermissions(player, true, "stylizer.namecolour.add", "stylizer.admin")) {
-        Utilities.message(player, messageHandler.string("No_Permission", "&cSorry, you do not have permission to do that."));
-        return;
-      }
-    }
-
     if(target == null) {
       if(player != null) {
         Utilities.message(player, messageHandler.string("Invalid_Player", "&cSorry, that player cannot be found."));
@@ -104,6 +97,24 @@ public class NameColour extends GlobalCommand implements TabCompleter {
 
     if(nameColour.equalsIgnoreCase("")) {
       removeNameColour(player, strings);
+      return;
+    }
+
+    if(target == player) {
+      if(!Utilities.checkPermissions(player, true, "stylizer.namecolour.add.self", "stylizier.namecolour.admin", "stylizer.admin")) {
+        Utilities.message(player, messageHandler.string("No_Permission", "&cSorry, you do not have permission to do that."));
+        return;
+      }
+
+      target.setDisplayName(Utilities.colourise(nameColour + target.getName()));
+      playerData.set(target.getUniqueId() + ".Name_Colour", nameColour);
+      plugin.getSettingsHandler().getPlayerData().saveConfig();
+      Utilities.message(target, messageHandler.string("Name_Colour_Applied", "&bYour name colour has been changed to: %namecolour%").replace("%namecolour%", nameColour + player.getName()));
+      return;
+    }
+
+    if(!Utilities.checkPermissions(player, true, "stylizer.namecolour.add.others", "stylizer.namecolour.admin", "stylizer.admin")) {
+      Utilities.message(player, messageHandler.string("No_Permission", "&cSorry, you do not have permission to do that."));
       return;
     }
 
@@ -120,13 +131,6 @@ public class NameColour extends GlobalCommand implements TabCompleter {
       return;
     }
 
-    if(player != null) {
-      if(!Utilities.checkPermissions(player, true, "stylizer.namecolour.remove", "stylizer.admin")) {
-        Utilities.message(player, messageHandler.string("No_Permission", "&cSorry, you do not have permission to do that."));
-        return;
-      }
-    }
-
     if(target == null) {
       if(player != null) {
         Utilities.message(player, messageHandler.string("Invalid_Player", "&cSorry, that player cannot be found."));
@@ -136,8 +140,25 @@ public class NameColour extends GlobalCommand implements TabCompleter {
       return;
     }
 
-    for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
+    if(target == player) {
+      if(!Utilities.checkPermissions(player, true, "stylizer.namecolour.remove.self", "stylizier.namecolour.admin", "stylizer.admin")) {
+        Utilities.message(player, messageHandler.string("No_Permission", "&cSorry, you do not have permission to do that."));
+        return;
+      }
 
+      getNewNameColour(target);
+    }
+
+    if(!Utilities.checkPermissions(player, true, "stylizer.namecolour.remove.others", "stylizer.namecolour.admin", "stylizer.admin")) {
+      Utilities.message(player, messageHandler.string("No_Permission", "&cSorry, you do not have permission to do that."));
+      return;
+    }
+
+    getNewNameColour(target);
+  }
+
+  private void getNewNameColour(final Player target) {
+    for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
       if(Utilities.checkPermission(target, false, "stylizer.namecolour.groups." + groupName)) {
         target.setDisplayName(Utilities.colourise(configFile.getString("Group_Name_Colour.Groups." + groupName) + target.getName()));
         playerData.set(target.getUniqueId() + ".Name_Colour", null);
@@ -145,20 +166,19 @@ public class NameColour extends GlobalCommand implements TabCompleter {
         Utilities.message(target, messageHandler.string("Name_Colour_Removed", "&cYour name colour has been reverted to the default colour"));
         return;
       }
-
-      target.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "&e") + target.getName()));
-      playerData.set(target.getUniqueId() + ".Name_Colour", configFile.getString("Default_Name_Colour", "&e"));
-      plugin.getSettingsHandler().getPlayerData().saveConfig();
-      Utilities.message(target, messageHandler.string("Name_Colour_Removed", "&cYour name colour has been reverted to the default colour"));
     }
+    target.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "&e") + target.getName()));
+    playerData.set(target.getUniqueId() + ".Name_Colour", configFile.getString("Default_Name_Colour", "&e"));
+    plugin.getSettingsHandler().getPlayerData().saveConfig();
+    Utilities.message(target, messageHandler.string("Name_Colour_Removed", "&cYour name colour has been reverted to the default colour"));
   }
 
   @Override
   public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, String[] strings) {
     if(strings.length <= 1) {
       return new TabCompleteBuilder(commandSender)
-        .checkCommand("add", true, "stylizer.namecolour.add", "stylizer.admin")
-        .checkCommand("remove", true, "stylizer.namecolour.remove", "stylizer.admin")
+        .checkCommand("add", true, "stylizer.namecolour.add.self", "stylizer.namecolour.add.others", "stylizer.namecolour.admin", "stylizer.admin")
+        .checkCommand("remove", true, "stylizer.namecolour.remove.self", "stylizer.namecolour.remove.others", "stylizer.namecolour.admin", "stylizer.admin")
         .build(strings[0]);
     }
 

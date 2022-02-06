@@ -39,20 +39,32 @@ permissions:
       - stylizer.reload
       - stylizer.update
       - stylizer.debug
-      - stylizer.namecolour.add
-      - stylizer.namecolour.remove
+      - stylizer.namecolour.admin
+      - stylizer.chatcolour.admin
+      - stylizer.itemnamer.admin
+      - stylizer.clearlog
+  stylizer.namecolour.admin:
+    description: Grants the user all the name colour permissions
+    default: false
+    children:
+      - stylizer.namecolour.add.self
+      - stylizer.namecolour.add.target
+      - stylizer.namecolour.remove.self
+      - stylizer.namecolour.remove.target
       - stylizer.namecolour.colours
       - stylizer.namecolour.colour.all
       - stylizer.namecolour.login
       - stylizer.namecolour.open
+  stylizer.chatcolour.admin:
+    description: Grants the user all the chat colour permissions
+    default: false
+    children:
       - stylizer.chatcolour.add
       - stylizer.chatcolour.remove
       - stylizer.chatcolour.colours
       - stylizer.chatcolour.colour.all
       - stylizer.chatcolour.login
       - stylizer.chatcolour.open
-      - stylizer.itemnamer.admin
-      - stylizer.clearlog
   stylizer.reload:
     description: Grants the user access to the reload command
     default: false
@@ -71,11 +83,17 @@ permissions:
   stylizer.namecolour.colour.all:
     description: Allows the user to use all the colours if Per_Name_Colour_Permissions is enabled
     default: false
-  stylizer.namecolour.add:
-    description: Allows the user to use the name colour add command
+  stylizer.namecolour.add.self:
+    description: Allows the user to use the name colour add self command
     default: false
-  stylizer.namecolour.remove:
-    description: Allows the user to use the name colour remove command
+  stylizer.namecolour.add.target:
+    description: Allows the user to use the name colour add others command
+    default: false
+  stylizer.namecolour.remove.self:
+    description: Allows the user to use the name colour remove self command
+    default: false
+  stylizer.namecolour.remove.target:
+    description: Allows the user to use the name colour remove others command
     default: false
   stylizer.debug:
     description: Allows the user to use the debug command
