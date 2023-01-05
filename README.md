@@ -43,7 +43,7 @@ If at any stage you come across a sneaky bug that I was unable to locate during 
 
 ### **Discord**
  <a href="https://discord.gg/9nZTPcp">
-    <img src="[https://static.jeff-media.com/img/button_javadocs.png?3](https://i.imgur.com/yQIZDR6.png)" alt="Join my Discord">
+    <img src="https://i.imgur.com/yQIZDR6.png" alt="Join my Discord">
   </a>
 
 I have spent some time setting up a discord server that you are welcome to join at any time. Here you are able to seek help, have a chat, be informed of any updates or announcements and just be apart of a great community. You can join the community or invite your friends to the discord community by using this link: https://discord.gg/9nZTPcp
