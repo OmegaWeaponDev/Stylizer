@@ -9,23 +9,23 @@ import me.omegaweapondev.stylizer.menus.ChatColours;
 import me.omegaweapondev.stylizer.menus.NameColours;
 import me.omegaweapondev.stylizer.utilities.Placeholders;
 import me.omegaweapondev.stylizer.utilities.SettingsHandler;
-import me.ou.library.SpigotUpdater;
 import me.ou.library.Utilities;
 import me.ou.library.menus.MenuCreator;
 import net.milkbowl.vault.chat.Chat;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 public class Stylizer extends JavaPlugin {
   private Stylizer plugin;
+  private SettingsHandler settingsHandler;
   private NameColours nameColourGUI;
   private ChatColours chatColourGUI;
-  private SettingsHandler settingsHandler;
-
-  private static Chat chat = null;
+  private Chat chat = null;
+  private final Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 
   @Override
   public void onEnable() {
@@ -60,8 +60,7 @@ public class Stylizer extends JavaPlugin {
     getSettingsHandler().configUpdater();
     commandSetup();
     eventsSetup();
-    guiSetup();
-    spigotUpdater();
+    registerTablistTeams();
   }
 
   @Override
@@ -71,12 +70,27 @@ public class Stylizer extends JavaPlugin {
       nameColourGUI.deleteInventory();
       chatColourGUI.deleteInventory();
     }
+
+    if (!Bukkit.getScoreboardManager().getMainScoreboard().getTeams().isEmpty()) {
+      for(Team team : scoreboard.getTeams()) {
+        team.unregister();
+      }
+    }
+
     super.onDisable();
   }
 
   public void onReload() {
     // Reload the files
     getSettingsHandler().reloadFiles();
+  }
+
+  private void guiSetup() {
+
+    // Create the GUI's
+    nameColourGUI = new NameColours(plugin);
+    chatColourGUI = new ChatColours(plugin);
+
   }
 
   private void initialSetup() {
@@ -96,16 +110,8 @@ public class Stylizer extends JavaPlugin {
     }
 
     // Setup bStats
-    final int bstatsPluginId = 7490;
+    final int bstatsPluginId = 17447;
     Metrics metrics = new Metrics(plugin, bstatsPluginId);
-  }
-
-  private void guiSetup() {
-
-    // Create the GUI's
-    nameColourGUI = new NameColours(plugin);
-    chatColourGUI = new ChatColours(plugin);
-
   }
 
   private void commandSetup() {
@@ -113,48 +119,36 @@ public class Stylizer extends JavaPlugin {
 
     Utilities.setCommand().put("stylizer", new MainCommand(plugin));
     Utilities.setCommand().put("namecolour", new NameColour(plugin));
-    Utilities.setCommand().put("stylizerdebug", new DebugCommand(plugin));
     Utilities.setCommand().put("itemnamer", new ItemNamer(plugin));
-    Utilities.setCommand().put("stylizerclearlog", new ClearLog(plugin));
     Utilities.setCommand().put("chatcolour", new ChatColour(plugin));
-
-
     Utilities.registerCommands();
 
-    Utilities.logInfo(true, "Commands Registered: " + Utilities.setCommand().size() + " / 6");
+    Utilities.logInfo(true, "Commands Registered: " + Utilities.setCommand().size() + " / 4");
   }
 
   private void eventsSetup() {
-    Utilities.registerEvents(new PlayerListener(plugin), new MenuListener(), new ChatListener(plugin), new ServerPingListener(plugin));
-  }
-
-  private void spigotUpdater() {
-    if(!getSettingsHandler().getConfigFile().getConfig().getBoolean("Update_Messages")) {
-      return;
-    }
-    // The Updater
-    new SpigotUpdater(plugin, 78327).getVersion(version -> {
-      int spigotVersion = Integer.parseInt(version.replace(".", ""));
-      int pluginVersion = Integer.parseInt(plugin.getDescription().getVersion().replace(".", ""));
-
-      if(pluginVersion >= spigotVersion) {
-        Utilities.logInfo(true, "You are already running the latest version");
-        return;
-      }
-
-      PluginDescriptionFile pdf = plugin.getDescription();
-      Utilities.logWarning(true,
-        "A new version of " + pdf.getName() + " is avaliable!",
-        "Current Version: " + pdf.getVersion() + " > New Version: " + version,
-        "Grab it here: https://www.spigotmc.org/resources/stylizer.78327/"
-      );
-    });
+    Utilities.registerEvents(new PlayerListener(plugin), new MenuListener(plugin), new ChatListener(plugin), new ServerPingListener(plugin));
   }
 
   private boolean setupChat() {
     RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
     chat = rsp.getProvider();
     return chat != null;
+  }
+
+  private void registerTablistTeams() {
+    if(settingsHandler.getConfigFile().getConfig().getBoolean("Tablist.Sorting_Order.Enabled")) {
+      for(String configGroup : settingsHandler.getConfigFile().getConfig().getConfigurationSection("Tablist.Sorting_Order.Order").getKeys(false)) {
+        Team team = scoreboard.getTeam("group_" + configGroup);
+        if (team == null) {
+          scoreboard.registerNewTeam("group_" + configGroup);
+        }
+      }
+    }
+  }
+
+  public boolean isPlaceholderAPI() {
+    return Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
   }
 
   public NameColours getNameColourGUI() {

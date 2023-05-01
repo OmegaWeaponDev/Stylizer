@@ -1,7 +1,7 @@
 package me.omegaweapondev.stylizer.utilities;
 
-import me.omegaweapondev.stylizer.Stylizer;
 import me.ou.library.Utilities;
+import me.omegaweapondev.stylizer.Stylizer;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;

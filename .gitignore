@@ -1,4 +1,11 @@
-/.idea/
-/Stylizer.iml
-/build/
-/.gradle/
+.gradle/
+build/
+libs/
+
+*.iml
+*.ipr
+*.iws
+.idea/
+out/
+/gradle/
+/Notes

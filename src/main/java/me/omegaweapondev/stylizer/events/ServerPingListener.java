@@ -1,19 +1,19 @@
 package me.omegaweapondev.stylizer.events;
 
-import me.omegaweapondev.stylizer.Stylizer;
 import me.ou.library.Utilities;
+import me.omegaweapondev.stylizer.Stylizer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerListPingEvent;
 
+import java.util.List;
+
 public class ServerPingListener implements Listener {
-  private final Stylizer plugin;
   private final FileConfiguration configFile;
 
   public ServerPingListener(final Stylizer plugin) {
-    this.plugin = plugin;
     configFile = plugin.getSettingsHandler().getConfigFile().getConfig();
   }
 
@@ -24,11 +24,13 @@ public class ServerPingListener implements Listener {
       return;
     }
 
-    String serverMOTD = "";
+    final List<String> configMotd = configFile.getStringList("Server_Listing.Format");
+    final StringBuilder motd = new StringBuilder();
 
-    for(String string : configFile.getStringList("Server_Listing.Format")) {
-      serverMOTD = serverMOTD.concat(Utilities.colourise(string) + "\n");
+    for(String string : configMotd) {
+      motd.append(string).append("\n");
     }
-    listPingEvent.setMotd(serverMOTD);
+
+    listPingEvent.setMotd(Utilities.componentSerializerFromString(motd.toString()));
   }
 }

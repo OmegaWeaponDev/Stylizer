@@ -2,6 +2,7 @@ package me.omegaweapondev.stylizer.events;
 
 import me.ou.library.Utilities;
 import me.ou.library.menus.MenuCreator;
+import me.omegaweapondev.stylizer.Stylizer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,6 +17,11 @@ import org.bukkit.inventory.ItemStack;
 import java.util.UUID;
 
 public class MenuListener implements Listener {
+  final Stylizer plugin;
+
+  public MenuListener(final Stylizer plugin) {
+    this.plugin = plugin;
+  }
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onClick(InventoryClickEvent e) {
@@ -37,7 +43,8 @@ public class MenuListener implements Listener {
       return;
     }
 
-    if(clickedItem.getItemMeta().getDisplayName().equals(Utilities.colourise("#FF4A4AInvalid Item"))) {
+
+    if(clickedItem.getItemMeta().getDisplayName().equals(Utilities.componentSerializerFromString("#FF4A4AInvalid Item"))) {
       return;
     }
 

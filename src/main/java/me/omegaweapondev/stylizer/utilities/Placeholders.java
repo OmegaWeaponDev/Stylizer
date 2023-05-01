@@ -3,7 +3,6 @@ package me.omegaweapondev.stylizer.utilities;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.omegaweapondev.stylizer.Stylizer;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 public class Placeholders extends PlaceholderExpansion {
 
@@ -96,7 +95,7 @@ public class Placeholders extends PlaceholderExpansion {
    * @return possibly-null String of the requested identifier.
    */
   @Override
-  public String onPlaceholderRequest(Player player, @NotNull String identifier){
+  public String onPlaceholderRequest(Player player, String identifier){
     if(player == null){
       return "";
     }

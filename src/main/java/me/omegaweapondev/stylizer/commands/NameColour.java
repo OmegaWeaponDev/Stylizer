@@ -1,10 +1,10 @@
 package me.omegaweapondev.stylizer.commands;
 
-import me.omegaweapondev.stylizer.Stylizer;
-import me.omegaweapondev.stylizer.utilities.MessageHandler;
 import me.ou.library.Utilities;
 import me.ou.library.builders.TabCompleteBuilder;
 import me.ou.library.commands.GlobalCommand;
+import me.omegaweapondev.stylizer.Stylizer;
+import me.omegaweapondev.stylizer.utilities.MessageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -12,8 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -106,7 +104,7 @@ public class NameColour extends GlobalCommand implements TabCompleter {
         return;
       }
 
-      target.setDisplayName(Utilities.colourise(nameColour + target.getName()));
+      target.setDisplayName(Utilities.componentSerializerFromString(nameColour + target.getName()));
       playerData.set(target.getUniqueId() + ".Name_Colour", nameColour);
       plugin.getSettingsHandler().getPlayerData().saveConfig();
       Utilities.message(target, messageHandler.string("Name_Colour_Applied", "&bYour name colour has been changed to: %namecolour%").replace("%namecolour%", nameColour + player.getName()));
@@ -118,7 +116,7 @@ public class NameColour extends GlobalCommand implements TabCompleter {
       return;
     }
 
-    target.setDisplayName(Utilities.colourise(nameColour + target.getName()));
+    target.setDisplayName(Utilities.componentSerializerFromString(nameColour + target.getName()));
     playerData.set(target.getUniqueId() + ".Name_Colour", nameColour);
     plugin.getSettingsHandler().getPlayerData().saveConfig();
     Utilities.message(target, messageHandler.string("Name_Colour_Applied", "&bYour name colour has been changed to: %namecolour%").replace("%namecolour%", nameColour + player.getName()));
@@ -160,21 +158,21 @@ public class NameColour extends GlobalCommand implements TabCompleter {
   private void getNewNameColour(final Player target) {
     for(String groupName : configFile.getConfigurationSection("Group_Name_Colour.Groups").getKeys(false)) {
       if(Utilities.checkPermission(target, false, "stylizer.namecolour.groups." + groupName)) {
-        target.setDisplayName(Utilities.colourise(configFile.getString("Group_Name_Colour.Groups." + groupName) + target.getName()));
+        target.setDisplayName(Utilities.componentSerializerFromString(configFile.getString("Group_Name_Colour.Groups." + groupName) + target.getName()));
         playerData.set(target.getUniqueId() + ".Name_Colour", null);
         plugin.getSettingsHandler().getPlayerData().saveConfig();
         Utilities.message(target, messageHandler.string("Name_Colour_Removed", "&cYour name colour has been reverted to the default colour"));
         return;
       }
     }
-    target.setDisplayName(Utilities.colourise(configFile.getString("Default_Name_Colour", "&e") + target.getName()));
+    target.setDisplayName(Utilities.componentSerializerFromString(configFile.getString("Default_Name_Colour", "&e") + target.getName()));
     playerData.set(target.getUniqueId() + ".Name_Colour", configFile.getString("Default_Name_Colour", "&e"));
     plugin.getSettingsHandler().getPlayerData().saveConfig();
     Utilities.message(target, messageHandler.string("Name_Colour_Removed", "&cYour name colour has been reverted to the default colour"));
   }
 
   @Override
-  public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, String[] strings) {
+  public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
     if(strings.length <= 1) {
       return new TabCompleteBuilder(commandSender)
         .checkCommand("add", true, "stylizer.namecolour.add.self", "stylizer.namecolour.add.others", "stylizer.namecolour.admin", "stylizer.admin")
@@ -182,7 +180,7 @@ public class NameColour extends GlobalCommand implements TabCompleter {
         .build(strings[0]);
     }
 
-    if(strings.length <= 2 && strings[0].equalsIgnoreCase("add")) {
+    if(strings.length == 2 && strings[0].equalsIgnoreCase("add")) {
       List<String> players = new ArrayList<>();
       for(Player player : Bukkit.getOnlinePlayers()) {
         players.add(player.getName());

@@ -1,10 +1,9 @@
 package me.omegaweapondev.stylizer.utilities;
 
-import me.omegaweapondev.stylizer.Stylizer;
 import me.ou.library.Utilities;
+import me.omegaweapondev.stylizer.Stylizer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 public class PlayerUtil {
   private final Stylizer plugin;
@@ -12,7 +11,7 @@ public class PlayerUtil {
   private final FileConfiguration configFile;
   private final FileConfiguration userData;
 
-  public PlayerUtil(@NotNull final Stylizer plugin, @NotNull final Player player) {
+  public PlayerUtil(final Stylizer plugin, final Player player) {
     this.plugin = plugin;
     this.player = player;
 

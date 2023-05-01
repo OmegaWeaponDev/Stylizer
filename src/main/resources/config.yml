@@ -6,13 +6,8 @@
 #  customize to your server needs. Most features are customizable
 #  to an extent.
 #
-#  For help you can visit the wiki at: https://github.com/OmegaWeaponDev/OmegaNames/wiki
-#  If you have any issues, report them here: https://github.com/OmegaWeaponDev/OmegaNames/issues
-#
-#  Stylizer Placeholders:
-#    %displayname% - Gets the players namecolour and name.
-#    %message% - Gets the players chat message.
-#
+#  For help, you can visit the wiki at: https://github.com/OmegaWeaponDev/Stylizer/wiki
+#  If you have any issues, report them here: https://github.com/OmegaWeaponDev/Stylizer/issues
 #
 # -------------------------------------------------------------------------------------------
 
@@ -142,7 +137,7 @@ Chat_Colour_Items:
 # Group Specific name colours.
 # Use the permission `stylizer.namecolour.groups.<group name>`
 Group_Name_Colour:
-  # Whether or not you want per-group name colours
+  # Whether you want per-group name colours
   Enabled: true
   # The groups and their respective name colour
   Groups:
@@ -152,7 +147,7 @@ Group_Name_Colour:
 # Group Specific chat colours.
 # Use the permission `stylizer.chatcolour.groups.<group chat>`
 Group_Chat_Colour:
-  # Whether or not you want per-group chat colours
+  # Whether you want per-group chat colours
   Enabled: true
   # The groups and their respective chat colour
   Groups:
@@ -162,7 +157,7 @@ Group_Chat_Colour:
 # Here you are able to stylize how your chat messages look!
 # All PlaceholderAPI placeholders can be used!
 Chat_Settings:
-  # Whether or not you want Stylizer to style the chat.
+  # Whether you want Stylizer to style the chat.
   Enabled: true
   # Whether you want Stylizer to log all the chat messages.
   Log_Chat_Messages: false
@@ -184,7 +179,7 @@ Chat_Settings:
         member: "%prefix%%displayname%%suffix% #14abc9>> #6b6b6b%message%"
 # Stylize how you would like the tablist to look like
 Tablist:
-  # Whether or not you want Stylizer to style the tablist.
+  # Whether you want Stylizer to style the tablist.
   Enabled: true
   # The tablist header message
   # Use %player% to get the players name (Prefixes and Suffixes included)
@@ -226,9 +221,9 @@ Tablist:
         player: "%prefix% %displayname%"
 
 # Set the name colour that will be used for the above head names
-# Sadly these cannot be hex colours, thus, cannot use the normal name colours set.
+# Make sure players have the permission `stylizer.nametags.group.<group name>`
 Player_Name_Tags:
-  # Whether or not you're wanting above head names
+  # Whether you're wanting above head names
   Enabled: true
   # If you're wanting a players prefix to display above their heads.
   Player_Prefixes: true
@@ -239,7 +234,7 @@ Player_Name_Tags:
 
 # Set some special announcement messages that will be broadcast to your whole server.
 Announcement_Messages:
-  # Whether or not you want Stylizer to use annoucement messages.
+  # Whether you want Stylizer to use annoucement messages.
   Enabled: true
   # The messages to be broadcast
   # All messages fully support PlaceholderAPI placeholders.
@@ -273,7 +268,7 @@ Announcement_Messages:
 
 # Display a pretty message for your server in the multiplayer server list
 Server_Listing:
-  # Whether or not you want Stylizer to display a message.
+  # Whether you want Stylizer to display a message.
   Enabled: true
   # The message that you want displayed.
   Format:
@@ -284,4 +279,4 @@ Server_Listing:
 Update_Messages: true
 
 # DO NOT EDIT THIS
-Config_Version: 2.10
+Config_Version: 2.11

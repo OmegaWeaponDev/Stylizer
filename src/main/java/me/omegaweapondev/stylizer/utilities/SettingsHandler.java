@@ -6,7 +6,9 @@ import me.ou.library.configs.ConfigCreator;
 import me.ou.library.configs.ConfigUpdater;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class SettingsHandler {
   private final Stylizer plugin;
@@ -26,28 +28,30 @@ public class SettingsHandler {
     getPlayerData().createConfig();
     getChatLog().createConfig();
 
-    getChatLog().getConfig().options().header(
-      " -------------------------------------------------------------------------------------------\n" +
-        " \n" +
-        " Welcome to Stylizer's Chat Log.\n" +
-        " \n" +
-        " Below will be a list of all the chat messages that have been said.\n" +
-        " The format used to log chat messages is <timestamp>: <players name> >> <message>\n" +
-        " \n" +
-        " -------------------------------------------------------------------------------------------"
-    );
+    List<String> chatlogHeaderMessage = new ArrayList<>();
+    chatlogHeaderMessage.add(" -------------------------------------------------------------------------------------------\n");
+    chatlogHeaderMessage.add(" \n");
+    chatlogHeaderMessage.add(" Welcome to Stylizer's Chat Log.\n");
+    chatlogHeaderMessage.add(" \n");
+    chatlogHeaderMessage.add(" Below will be a list of all the chat messages that have been said.\n");
+    chatlogHeaderMessage.add(" The format used to log chat messages is <timestamp>: <players name> >> <message>\n");
+    chatlogHeaderMessage.add(" \n");
+    chatlogHeaderMessage.add(" -------------------------------------------------------------------------------------------");
+
+    getChatLog().getConfig().options().setHeader(chatlogHeaderMessage);
     getChatLog().saveConfig();
 
-    getPlayerData().getConfig().options().header(
-      " -------------------------------------------------------------------------------------------\n" +
-        " \n" +
-        " Welcome to Stylizer Player Data file.\n" +
-        " \n" +
-        " This file contains all the uuids and namecolour colours\n" +
-        " for all the players who have the permission stylizer.login\n" +
-        " \n" +
-        " -------------------------------------------------------------------------------------------"
-    );
+    List<String> playerdataHeaderMessage = new ArrayList<>();
+    playerdataHeaderMessage.add(" -------------------------------------------------------------------------------------------\n");
+    playerdataHeaderMessage.add(" \n");
+    playerdataHeaderMessage.add(" Welcome to Stylizer Player Data file.\n");
+    playerdataHeaderMessage.add(" \n");
+    playerdataHeaderMessage.add(" This file contains all the uuids and namecolour colours\n");
+    playerdataHeaderMessage.add(" for all the players who have the permission stylizer.login\n");
+    playerdataHeaderMessage.add(" \n");
+    playerdataHeaderMessage.add(" -------------------------------------------------------------------------------------------");
+
+    getPlayerData().getConfig().options().setHeader(playerdataHeaderMessage);
     getPlayerData().saveConfig();
   }
 
@@ -55,8 +59,8 @@ public class SettingsHandler {
     Utilities.logInfo(true, "Attempting to update the config files....");
 
     try {
-      if(getConfigFile().getConfig().getDouble("Config_Version") != 2.10) {
-        getConfigFile().getConfig().set("Config_Version", 2.10);
+      if(getConfigFile().getConfig().getDouble("Config_Version") != 2.11) {
+        getConfigFile().getConfig().set("Config_Version", 2.11);
         getConfigFile().saveConfig();
         ConfigUpdater.update(plugin, "config.yml", getConfigFile().getFile(), Arrays.asList("Group_Name_Colour.Groups", "Group_Chat_Colour.Groups" ,"Name_Colour_Items", "Chat_Colour_Items", "Chat_Settings.Chat_Formats.Group_Formats.Groups"));
         Utilities.logInfo(true, "Stylizer has automatically updated your config.yml!");

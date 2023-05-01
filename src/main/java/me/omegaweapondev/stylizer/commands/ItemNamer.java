@@ -10,11 +10,9 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,12 +22,10 @@ import java.util.List;
 public class ItemNamer extends PlayerCommand implements TabCompleter {
   private final Stylizer plugin;
   private final MessageHandler messageHandler;
-  private final FileConfiguration configFile;
 
   public ItemNamer(final Stylizer plugin) {
     this.plugin = plugin;
     messageHandler = new MessageHandler(plugin, plugin.getSettingsHandler().getMessagesFile().getConfig());
-    configFile = plugin.getSettingsHandler().getConfigFile().getConfig();
   }
 
   @Override
@@ -99,9 +95,10 @@ public class ItemNamer extends PlayerCommand implements TabCompleter {
         return;
       }
 
-      playerItemMeta.setDisplayName(Utilities.colourise(value));
+      playerItemMeta.setDisplayName(Utilities.componentSerializerFromString(value));
       playerItem.setItemMeta(playerItemMeta);
-      Utilities.message(player, messageHandler.string("ItemNamer.Set_Item_Name", "#14abc9You have set the items name to %itemName%").replace("%itemName%", playerItemMeta.getDisplayName()));
+      Utilities.message(player, messageHandler.string("ItemNamer.Set_Item_Name", "#14abc9You have set the items name to %itemName%")
+              .replace("%itemName%", Utilities.componentSerializerFromString(playerItemMeta.getDisplayName())));
       return;
     }
 
@@ -111,7 +108,7 @@ public class ItemNamer extends PlayerCommand implements TabCompleter {
         return;
       }
 
-      playerItemMeta.setDisplayName(Utilities.colourise("&r" + WordUtils.capitalizeFully(playerItem.getType().toString().replace("_", " "))));
+      playerItemMeta.setDisplayName(Utilities.componentSerializerFromString("&r" + WordUtils.capitalizeFully(playerItem.getType().toString().replace("_", " "))));
       playerItem.setItemMeta(playerItemMeta);
       Utilities.message(player, messageHandler.string("ItemNamer.Remove_Item_Name", "#14abc9You have removed the items name"));
     }
@@ -142,7 +139,12 @@ public class ItemNamer extends PlayerCommand implements TabCompleter {
         return;
       }
 
-      playerItemMeta.setLore(Utilities.colourise(lore));
+      final List<String> loreList = new ArrayList<>();
+      for(String loreMessage : lore) {
+        loreList.add(Utilities.componentSerializerFromString(loreMessage));
+      }
+
+      playerItemMeta.setLore(loreList);
       playerItem.setItemMeta(playerItemMeta);
       Utilities.message(player, messageHandler.string("ItemNamer.Set_Item_Lore", "#14abc9You have set the items lore"));
       return;
@@ -161,7 +163,7 @@ public class ItemNamer extends PlayerCommand implements TabCompleter {
   }
 
   @Override
-  public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, String[] strings) {
+  public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
 
     if(strings.length <= 1) {
       return new TabCompleteBuilder(commandSender)

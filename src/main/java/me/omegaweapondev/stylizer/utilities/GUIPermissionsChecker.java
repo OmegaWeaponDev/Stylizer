@@ -1,7 +1,8 @@
 package me.omegaweapondev.stylizer.utilities;
 
-import me.omegaweapondev.stylizer.Stylizer;
 import me.ou.library.Utilities;
+import me.omegaweapondev.stylizer.Stylizer;
+import me.ou.library.libs.net.kyori.adventure.text.Component;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -39,7 +40,7 @@ public class GUIPermissionsChecker {
       return;
     }
 
-    player.setDisplayName(Utilities.colourise(colour + player.getName() + "&r"));
+    player.setDisplayName(Utilities.componentSerializer(Component.text(colour + player.getName() + "&r")));
 
     playerData.set(player.getUniqueId() + ".Name_Colour", colour);
     plugin.getSettingsHandler().getPlayerData().saveConfig();
@@ -53,7 +54,7 @@ public class GUIPermissionsChecker {
       return;
     }
 
-    player.setDisplayName(Utilities.colourise(colour + player.getName() + "&r"));
+    player.setDisplayName(Utilities.componentSerializer(Component.text(colour + player.getName() + "&r")));
 
     if(!playerData.isConfigurationSection(player.getUniqueId().toString())) {
       plugin.getSettingsHandler().getPlayerData().getConfig().createSection(player.getUniqueId().toString());

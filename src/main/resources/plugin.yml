@@ -1,15 +1,13 @@
-name: ${name}
+name: Stylizer
 description: An advanced chat/tablist plugin
-version: ${version}
-api-version: ${apiVersion}
-main: ${mainClass}
-author: ${author}
+version: 2.1.0
+api-version: 1.19
+main: me.omegaweapondev.stylizer.Stlyizer
+author: OmegaWeaponDev
 
-depend:
-  - Vault
+depend: [Vault]
 
-softdepend:
-  - PlaceholderAPI
+softdepend: [PlaceholderAPI]
 
 commands:
   stylizer:
@@ -21,9 +19,6 @@ commands:
   chatcolour:
     description: The chat colour command
     aliases: [cc, chatc, chatcolours, ccolours]
-  stylizerdebug:
-    description: Display useful information to help debug issues
-    aliases: [styledebug]
   itemnamer:
     description: Edit the name and lore of an item
     aliases: [styleitem, itemstyles, itemname]

@@ -3,10 +3,10 @@ package me.omegaweapondev.stylizer.utilities;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.omegaweapondev.stylizer.Stylizer;
 import me.ou.library.Utilities;
+import me.ou.library.libs.net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 public class TablistManager {
   private final Stylizer plugin;
@@ -40,30 +40,24 @@ public class TablistManager {
       for(String headerMessage : configFile.getStringList("Tablist.Tablist_Header")) {
         header.append(headerMessage.replace("%player%", playerPrefix + playerUtil.getNameColour() + player.getName())).append("\n");
       }
-
-      player.setPlayerListHeader(PlaceholderAPI.setPlaceholders(player, Utilities.colourise(header.toString())));
+      player.setPlayerListHeader(Utilities.componentSerializer(Component.text(PlaceholderAPI.setPlaceholders(player, header.toString()))));
 
       for(String footerMessage : configFile.getStringList("Tablist.Tablist_Footer")) {
         footer.append(footerMessage.replace("%player%", playerPrefix + playerUtil.getNameColour() + player.getName())).append("\n");
       }
-
-      player.setPlayerListFooter(PlaceholderAPI.setPlaceholders(player, Utilities.colourise(footer.toString())));
+      player.setPlayerListFooter(Utilities.componentSerializer(Component.text(PlaceholderAPI.setPlaceholders(player, footer.toString()))));
       return;
     }
-
 
     for(String headerMessage : configFile.getStringList("Tablist.Tablist_Header")) {
       header.append(headerMessage.replace("%player%", playerPrefix + playerUtil.getNameColour() + player.getName())).append("\n");
     }
-
-    player.setPlayerListHeader(Utilities.colourise(header.toString()));
-
+    player.setPlayerListHeader(Utilities.componentSerializer(Component.text(header.toString())));
 
     for(String footerMessage : configFile.getStringList("Tablist.Tablist_Footer")) {
       footer.append(footerMessage.replace("%player%", playerPrefix + playerUtil.getNameColour() + player.getName())).append("\n");
     }
-
-    player.setPlayerListFooter(Utilities.colourise(footer.toString()));
+    player.setPlayerListFooter(Utilities.componentSerializer(Component.text(header.toString())));
   }
 
   public void tablistPlayerName() {
@@ -72,28 +66,45 @@ public class TablistManager {
     }
 
     if(!configFile.getBoolean("Tablist.Player_Name_Formats.Group_Formats.Enabled")) {
-      player.setPlayerListName(setFormat(player, configFile.getString("Tablist.Player_Name_Formats.Default_Format")));;
+      player.setPlayerListName(
+        Utilities.componentSerializer(Component.text(
+          setFormat(
+            player,
+            configFile.getString(
+              "Tablist.Player_Name_Formats.Default_Format",
+              "%playername%"
+            )
+          )
+        )
+      ));
       return;
     }
 
     for(String groupName : configFile.getConfigurationSection("Tablist.Player_Name_Formats.Group_Formats.Groups").getKeys(false)) {
       if(Utilities.checkPermissions(player, false, "stylizer.tablist.groups." + groupName)) {
-        player.setPlayerListName(setFormat(player, configFile.getString("Tablist.Player_Name_Formats.Group_Formats.Groups." + groupName)));
+        player.setPlayerListName(
+          Utilities.componentSerializer(Component.text(setFormat(player,
+            configFile.getString(
+              "Tablist.Player_Name_Formats.Group_Formats.Groups." + groupName,
+              "%playername%"
+            ))
+          )
+        ));
         return;
       }
     }
   }
 
-  private String setFormat(@NotNull final Player player, @NotNull String tablistFormat) {
+  private String setFormat(final Player player, String tablistFormat) {
     String finalFormat = tablistFormat.replace("%playername%", player.getName());
     finalFormat = finalFormat.replace("%displayname%", playerUtil.getNameColour() + player.getName());
     finalFormat = finalFormat.replace("%prefix%", playerPrefix);
     finalFormat = finalFormat.replace("%suffix%", playerSuffix);
 
     if(isPlaceholderAPI) {
-      return Utilities.colourise(PlaceholderAPI.setPlaceholders(player, finalFormat));
+      return PlaceholderAPI.setPlaceholders(player, finalFormat);
     }
 
-    return Utilities.colourise(finalFormat);
+    return finalFormat;
   }
 }
