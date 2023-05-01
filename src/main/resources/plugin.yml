@@ -1,7 +1,7 @@
 name: Stylizer
 description: An advanced chat/tablist plugin
 version: 2.1.0
-api-version: 1.19
+api-version: 1.13
 main: me.omegaweapondev.stylizer.Stlyizer
 author: OmegaWeaponDev
 
@@ -22,9 +22,6 @@ commands:
   itemnamer:
     description: Edit the name and lore of an item
     aliases: [styleitem, itemstyles, itemname]
-  stylizerclearlog:
-    description: The clear log command
-    aliases: [scl, sclearlog, stylizercl]
 
 permissions:
   stylizer.admin:

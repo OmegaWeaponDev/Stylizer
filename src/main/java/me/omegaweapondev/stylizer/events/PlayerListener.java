@@ -50,7 +50,7 @@ public class PlayerListener implements Listener {
     formatNameTags(player);
     spigotUpdater(player);
 
-    if(Bukkit.getOnlinePlayers().size() == 1) {
+    if(Bukkit.getOnlinePlayers().size() >= 1) {
       messageAnnouncements();
     }
   }
