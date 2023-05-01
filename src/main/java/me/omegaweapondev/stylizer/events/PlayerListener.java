@@ -4,6 +4,7 @@ import me.omegaweapondev.stylizer.Stylizer;
 import me.omegaweapondev.stylizer.utilities.MessageAnnouncements;
 import me.omegaweapondev.stylizer.utilities.PlayerUtil;
 import me.omegaweapondev.stylizer.utilities.TablistManager;
+import me.ou.library.SpigotUpdater;
 import me.ou.library.Utilities;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,6 +14,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import java.util.Comparator;
@@ -46,6 +48,7 @@ public class PlayerListener implements Listener {
     }
 
     formatNameTags(player);
+    spigotUpdater(player);
 
     if(Bukkit.getOnlinePlayers().size() == 1) {
       messageAnnouncements();
@@ -104,6 +107,31 @@ public class PlayerListener implements Listener {
       nameTagTeam.setSuffix(tablistManager.playerSuffix);
       nameTagTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
       nameTagTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+    }
+  }
+
+  private void spigotUpdater(final Player player) {
+    if (!configFile.getBoolean("Update_Message")) return;
+    if (!Utilities.checkPermissions(player, true, "stylizer.update", "stylizer.admin")) return;
+
+    // Send a message in console if there is a new version of the plugin
+    if(plugin.getSettingsHandler().getConfigFile().getConfig().getBoolean("Update_Messages")) {
+      new SpigotUpdater(plugin, 78327).getVersion(version -> {
+        int spigotVersion = Integer.parseInt(version.replace(".", ""));
+        int pluginVersion = Integer.parseInt(plugin.getDescription().getVersion().replace(".", ""));
+
+        if(pluginVersion >= spigotVersion) {
+          Utilities.logInfo(true, "You are already running the latest version");
+          return;
+        }
+
+        PluginDescriptionFile pdf = plugin.getDescription();
+        Utilities.message(player,
+                "#00D4FFA new version of #FF4A4A" + pdf.getName() + " #00D4FFis avaliable!",
+                "#00D4FFCurrent Version: #FF4A4A" + pdf.getVersion() + " #00D4FF> New Version: #FF4A4A" + version,
+                "#00D4FFGrab it here:#FF4A4A https://www.spigotmc.org/resources/stylizer.78327/"
+        );
+      });
     }
   }
 

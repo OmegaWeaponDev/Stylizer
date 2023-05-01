@@ -9,11 +9,13 @@ import me.omegaweapondev.stylizer.menus.ChatColours;
 import me.omegaweapondev.stylizer.menus.NameColours;
 import me.omegaweapondev.stylizer.utilities.Placeholders;
 import me.omegaweapondev.stylizer.utilities.SettingsHandler;
+import me.ou.library.SpigotUpdater;
 import me.ou.library.Utilities;
 import me.ou.library.menus.MenuCreator;
 import net.milkbowl.vault.chat.Chat;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
@@ -61,6 +63,7 @@ public class Stylizer extends JavaPlugin {
     commandSetup();
     eventsSetup();
     registerTablistTeams();
+    spigotUpdater();
   }
 
   @Override
@@ -145,6 +148,28 @@ public class Stylizer extends JavaPlugin {
         }
       }
     }
+  }
+
+  private void spigotUpdater() {
+    if(!getSettingsHandler().getConfigFile().getConfig().getBoolean("Update_Messages"))  return;
+    // Send a message in console if there is a new version of the plugin
+
+    new SpigotUpdater(this, 78327).getVersion(version -> {
+      int spigotVersion = Integer.parseInt(version.replace(".", ""));
+      int pluginVersion = Integer.parseInt(this.getDescription().getVersion().replace(".", ""));
+
+      if(pluginVersion >= spigotVersion) {
+        Utilities.logInfo(true, "You are already running the latest version");
+        return;
+      }
+
+      PluginDescriptionFile pdf = this.getDescription();
+      Utilities.logWarning(true,
+              "A new version of " + pdf.getName() + " is avaliable!",
+              "Current Version: " + pdf.getVersion() + " > New Version: " + version,
+              "Grab it here: https://www.spigotmc.org/resources/stylizer.78327/"
+      );
+    });
   }
 
   public boolean isPlaceholderAPI() {
