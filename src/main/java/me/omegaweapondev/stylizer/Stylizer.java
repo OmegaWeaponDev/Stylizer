@@ -1,6 +1,9 @@
 package me.omegaweapondev.stylizer;
 
-import me.omegaweapondev.stylizer.commands.*;
+import me.omegaweapondev.stylizer.commands.ChatColour;
+import me.omegaweapondev.stylizer.commands.ItemNamer;
+import me.omegaweapondev.stylizer.commands.MainCommand;
+import me.omegaweapondev.stylizer.commands.NameColour;
 import me.omegaweapondev.stylizer.events.ChatListener;
 import me.omegaweapondev.stylizer.events.MenuListener;
 import me.omegaweapondev.stylizer.events.PlayerListener;
@@ -21,17 +24,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import java.lang.module.ModuleDescriptor;
+
 public class Stylizer extends JavaPlugin {
   private Stylizer plugin;
   private SettingsHandler settingsHandler;
   private NameColours nameColourGUI;
   private ChatColours chatColourGUI;
   private Chat chat = null;
-  private final Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 
   @Override
   public void onEnable() {
     plugin = this;
+    Utilities.setInstance(this);
     settingsHandler = new SettingsHandler(plugin);
 
     Utilities.logInfo(false,
@@ -62,12 +67,13 @@ public class Stylizer extends JavaPlugin {
     getSettingsHandler().configUpdater();
     commandSetup();
     eventsSetup();
-    registerTablistTeams();
     spigotUpdater();
+    Bukkit.getScheduler().runTaskLater(this, this::registerTablistTeams, 20L * 20L * 3L);
   }
 
   @Override
   public void onDisable() {
+    Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
     // Set the instance to null when the plugin is disabled
     if(!MenuCreator.getOpenInventories().isEmpty()) {
       nameColourGUI.deleteInventory();
@@ -139,37 +145,44 @@ public class Stylizer extends JavaPlugin {
     return chat != null;
   }
 
-  private void registerTablistTeams() {
-    if(settingsHandler.getConfigFile().getConfig().getBoolean("Tablist.Sorting_Order.Enabled")) {
-      for(String configGroup : settingsHandler.getConfigFile().getConfig().getConfigurationSection("Tablist.Sorting_Order.Order").getKeys(false)) {
-        Team team = scoreboard.getTeam("group_" + configGroup);
-        if (team == null) {
-          scoreboard.registerNewTeam("group_" + configGroup);
-        }
-      }
-    }
-  }
-
   private void spigotUpdater() {
     if(!getSettingsHandler().getConfigFile().getConfig().getBoolean("Update_Messages"))  return;
     // Send a message in console if there is a new version of the plugin
 
     new SpigotUpdater(this, 78327).getVersion(version -> {
-      int spigotVersion = Integer.parseInt(version.replace(".", ""));
-      int pluginVersion = Integer.parseInt(this.getDescription().getVersion().replace(".", ""));
+      ModuleDescriptor.Version spigotVersion = ModuleDescriptor.Version.parse(version);
+      ModuleDescriptor.Version pluginVersion = ModuleDescriptor.Version.parse(this.getDescription().getVersion());
 
-      if(pluginVersion >= spigotVersion) {
-        Utilities.logInfo(true, "You are already running the latest version");
-        return;
+      if(spigotVersion.compareTo(pluginVersion) >= 0) {
+
+        pluginUpdateMessage(version);
+      } else {
+        Utilities.logInfo(true, "You are running the latest plugin version");
       }
-
-      PluginDescriptionFile pdf = this.getDescription();
-      Utilities.logWarning(true,
-              "A new version of " + pdf.getName() + " is avaliable!",
-              "Current Version: " + pdf.getVersion() + " > New Version: " + version,
-              "Grab it here: https://www.spigotmc.org/resources/stylizer.78327/"
-      );
     });
+  }
+
+  private void registerTablistTeams() {
+    Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+
+    if (!settingsHandler.getConfigFile().getConfig().getBoolean("Tablist.Sorting_Order.Enabled")) return;
+
+    Team team;
+    for (String configGroup : settingsHandler.getConfigFile().getConfig().getStringList("Tablist.Sorting_Order.Order")) {
+      team = scoreboard.getTeam("group_" + configGroup);
+      if (team == null) {
+        scoreboard.registerNewTeam("group_" + configGroup);
+      }
+    }
+  }
+
+  private void pluginUpdateMessage(final String version) {
+    PluginDescriptionFile pdf = this.getDescription();
+    Utilities.logWarning(true,
+            "A new version of " + pdf.getName() + " is avaliable!",
+            "Current Version: " + pdf.getVersion() + " > New Version: " + version,
+            "Grab it here: https://www.spigotmc.org/resources/stylizer.78327/"
+    );
   }
 
   public boolean isPlaceholderAPI() {
